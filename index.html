@@ -299,14 +299,14 @@ function App(){
 
           {/* FEATURE 1: Hue slider — visible always, works for Pro only */}
           <div style={{fontSize:10,color:"#666",marginBottom:4,display:"flex",alignItems:"center",gap:6}}>
-            🎛️ ปรับ Hue {!isPro&&<span style={{fontSize:9,color:"#f0b27a",background:"#3a2a1a",padding:"1px 6px",borderRadius:4}}>🔒 PRO</span>}
+            🎛️ ปรับเฉดสี (Hue) {!isPro&&<span style={{fontSize:9,color:"#f0b27a",background:"#3a2a1a",padding:"1px 6px",borderRadius:4}}>🔒 PRO</span>}
           </div>
           <div style={{position:"relative",marginBottom:4}}>
             <input type="range" min="-180" max="180" value={isPro?hue:0} onChange={e=>isPro&&setHue(Number(e.target.value))}
               style={{width:"100%",height:6,borderRadius:3,appearance:"none",background:`linear-gradient(90deg,#ff0000,#ffff00,#00ff00,#00ffff,#0000ff,#ff00ff,#ff0000)`,cursor:isPro?"pointer":"not-allowed",opacity:isPro?1:0.35}}/>
             {isPro&&<div style={{fontSize:9,color:ac,textAlign:"center"}}>{hue}°</div>}
             {!isPro&&<div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}} onClick={()=>window.open("mailto:saantie@gmail.com?subject=สนใจซื้อ Newsletter Generator PRO&body=ต้องการสั่งซื้อเวอร์ชั่น PRO รายปี","_blank")}>
-              <span style={{fontSize:10,color:"#f0b27a",background:"#1a1a2e",padding:"3px 10px",borderRadius:6,border:"1px solid #3a2a1a"}}>📧 ติดต่อซื้อ: saantie@gmail.com</span>
+              <span style={{fontSize:10,color:"#f0b27a",background:"#1a1a2e",padding:"3px 10px",borderRadius:6,border:"1px solid #3a2a1a"}}>📧 ปรับสีได้ตามใจชอบ ติดต่อ: saantie@gmail.com</span>
             </div>}
           </div>
         </div>
