@@ -620,7 +620,7 @@ function App(){
           {exportMsg&&<div style={{padding:"6px 12px",borderRadius:10,marginBottom:8,fontSize:12,textAlign:"center",background:exportMsg.startsWith("✅")?"#e8f5e9":"#fce4ec",color:exportMsg.startsWith("✅")?"#2e7d32":"#c62828"}}>{exportMsg}</div>}
           <div style={{display:"flex",gap:8,border:"2px solid #bbb",borderRadius:12,padding:8,background:"#fafafa"}}>
             <button onClick={handleReset} style={{padding:"10px 14px",border:"1px solid #ddd",borderRadius:10,background:"#fafafa",color:"#888",cursor:"pointer",fontSize:13}}>🔄</button>
-            <button onClick={handleExport} disabled={exporting||!d.headline} style={{flex:1,padding:"10px",border:"none",borderRadius:10,background:!d.headline?"#eee":`linear-gradient(135deg,${ac},${fc2})`,color:!d.headline?"#bbb":"#fff",cursor:!d.headline?"default":"pointer",fontSize:15,fontWeight:600,fontFamily:"'Kanit',sans-serif",boxShadow:d.headline?`0 4px 12px ${ac}30`:"none"}}>{exporting?"⏳ กำลังสร้าง...":"📥 ส่งออก PNG"}</button>
+            <button onClick={handleExport} disabled={exporting||!d.headline} style={{flex:1,padding:"10px",border:"none",borderRadius:10,background:!d.headline?"#eee":`linear-gradient(135deg,${ac},${fc2})`,color:!d.headline?"#bbb":"#fff",cursor:!d.headline?"default":"pointer",fontSize:15,fontWeight:600,fontFamily:"'Kanit',sans-serif",boxShadow:d.headline?`0 4px 12px ${ac}30`:"none"}}>{exporting?"⏳ กำลังสร้าง...":"📥 ส่งออกภาพ"}</button>
           </div>
         </div>
       </div>
