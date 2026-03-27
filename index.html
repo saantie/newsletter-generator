@@ -520,7 +520,7 @@ function App(){
 
             {/* Hue */}
             <div style={{fontSize:11,color:"#888",marginBottom:5,display:"flex",alignItems:"center",gap:6}}>
-              🎛️ ปรับ Hue {!isPro&&<span style={{fontSize:9,color:"#e67e22",background:"#fef3e2",padding:"2px 8px",borderRadius:10}}>PRO</span>}
+              🎛️ ปรับเฉดสี Hue {!isPro&&<span style={{fontSize:9,color:"#e67e22",background:"#fef3e2",padding:"2px 8px",borderRadius:10}}>PRO</span>}
             </div>
             <div style={{position:"relative",marginBottom:4}}>
               <input type="range" min="-180" max="180" value={hue} onChange={e=>setHue(Number(e.target.value))}
@@ -530,7 +530,7 @@ function App(){
 
             {/* Brightness */}
             <div style={{fontSize:11,color:"#888",marginBottom:5,marginTop:10,display:"flex",alignItems:"center",gap:6}}>
-              ☀️ สมดุลแสง {!isPro&&<span style={{fontSize:9,color:"#e67e22",background:"#fef3e2",padding:"2px 8px",borderRadius:10}}>PRO</span>}
+              ☀️ ปรับสมดุลแสง {!isPro&&<span style={{fontSize:9,color:"#e67e22",background:"#fef3e2",padding:"2px 8px",borderRadius:10}}>PRO</span>}
             </div>
             <div style={{position:"relative",marginBottom:4}}>
               <input type="range" min="50" max="150" value={brightness} onChange={e=>setBrightness(Number(e.target.value))}
@@ -561,8 +561,8 @@ function App(){
           <div className="sec"><div className="sec-t" style={{color:ac}}>🏢 หน่วยงาน</div><div className="fld"><Label>ชื่อจดหมายข่าว</Label><div style={{display:"flex",gap:6,alignItems:"center"}}><div style={{flex:1}}><Input value={d.headerTitle} onChange={v=>set("headerTitle",v)} placeholder="ประชาสัมพันธ์" ac={ac}/></div><div style={{display:"flex",alignItems:"center",gap:2,flexShrink:0}}><button onClick={()=>set("headerTitleSize",Math.max(20,(d.headerTitleSize||38)-2))} style={{width:28,height:28,borderRadius:6,border:"1px solid #ddd",background:"#fafafa",color:"#888",cursor:"pointer",fontSize:14,display:"flex",alignItems:"center",justifyContent:"center"}}>−</button><span style={{fontSize:10,color:"#888",minWidth:28,textAlign:"center"}}>{d.headerTitleSize||38}</span><button onClick={()=>set("headerTitleSize",Math.min(50,(d.headerTitleSize||38)+2))} style={{width:28,height:28,borderRadius:6,border:"1px solid #ddd",background:"#fafafa",color:"#888",cursor:"pointer",fontSize:14,display:"flex",alignItems:"center",justifyContent:"center"}}>+</button></div></div></div><div className="fld"><Label>ชื่อหน่วยงาน *</Label><Input value={d.orgName} onChange={v=>set("orgName",v)} placeholder="สำนักงานสาธารณสุข" ac={ac}/></div><div className="fld"><Label>หน่วยงานย่อย</Label><Input value={d.subOrg} onChange={v=>set("subOrg",v)} placeholder="อำเภอนาแห้ว" ac={ac}/></div><div style={{display:"flex",gap:10}}><div style={{flex:1}}><Label>โลโก้ (สูงสุด 3)</Label>
                 <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>{(d.logos||[]).map((lg,i)=>(<div key={i} style={{width:40,height:40,borderRadius:"50%",overflow:"hidden",border:"1px solid #ddd",position:"relative"}}><img src={lg} style={{width:"100%",height:"100%",objectFit:"cover"}} alt=""/><button onClick={()=>setD(p=>({...p,logos:p.logos.filter((_,j)=>j!==i)}))} style={{position:"absolute",top:-2,right:-2,width:14,height:14,borderRadius:"50%",background:"rgba(0,0,0,.5)",border:"none",color:"#fff",cursor:"pointer",fontSize:8,display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button></div>))}
                 {(d.logos||[]).length<3&&<button onClick={()=>{const inp=document.createElement("input");inp.type="file";inp.accept="image/*";inp.onchange=e=>{const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=ev=>setD(p=>({...p,logos:[...(p.logos||[]),ev.target.result]}));r.readAsDataURL(f)};inp.click()}} style={{width:40,height:40,borderRadius:"50%",border:"2px dashed #ddd",background:"#fafafa",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,color:"#ccc"}}>+</button>}
-                </div></div><div style={{flex:1}}><ImgUp label="โปรไฟล์" icon="👤" src={d.profileUrl} onUpload={v=>set("profileUrl",v)} onRemove={()=>set("profileUrl","")} ac={ac} h={65}/></div></div></div>
-          <div className="sec"><div className="sec-t" style={{color:ac}}>👤 ผู้บริหาร</div><div className="fld"><Label>ชื่อ-สกุล</Label><Input value={d.personName} onChange={v=>set("personName",v)} placeholder="นางทัศนา โกศล" ac={ac}/></div><div className="fld"><Label>ตำแหน่ง</Label><Input value={d.personTitle} onChange={v=>set("personTitle",v)} placeholder="สาธารณสุขอำเภอนาแห้ว" ac={ac}/></div></div>
+                </div></div><div style={{flex:1}}><ImgUp label="รูปผู้บริหาร" icon="👤" src={d.profileUrl} onUpload={v=>set("profileUrl",v)} onRemove={()=>set("profileUrl","")} ac={ac} h={65}/></div></div></div>
+          <div className="sec"><div className="sec-t" style={{color:ac}}>👤 ผู้บริหาร</div><div className="fld"><Label>ชื่อ-สกุล</Label><Input value={d.personName} onChange={v=>set("personName",v)} placeholder="นาย/นาง/นางสาว........" ac={ac}/></div><div className="fld"><Label>ตำแหน่ง</Label><Input value={d.personTitle} onChange={v=>set("personTitle",v)} placeholder="หัวหน้า............" ac={ac}/></div></div>
           <div className="sec"><div className="sec-t" style={{color:ac}}>📝 เนื้อหา</div>
             <div className="fld"><Label>หัวข้อข่าว *</Label><TextArea value={d.headline} onChange={v=>set("headline",v)} placeholder="หัวข้อกิจกรรม" rows={2} ac={ac}/>
               <div style={{display:"flex",gap:4,marginTop:4,alignItems:"center"}}><span style={{fontSize:10,color:"#888"}}>สีตัวอักษร:</span>
@@ -616,7 +616,7 @@ function App(){
         </div>{/* end single scroll */}
 
         {/* Bottom bar — fixed */}
-        <div style={{padding:"10px 18px",borderTop:"1px solid #eee",background:"#fff",flexShrink:0}}>
+        <div style={{padding:"10px 18px",borderTop:"1px solid #eee",background:"#e3e3e3",flexShrink:0}}>
           {exportMsg&&<div style={{padding:"6px 12px",borderRadius:10,marginBottom:8,fontSize:12,textAlign:"center",background:exportMsg.startsWith("✅")?"#e8f5e9":"#fce4ec",color:exportMsg.startsWith("✅")?"#2e7d32":"#c62828"}}>{exportMsg}</div>}
           <div style={{display:"flex",gap:8,border:"2px solid #bbb",borderRadius:12,padding:8,background:"#fafafa"}}>
             <button onClick={handleReset} style={{padding:"10px 14px",border:"1px solid #ddd",borderRadius:10,background:"#fafafa",color:"#888",cursor:"pointer",fontSize:13}}>🔄</button>
