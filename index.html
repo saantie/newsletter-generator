@@ -673,33 +673,29 @@ function App(){
         </div>{/* end single scroll */}
       </div>
 
-      {/* Preview column */}
-<div style={{flex:1,display:"flex",flexDirection:"column",background:"#f0f0f5",height:"100%"}}>
+     {/* Preview column */}
+<div style={{flex:1,display:"flex",flexDirection:"column",background:"#f0f0f5"}}>
 
-  {/* Zoom bar — fixed top */}
-  <div
-    style={{
-      padding:"6px 0",
+  {/* Zoom bar */}
+  <div style={{
+    padding:"6px 0",
+    display:"flex",
+    justifyContent:"center",
+    flexShrink:0,
+    background:"#f0f0f5",
+    borderBottom:"1px solid #e8e8e8",
+    zIndex:5
+  }}>
+    <div style={{
       display:"flex",
-      justifyContent:"center",
-      flexShrink:0,
-      background:"#f0f0f5",
-      borderBottom:"1px solid #e8e8e8",
-      zIndex:5
-    }}
-  >
-    <div
-      style={{
-        display:"flex",
-        alignItems:"center",
-        gap:2,
-        background:"#fff",
-        borderRadius:50,
-        padding:"4px 6px",
-        boxShadow:"0 2px 12px rgba(0,0,0,.08)",
-        border:"1px solid #e8e8e8"
-      }}
-    >
+      alignItems:"center",
+      gap:2,
+      background:"#fff",
+      borderRadius:50,
+      padding:"4px 6px",
+      boxShadow:"0 2px 12px rgba(0,0,0,.08)",
+      border:"1px solid #e8e8e8"
+    }}>
       <span style={{fontSize:10,color:"#999",padding:"0 6px"}}>🔍</span>
 
       {[0.3,0.45,0.6,0.8,1.0,1.2].map(s=>(
@@ -722,7 +718,6 @@ function App(){
           {Math.round(s*100)}%
         </button>
       ))}
-
     </div>
   </div>
 
@@ -731,10 +726,11 @@ function App(){
     style={{
       flex:1,
       minHeight:0,
-      overflow:"auto",
+      overflowY:"auto",
+      overflowX:"auto",
       display:"flex",
-      flexDirection:"column",
-      alignItems:"center",
+      justifyContent:"center",
+      alignItems:"flex-start",
       padding:12
     }}
   >
@@ -743,8 +739,7 @@ function App(){
       style={{
         width:Math.ceil(794*scale),
         height:Math.ceil(1123*scale),
-        flexShrink:0,
-        margin:"0 auto"
+        flexShrink:0
       }}
     >
 
@@ -764,7 +759,6 @@ function App(){
           id="main-preview"
           hue={hue}
           brightness={brightness}
-          saturation={saturation}
           headerWm={headerWm}
           headerWmPos={headerWmPos}
           headerWmZoom={headerWmZoom}
@@ -784,10 +778,7 @@ function App(){
 
     </div>
 
-    <div style={{height:30,flexShrink:0}}/>
-
   </div>
-
 </div>
   </>);
 }
