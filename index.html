@@ -402,7 +402,7 @@ function App(){
     const el=document.getElementById("main-preview");
     if(!el)throw new Error("ไม่พบ preview");
     const canvas=await window.html2canvas(el,{scale:4,useCORS:true,allowTaint:true,backgroundColor:"#ffffff",width:794,height:1123,logging:false,imageTimeout:30000,
-      onclone:(doc)=>{
+            onclone:(doc)=>{
         const divs=doc.querySelectorAll('[style]');
         divs.forEach(div=>{
           const s=div.style;
@@ -412,33 +412,54 @@ function App(){
           if(url.startsWith("data:image/svg")||url.includes("encodeURIComponent"))return;
           if(!url.startsWith("data:image/")&&!url.startsWith("blob:"))return;
 
+          // Get container dimensions
+          const rect=div.getBoundingClientRect();
+          const cw=rect.width||div.offsetWidth||200;
+          const ch=rect.height||div.offsetHeight||200;
+
+          // Parse background position
+          const bgPos=s.backgroundPosition||"50% 50%";
+          const posArr=bgPos.split(" ");
+          const px=parseFloat(posArr[0])||50;
+          const py=parseFloat(posArr[1])||50;
+
+          // Parse zoom level from backgroundSize
+          const bgSize=s.backgroundSize;
+          let zoomFactor=1;
+          if(bgSize&&bgSize!=='cover'&&bgSize.includes("%")){
+            const pct=parseFloat(bgSize);
+            if(pct>100) zoomFactor=pct/100;
+          }
+
           const img=doc.createElement("img");
           img.src=url;
           img.crossOrigin="anonymous";
-
-          const bgPos=s.backgroundPosition||"50% 50%";
-          const posArr=bgPos.split(" ");
-          const px=parseFloat(posArr[0])||50,py=parseFloat(posArr[1])||50;
-
-          // Base: cover container with correct crop position
-          img.style.cssText=`position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:${px}% ${py}%;pointer-events:none;`;
-
-          // Handle zoom via transform:scale (preserves aspect ratio)
-          const bgSize=s.backgroundSize;
-          if(bgSize&&bgSize!=='cover'&&bgSize.includes("%")){
-            const pct=parseFloat(bgSize);
-            if(pct>100){
-              img.style.transformOrigin=`${px}% ${py}%`;
-              img.style.transform=`scale(${pct/100})`;
-            }
-          }
 
           // Ensure container has positioning context
           const oldPos=s.position;
           if(oldPos!=='absolute'&&oldPos!=='fixed'&&oldPos!=='relative')s.position="relative";
           s.overflow="hidden";
           s.backgroundImage="none";
-          div.insertBefore(img,div.firstChild);
+
+          if(zoomFactor>1){
+            // Zoomed: wrapper div with overflow:hidden + oversized img with pixel offsets
+            const wrapper=doc.createElement("div");
+            wrapper.style.cssText=`position:absolute;top:0;left:0;width:${cw}px;height:${ch}px;overflow:hidden;pointer-events:none;`;
+
+            const imgW=cw*zoomFactor;
+            const imgH=ch*zoomFactor;
+            const offsetX=-(px/100)*(imgW-cw);
+            const offsetY=-(py/100)*(imgH-ch);
+
+            img.style.cssText=`position:absolute;top:${offsetY}px;left:${offsetX}px;width:${imgW}px;height:${imgH}px;object-fit:cover;pointer-events:none;`;
+
+            wrapper.appendChild(img);
+            div.insertBefore(wrapper,div.firstChild);
+          }else{
+            // No zoom: simple cover with object-position
+            img.style.cssText=`position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:${px}% ${py}%;pointer-events:none;`;
+            div.insertBefore(img,div.firstChild);
+          }
         });
       }
     });
@@ -676,17 +697,14 @@ function App(){
         </div>{/* end single scroll */}
       </div>
 
-      {/* Preview column */}
-      <div style={{width:"100%",display:"flex",flexDirection:"column",background:"#f0f0f5"}}>
+            {/* Preview column */}
+      <div className="prev-col">
         {/* Zoom bar */}
         <div style={{padding:"6px 0",display:"flex",justifyContent:"center",flexShrink:0,background:"#f0f0f5",borderBottom:"1px solid #e8e8e8",zIndex:5}}>
-          <div style={{display:"flex",alignItems:"center",gap:2,background:"#fff",borderRadius:50,padding:"4px 6px",boxShadow:"0 2px 12px rgba(0,0,0,.08)",border:"1px solid #e8e8e8"}}>
-            <span style={{fontSize:10,color:"#999",padding:"0 6px"}}>🔍</span>
-            {[0.3,0.45,0.6,0.8,1.0,1.2].map(s=>(<button key={s} onClick={()=>setScale(s)} style={{padding:"4px 10px",border:"none",borderRadius:50,background:scale===s?ac:"transparent",color:scale===s?"#fff":"#888",cursor:"pointer",fontSize:11,fontWeight:scale===s?600:400,fontFamily:"'Sarabun',sans-serif",minWidth:38}}>{Math.round(s*100)}%</button>))}
-          </div>
+          ...
         </div>
         {/* Scrollable preview area — supports both directions for high zoom */}
-        <div style={{overflowX:"auto",overflowY:"auto",WebkitOverflowScrolling:"touch",display:"flex",flexDirection:"column",alignItems:"center",padding:24}}>
+        <div style={{flex:1,overflowX:"auto",overflowY:"auto",WebkitOverflowScrolling:"touch",display:"flex",flexDirection:"column",alignItems:"center",padding:24}}>
         <div style={{width:Math.ceil(794*scale),height:Math.ceil(1123*scale),flexShrink:0,margin:"0 auto"}}>
           <div ref={wrapRef} style={{transform:`scale(${scale})`,transformOrigin:"top left",width:794,height:1123}}>
             <Preview ck={ck} sk={sk} d={d} id="main-preview" hue={hue} brightness={brightness} saturation={saturation} headerWm={headerWm} headerWmPos={headerWmPos} headerWmZoom={headerWmZoom} headerWmOp={headerWmOp} textAlign={textAlign} isPro={isPro} onImgDrag={onImgDrag} onImgZoom={onImgZoom} onProfileDrag={onProfileDrag} onProfileZoom={onProfileZoom} onHdrWmDrag={p=>setHeaderWmPos(p)} onHdrWmZoom={z=>setHeaderWmZoom(z)} onLogoDrag={onLogoDrag} onLogoZoom={onLogoZoom}/>
