@@ -222,7 +222,7 @@ function Preview({ck,sk,d,id,hue=0,brightness=100,saturation=100,headerWm="",hea
         {headerWm&&<CropImg src={headerWm} pos={headerWmPos} zoom={headerWmZoom} onDrag={onHdrWmDrag||null} onZoom={onHdrWmZoom||null} style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",opacity:headerWmOp/100,zIndex:0}}/>}
         {sk!=="minimal"&&<><div style={{position:"absolute",top:-40,right:-40,width:160,height:160,borderRadius:sk==="retro"?"10%":"50%",background:"rgba(255,255,255,.06)"}}/><div style={{position:"absolute",bottom:-30,left:"35%",width:120,height:120,borderRadius:sk==="retro"?"10%":"50%",background:"rgba(255,255,255,.04)"}}/></>}
         {/* Logo U-shape */}
-        {d.logos&&d.logos.length>0&&<div style={{position:"absolute",top:4,right:6,zIndex:2,display:"flex",gap:4}}>
+                {d.logos&&d.logos.length>0&&<div style={{position:"absolute",top:0,right:0,zIndex:2,display:"flex",gap:4}}>
           {d.logos.map((lg,i)=>{const lo=typeof lg==="string"?{url:lg,pos:"50% 50%",zoom:100}:lg;const ls=d.logoSize||42;const cw=ls+10,ch=ls+14;return(<div key={i} style={{width:cw,height:ch,borderRadius:`0 0 ${cw/2}px ${cw/2}px`,background:"rgba(255,255,255,0.3)",display:"flex",alignItems:"center",justifyContent:"center",paddingTop:3}}><div style={{width:ls,height:ls,borderRadius:"50%",overflow:"hidden"}}><CropImg src={lo.url} pos={lo.pos} zoom={lo.zoom} onDrag={onLogoDrag?p=>onLogoDrag(i,p):null} onZoom={onLogoZoom?z=>onLogoZoom(i,z):null} style={{width:"100%",height:"100%",borderRadius:"50%"}}/></div></div>)})}
         </div>}
         {/* Text */}
@@ -233,20 +233,20 @@ function Preview({ck,sk,d,id,hue=0,brightness=100,saturation=100,headerWm="",hea
         </div>
         {/* Profile U-shape */}
         {(()=>{const ps=d.profileSize||116;const uw=ps+20,uh=ps+22;return(
-        <div style={{position:"absolute",top:0,left:20,zIndex:2,display:"flex",flexDirection:"column",alignItems:"center",height:HEADER_H,justifyContent:"center"}}>
+                <div style={{position:"absolute",top:0,left:20,zIndex:2,display:"flex",flexDirection:"column",alignItems:"center"}}>
           <div style={{width:uw,height:uh,borderRadius:c.sp.uShape,background:"rgba(255,255,255,0.3)",display:"flex",alignItems:"center",justifyContent:"center",paddingTop:8}}>
             <div style={{width:ps,height:ps,borderRadius:c.sp.profR,border:"4px solid rgba(255,255,255,.55)",overflow:"hidden",boxShadow:"0 6px 20px rgba(0,0,0,.3)"}}><CropImg src={d.profileUrl} pos={d.profilePos||"50% 50%"} zoom={d.profileZoom||100} onDrag={onProfileDrag||null} onZoom={onProfileZoom||null} style={{width:"100%",height:"100%",borderRadius:c.sp.profR,backgroundColor:"rgba(255,255,255,.12)"}}/>{!d.profileUrl&&<div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",color:"rgba(255,255,255,.35)",fontSize:44}}>👤</div>}</div>
           </div>
           <div style={{textAlign:"center",marginTop:4,fontFamily:"'Kanit',sans-serif",fontSize:19,fontWeight:600,color:"#ffeaa7"}}>{d.personName||""}</div>
           <div style={{textAlign:"center",fontFamily:"'Sarabun',sans-serif",fontSize:12,fontWeight:500,color:"rgba(255,255,255,.85)",maxWidth:ps+24,whiteSpace:"pre-line"}}>{d.personTitle||""}</div>
         </div>)})()}
-        {/* FIX: Headline — centered text */}
-        {(()=>{const hs=c.sp.hlStyle;const hlLeft=(d.profileSize||116)+60;const base={position:"absolute",bottom:14,left:hlLeft,right:26,borderRadius:c.sp.hlR,zIndex:2,padding:"12px 16px",overflow:"hidden"};
+                {/* FIX: Headline — auto-height, max 2 lines */}
+        {(()=>{const hs=c.sp.hlStyle;const hlLeft=(d.profileSize||116)+60;const base={position:"absolute",bottom:14,left:hlLeft,right:26,borderRadius:c.sp.hlR,zIndex:2,padding:"10px 16px",overflow:"hidden"};
           const hlS=hs==="border"?{...base,border:`2px solid ${c.ac}60`,backdropFilter:"blur(4px)"}
           :hs==="flat"?{...base}:hs==="glow"?{...base,boxShadow:`0 4px 20px ${c.ac}40, 0 0 40px ${c.ac}15`}:{...base,boxShadow:"0 4px 12px rgba(0,0,0,.12)"};
           const bgC=d.hlBgColor||(hs==="border"?"rgba(255,255,255,0.2)":c.hlBg);
           const txtC=hs==="border"?"#fff":(d.hlColor||c.hlTxt);
-          return<div style={hlS}><div style={{position:"absolute",inset:0,background:bgC,filter:bf,borderRadius:c.sp.hlR}}/><div style={{position:"relative",fontFamily:"'Kanit',sans-serif",fontSize:14,fontWeight:500,color:txtC,lineHeight:1.55,textAlign:"center"}}>{d.headline||"หัวข้อข่าวประชาสัมพันธ์"}</div></div>})()}
+          return<div style={hlS}><div style={{position:"absolute",inset:0,background:bgC,filter:bf,borderRadius:c.sp.hlR}}/><div style={{position:"relative",fontFamily:"'Kanit',sans-serif",fontSize:14,fontWeight:500,color:txtC,lineHeight:1.55,textAlign:"center",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden",wordBreak:"break-word",whiteSpace:"pre-wrap"}}>{d.headline||"หัวข้อข่าวประชาสัมพันธ์"}</div></div>})()}
         {/* Decorations z:1 — style-specific */}
         <div style={{position:"absolute",inset:0,zIndex:1,pointerEvents:"none"}}>{hdrDecos()}</div>
       </div>
@@ -402,7 +402,7 @@ function App(){
     const el=document.getElementById("main-preview");
     if(!el)throw new Error("ไม่พบ preview");
     const canvas=await window.html2canvas(el,{scale:4,useCORS:true,allowTaint:true,backgroundColor:"#ffffff",width:794,height:1123,logging:false,imageTimeout:30000,
-            onclone:(doc)=>{
+                  onclone:(doc)=>{
         const divs=doc.querySelectorAll('[style]');
         divs.forEach(div=>{
           const s=div.style;
@@ -412,18 +412,15 @@ function App(){
           if(url.startsWith("data:image/svg")||url.includes("encodeURIComponent"))return;
           if(!url.startsWith("data:image/")&&!url.startsWith("blob:"))return;
 
-          // Get container dimensions
           const rect=div.getBoundingClientRect();
           const cw=rect.width||div.offsetWidth||200;
           const ch=rect.height||div.offsetHeight||200;
 
-          // Parse background position
           const bgPos=s.backgroundPosition||"50% 50%";
           const posArr=bgPos.split(" ");
           const px=parseFloat(posArr[0])||50;
           const py=parseFloat(posArr[1])||50;
 
-          // Parse zoom level from backgroundSize
           const bgSize=s.backgroundSize;
           let zoomFactor=1;
           if(bgSize&&bgSize!=='cover'&&bgSize.includes("%")){
@@ -435,29 +432,23 @@ function App(){
           img.src=url;
           img.crossOrigin="anonymous";
 
-          // Ensure container has positioning context
           const oldPos=s.position;
           if(oldPos!=='absolute'&&oldPos!=='fixed'&&oldPos!=='relative')s.position="relative";
           s.overflow="hidden";
           s.backgroundImage="none";
 
           if(zoomFactor>1){
-            // Zoomed: wrapper div with overflow:hidden + oversized img with pixel offsets
             const wrapper=doc.createElement("div");
             wrapper.style.cssText=`position:absolute;top:0;left:0;width:${cw}px;height:${ch}px;overflow:hidden;pointer-events:none;`;
-
             const imgW=cw*zoomFactor;
             const imgH=ch*zoomFactor;
             const offsetX=-(px/100)*(imgW-cw);
             const offsetY=-(py/100)*(imgH-ch);
-
             img.style.cssText=`position:absolute;top:${offsetY}px;left:${offsetX}px;width:${imgW}px;height:${imgH}px;object-fit:cover;pointer-events:none;`;
-
             wrapper.appendChild(img);
             div.insertBefore(wrapper,div.firstChild);
           }else{
-            // No zoom: simple cover with object-position
-            img.style.cssText=`position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:${px}% ${py}%;pointer-events:none;`;
+            img.style.cssText=`position:absolute;top:0;left:0;width:${cw}px;height:${ch}px;object-fit:cover;object-position:${px}% ${py}%;pointer-events:none;`;
             div.insertBefore(img,div.firstChild);
           }
         });
@@ -699,9 +690,12 @@ function App(){
 
             {/* Preview column */}
       <div className="prev-col">
-        {/* Zoom bar */}
+                {/* Zoom bar */}
         <div style={{padding:"6px 0",display:"flex",justifyContent:"center",flexShrink:0,background:"#f0f0f5",borderBottom:"1px solid #e8e8e8",zIndex:5}}>
-          ...
+          <div style={{display:"flex",alignItems:"center",gap:2,background:"#fff",borderRadius:50,padding:"4px 6px",boxShadow:"0 2px 12px rgba(0,0,0,.08)",border:"1px solid #e8e8e8"}}>
+            <span style={{fontSize:10,color:"#999",padding:"0 6px"}}>🔍</span>
+            {[0.3,0.45,0.6,0.8,1.0,1.2].map(s=>(<button key={s} onClick={()=>setScale(s)} style={{padding:"4px 10px",border:"none",borderRadius:50,background:scale===s?ac:"transparent",color:scale===s?"#fff":"#888",cursor:"pointer",fontSize:11,fontWeight:scale===s?600:400,fontFamily:"'Sarabun',sans-serif",minWidth:38}}>{Math.round(s*100)}%</button>))}
+          </div>
         </div>
         {/* Scrollable preview area — supports both directions for high zoom */}
         <div style={{flex:1,overflowX:"auto",overflowY:"auto",WebkitOverflowScrolling:"touch",display:"flex",flexDirection:"column",alignItems:"center",padding:24}}>
