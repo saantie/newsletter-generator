@@ -222,7 +222,7 @@ function Preview({ck,sk,d,id,hue=0,brightness=100,saturation=100,headerWm="",hea
         {headerWm&&<CropImg src={headerWm} pos={headerWmPos} zoom={headerWmZoom} onDrag={onHdrWmDrag||null} onZoom={onHdrWmZoom||null} style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",opacity:headerWmOp/100,zIndex:0}}/>}
         {sk!=="minimal"&&<><div style={{position:"absolute",top:-40,right:-40,width:160,height:160,borderRadius:sk==="retro"?"10%":"50%",background:"rgba(255,255,255,.06)"}}/><div style={{position:"absolute",bottom:-30,left:"35%",width:120,height:120,borderRadius:sk==="retro"?"10%":"50%",background:"rgba(255,255,255,.04)"}}/></>}
         {/* Logo U-shape */}
-                {d.logos&&d.logos.length>0&&<div style={{position:"absolute",top:0,right:4,zIndex:2,display:"flex",gap:4}}>
+                {d.logos&&d.logos.length>0&&<div style={{position:"absolute",top:0,right:10,zIndex:2,display:"flex",gap:4}}>
           {d.logos.map((lg,i)=>{const lo=typeof lg==="string"?{url:lg,pos:"50% 50%",zoom:100}:lg;const ls=d.logoSize||42;const cw=ls+10,ch=ls+14;return(<div key={i} style={{width:cw,height:ch,borderRadius:`0 0 ${cw/2}px ${cw/2}px`,background:"rgba(255,255,255,0.3)",display:"flex",alignItems:"center",justifyContent:"center",paddingTop:3}}><div style={{width:ls,height:ls,borderRadius:"50%",overflow:"hidden"}}><CropImg src={lo.url} pos={lo.pos} zoom={lo.zoom} onDrag={onLogoDrag?p=>onLogoDrag(i,p):null} onZoom={onLogoZoom?z=>onLogoZoom(i,z):null} style={{width:"100%",height:"100%",borderRadius:"50%"}}/></div></div>)})}
         </div>}
         {/* Text */}
