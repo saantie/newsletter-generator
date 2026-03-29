@@ -509,7 +509,7 @@ function App(){
 .main-wrap{display:flex;flex:1;min-height:0;overflow:hidden}
 .form-col{width:50%;min-width:340px;display:flex;flex-direction:column;border-right:1px solid #e8e8e8;background:#ffffff}
 .prev-col{flex:1;display:flex;flex-direction:column;align-items:center;background:#f0f0f5;overflow:auto;padding:12px}
-@media(max-width:850px){.main-wrap{flex-direction:column}.form-col{width:100%;min-width:unset;max-width:unset;flex:none;height:50vh;border-right:none}.prev-col{flex:1;min-height:120px;padding:8px;overflow:auto}}`}</style>
+@media(max-width:850px){.main-wrap{flex-direction:column}.form-col{width:100%;min-width:unset;max-width:unset;flex:none;height:45vh;border-right:none}.prev-col{flex:1;min-height:50vh;padding:8px;overflow:auto}}`}</style>
     <div style={{display:"flex",flexDirection:"column",height:"100vh",fontFamily:"'Sarabun',sans-serif",background:"#f5f5fa",color:"#333"}}><div className="main-wrap">
       <div className="form-col">
         {/* Single scrollable area: title + theme + form */}
@@ -673,23 +673,25 @@ function App(){
 
       {/* Preview column */}
       <div style={{flex:1,display:"flex",flexDirection:"column",background:"#f0f0f5"}}>
-        {/* Zoom bar — fixed top */}
-        <div style={{padding:"6px 0",display:"flex",justifyContent:"center",flexShrink:0,background:"#f0f0f5",borderBottom:"1px solid #e8e8e8",zIndex:5}}>
-          <div style={{display:"flex",alignItems:"center",gap:2,background:"#fff",borderRadius:50,padding:"4px 6px",boxShadow:"0 2px 12px rgba(0,0,0,.08)",border:"1px solid #e8e8e8"}}>
-            <span style={{fontSize:10,color:"#999",padding:"0 6px"}}>🔍</span>
-            {[0.3,0.45,0.6,0.8,1.0,1.2].map(s=>(<button key={s} onClick={()=>setScale(s)} style={{padding:"4px 10px",border:"none",borderRadius:50,background:scale===s?ac:"transparent",color:scale===s?"#fff":"#888",cursor:"pointer",fontSize:11,fontWeight:scale===s?600:400,fontFamily:"'Sarabun',sans-serif",minWidth:38}}>{Math.round(s*100)}%</button>))}
+        {/* Scrollable preview area with sticky zoom bar */}
+        <div style={{flex:1,overflow:"auto",WebkitOverflowScrolling:"touch",display:"flex",flexDirection:"column",alignItems:"center",padding:0}}>
+          {/* Zoom bar — sticky top inside scroll area */}
+          <div style={{padding:"6px 0",display:"flex",justifyContent:"center",flexShrink:0,background:"#f0f0f5",borderBottom:"1px solid #e8e8e8",zIndex:5,position:"sticky",top:0,width:"100%"}}>
+            <div style={{display:"flex",alignItems:"center",gap:2,background:"#fff",borderRadius:50,padding:"4px 6px",boxShadow:"0 2px 12px rgba(0,0,0,.08)",border:"1px solid #e8e8e8"}}>
+              <span style={{fontSize:10,color:"#999",padding:"0 6px"}}>🔍</span>
+              {[0.3,0.45,0.6,0.8,1.0,1.2].map(s=>(<button key={s} onClick={()=>setScale(s)} style={{padding:"4px 10px",border:"none",borderRadius:50,background:scale===s?ac:"transparent",color:scale===s?"#fff":"#888",cursor:"pointer",fontSize:11,fontWeight:scale===s?600:400,fontFamily:"'Sarabun',sans-serif",minWidth:38}}>{Math.round(s*100)}%</button>))}
+            </div>
           </div>
-        </div>
-        {/* Scrollable preview area */}
-        <div style={{flex:1,overflow:"auto",WebkitOverflowScrolling:"touch",display:"flex",flexDirection:"column",alignItems:"center",padding:12}}>
-        <div style={{width:Math.ceil(794*scale),height:Math.ceil(1123*scale),flexShrink:0,margin:"0 auto"}}>
-          <div ref={wrapRef} style={{transform:`scale(${scale})`,transformOrigin:"top left",width:794,height:1123}}>
-            <Preview ck={ck} sk={sk} d={d} id="main-preview" hue={hue} brightness={brightness} saturation={saturation} headerWm={headerWm} headerWmPos={headerWmPos} headerWmZoom={headerWmZoom} headerWmOp={headerWmOp} textAlign={textAlign} isPro={isPro} onImgDrag={onImgDrag} onImgZoom={onImgZoom} onProfileDrag={onProfileDrag} onProfileZoom={onProfileZoom} onHdrWmDrag={p=>setHeaderWmPos(p)} onHdrWmZoom={z=>setHeaderWmZoom(z)} onLogoDrag={onLogoDrag} onLogoZoom={onLogoZoom}/>
+          <div style={{padding:12,display:"flex",flexDirection:"column",alignItems:"center"}}>
+            <div style={{width:Math.ceil(794*scale),height:Math.ceil(1123*scale),flexShrink:0,margin:"0 auto"}}>
+              <div ref={wrapRef} style={{transform:`scale(${scale})`,transformOrigin:"top left",width:794,height:1123}}>
+                <Preview ck={ck} sk={sk} d={d} id="main-preview" hue={hue} brightness={brightness} saturation={saturation} headerWm={headerWm} headerWmPos={headerWmPos} headerWmZoom={headerWmZoom} headerWmOp={headerWmOp} textAlign={textAlign} isPro={isPro} onImgDrag={onImgDrag} onImgZoom={onImgZoom} onProfileDrag={onProfileDrag} onProfileZoom={onProfileZoom} onHdrWmDrag={p=>setHeaderWmPos(p)} onHdrWmZoom={z=>setHeaderWmZoom(z)} onLogoDrag={onLogoDrag} onLogoZoom={onLogoZoom}/>
+              </div>
+            </div>
+            <div style={{height:80,flexShrink:0}}/>
           </div>
-        </div>
-        <div style={{height:80,flexShrink:0}}/>
-      </div>{/* end scroll */}
-    </div>{/* end preview column */}
+        </div>{/* end scroll */}
+      </div>{/* end preview column */}
     </div></div>
   </>);
 }
