@@ -226,7 +226,7 @@ function Preview({ck,sk,d,id,hue=0,brightness=100,saturation=100,headerWm="",hea
           {d.logos.map((lg,i)=>{const lo=typeof lg==="string"?{url:lg,pos:"50% 50%",zoom:100}:lg;const ls=d.logoSize||42;const cw=ls+10,ch=ls+14;return(<div key={i} style={{width:cw,height:ch,borderRadius:`0 0 ${cw/2}px ${cw/2}px`,background:"rgba(255,255,255,0.3)",display:"flex",alignItems:"center",justifyContent:"center",paddingTop:3}}><div style={{width:ls,height:ls,borderRadius:"50%",overflow:"hidden"}}><CropImg src={lo.url} pos={lo.pos} zoom={lo.zoom} onDrag={onLogoDrag?p=>onLogoDrag(i,p):null} onZoom={onLogoZoom?z=>onLogoZoom(i,z):null} style={{width:"100%",height:"100%",borderRadius:"50%"}}/></div></div>)})}
         </div>}
         {/* Text */}
-        <div style={{position:"absolute",top:12,left:(d.profileSize||116)+60,right:((d.logoSize||42)+16)*(d.logos?.length||0)+20,zIndex:2}}>
+        <div style={{position:"absolute",top:12,left:(d.profileSize||116)+90,right:((d.logoSize||42)+16)*(d.logos?.length||0)+20,zIndex:2}}>
           <div style={{fontFamily:"'Kanit',sans-serif",fontSize:d.headerTitleSize||38,fontWeight:700,color:"#fff",textShadow:"2px 3px 6px rgba(0,0,0,.25)",letterSpacing:4}}>{d.headerTitle||"ประชาสัมพันธ์"}</div>
           <div style={{fontFamily:"'Kanit',sans-serif",fontSize:28,fontWeight:500,color:"#fff",opacity:.95,marginTop:2,lineHeight:1.3}}>{d.orgName||"ชื่อหน่วยงาน"}</div>
           {d.subOrg&&<div style={{fontFamily:"'Kanit',sans-serif",fontSize:24,color:"#fff",opacity:.8,marginTop:1,lineHeight:1.3}}>{d.subOrg}</div>}
