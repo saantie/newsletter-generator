@@ -233,7 +233,7 @@ function Preview({ck,sk,d,id,hue=0,brightness=100,saturation=100,headerWm="",hea
         </div>
         {/* Profile U-shape */}
         {(()=>{const ps=d.profileSize||116;const uw=ps+20,uh=ps+22;return(
-        <div style={{position:"absolute",top:0,left:18,zIndex:2,display:"flex",flexDirection:"column",alignItems:"center"}}>
+        <div style={{position:"absolute",top:0,left:20,zIndex:2,display:"flex",flexDirection:"column",alignItems:"center",height:HEADER_H,justifyContent:"center"}}>
           <div style={{width:uw,height:uh,borderRadius:c.sp.uShape,background:"rgba(255,255,255,0.3)",display:"flex",alignItems:"center",justifyContent:"center",paddingTop:8}}>
             <div style={{width:ps,height:ps,borderRadius:c.sp.profR,border:"4px solid rgba(255,255,255,.55)",overflow:"hidden",boxShadow:"0 6px 20px rgba(0,0,0,.3)"}}><CropImg src={d.profileUrl} pos={d.profilePos||"50% 50%"} zoom={d.profileZoom||100} onDrag={onProfileDrag||null} onZoom={onProfileZoom||null} style={{width:"100%",height:"100%",borderRadius:c.sp.profR,backgroundColor:"rgba(255,255,255,.12)"}}/>{!d.profileUrl&&<div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",color:"rgba(255,255,255,.35)",fontSize:44}}>👤</div>}</div>
           </div>
