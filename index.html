@@ -375,7 +375,7 @@ function App(){
     const el = formColRef.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
-    setZoomTop(Math.round(r.bottom-6)); // ขอบล่างของคอลัมน์ฟอร์ม
+    setZoomTop(Math.round(r.bottom+6)); // ขอบล่างของคอลัมน์ฟอร์ม
   };
 
   updateZoomTop();
@@ -558,11 +558,23 @@ function App(){
     <style>{`*{box-sizing:border-box;margin:0;padding:0}::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px}::-webkit-scrollbar-track{background:#f0f0f0}button{transition:all .15s}button:hover{filter:brightness(.96)}
 .sec{margin-bottom:16px}.sec-t{font-family:'Kanit',sans-serif;font-size:13px;font-weight:600;padding:6px 0 8px;border-bottom:1px solid #eee;margin-bottom:10px;display:flex;align-items:center;gap:6px;color:#555}.fld{margin-bottom:10px}
 .main-wrap{display:flex;flex:1;min-height:0;overflow:hidden}
-.form-col{width:50%;min-width:340px;display:flex;flex-direction:column;border-right:1px solid #e8e8e8;background:#ffffff}
+.form-col{width:50%;min-width:340px;display:flex;flex-direction:column;border-right:none;background:#ffffff}
 .prev-col{flex:1;display:flex;flex-direction:column;align-items:center;background:#f0f0f5;overflow:auto;padding:12px}
+.split-bar{
+  width:10px;
+  flex:0 0 10px;
+  background:linear-gradient(to right,#ffffff,#f3f3f8,#ffffff);
+  border-left:1px solid #e8e8e8;
+  border-right:1px solid #e8e8e8;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,0.4);
+}
+@media(max-width:850px){.split-bar{width:100%; height:10px; flex:0 0 10px; border-left:none; border-right:none; border-top:1px solid #e8e8e8; border-bottom:1px solid #e8e8e8; background:linear-gradient(to bottom,#ffffff,#f3f3f8,#ffffff);
+  }
+} 
 @media(max-width:850px){.main-wrap{flex-direction:column}.form-col{width:100%;min-width:unset;max-width:unset;flex:none;height:50vh;border-right:none}.prev-col{flex:1;min-height:120px;padding:8px;overflow:auto}}`}</style>
     <div style={{display:"flex",flexDirection:"column",height:"100vh",fontFamily:"'Sarabun',sans-serif",background:"#f5f5fa",color:"#333"}}><div className="main-wrap">
       <div className="form-col" ref={formColRef}>
+      <div className="split-bar" />  
         {/* Single scrollable area: title + theme + form */}
         <div style={{flex:1,overflowY:"auto",WebkitOverflowScrolling:"touch"}}>
 
