@@ -375,7 +375,7 @@ function App(){
     const el = formColRef.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
-    setZoomTop(Math.round(r.bottom)); // ขอบล่างของคอลัมน์ฟอร์ม
+    setZoomTop(Math.round(r.bottom-6)); // ขอบล่างของคอลัมน์ฟอร์ม
   };
 
   updateZoomTop();
