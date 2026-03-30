@@ -714,7 +714,7 @@ function App(){
         </div>
         {/* Scrollable preview area — supports both directions for high zoom */}
                 <div style={{flex:1,overflowX:"auto",overflowY:"auto",WebkitOverflowScrolling:"touch",display:"flex",flexDirection:"column",alignItems:"flex-start",padding:24}}>
-       <div style={{width:Math.ceil(794*scale),height:Math.ceil(1123*scale),flexShrink:0}}>
+      <div style={{width:794,height:1123,flexShrink:0}}>
           <div ref={wrapRef} style={{transform:`scale(${scale})`,transformOrigin:"top left",width:794,height:1123}}>
             <Preview ck={ck} sk={sk} d={d} id="main-preview" hue={hue} brightness={brightness} saturation={saturation} headerWm={headerWm} headerWmPos={headerWmPos} headerWmZoom={headerWmZoom} headerWmOp={headerWmOp} textAlign={textAlign} isPro={isPro} onImgDrag={onImgDrag} onImgZoom={onImgZoom} onProfileDrag={onProfileDrag} onProfileZoom={onProfileZoom} onHdrWmDrag={p=>setHeaderWmPos(p)} onHdrWmZoom={z=>setHeaderWmZoom(z)} onLogoDrag={onLogoDrag} onLogoZoom={onLogoZoom}/>
           </div>
