@@ -240,13 +240,14 @@ function Preview({ck,sk,d,id,hue=0,brightness=100,saturation=100,headerWm="",hea
           <div style={{textAlign:"center",marginTop:4,fontFamily:"'Kanit',sans-serif",fontSize:19,fontWeight:600,color:"#ffeaa7"}}>{d.personName||""}</div>
           <div style={{textAlign:"center",fontFamily:"'Sarabun',sans-serif",fontSize:12,fontWeight:500,color:"rgba(255,255,255,.85)",maxWidth:ps+24,whiteSpace:"pre-line"}}>{d.personTitle||""}</div>
         </div>)})()}
-                {/* FIX: Headline — auto-height, expands with text */}
-{(()=>{const hs=c.sp.hlStyle;const hlLeft=(d.profileSize||116)+60;const base={position:"absolute",bottom:14,left:hlLeft,right:26,borderRadius:c.sp.hlR,zIndex:2,padding:"10px 16px",overflow:"visible"};
-  const hlS=hs==="border"?{...base,border:`2px solid ${c.ac}60`,backdropFilter:"blur(4px)"}
-  :hs==="flat"?{...base}:hs==="glow"?{...base,boxShadow:`0 4px 20px ${c.ac}40, 0 0 40px ${c.ac}15`}:{...base,boxShadow:"0 4px 12px rgba(0,0,0,.12)"};
-  const bgC=d.hlBgColor||(hs==="border"?"rgba(255,255,255,0.2)":c.hlBg);
-  const txtC=hs==="border"?"#fff":(d.hlColor||c.hlTxt);
-  return<div style={hlS}><div style={{position:"absolute",inset:0,background:bgC,filter:bf,borderRadius:c.sp.hlR}}/><div style={{position:"relative",fontFamily:"'Kanit',sans-serif",fontSize:14,fontWeight:500,color:txtC,lineHeight:1.55,textAlign:"center",overflow:"hidden",wordBreak:"break-word",whiteSpace:"pre-wrap"}}>{d.headline||"หัวข้อข่าวประชาสัมพันธ์"}</div></div>})()}       
+                {/* FIX: Headline — auto-width & auto-height, shrinks/expands with text */}
+         {(()=>{const hs=c.sp.hlStyle;const hlLeft=(d.profileSize||116)+60;const base={position:"absolute",bottom:14,left:hlLeft,right:26,display:"flex",justifyContent:"center",zIndex:2,overflow:"visible"};
+        const capsule={borderRadius:c.sp.hlR,padding:"10px 16px",position:"relative",display:"inline-block",maxWidth:"100%"};
+        const hlS=hs==="border"?{...capsule,border:`2px solid ${c.ac}60`,backdropFilter:"blur(4px)"}
+        :hs==="flat"?{...capsule}:hs==="glow"?{...capsule,boxShadow:`0 4px 20px ${c.ac}40, 0 0 40px ${c.ac}15`}:{...capsule,boxShadow:"0 4px 12px rgba(0,0,0,.12)"};
+        const bgC=d.hlBgColor||(hs==="border"?"rgba(255,255,255,0.2)":c.hlBg);
+        const txtC=hs==="border"?"#fff":(d.hlColor||c.hlTxt);
+        return<div style={base}><div style={hlS}><div style={{position:"absolute",inset:0,background:bgC,filter:bf,borderRadius:c.sp.hlR}}/><div style={{position:"relative",fontFamily:"'Kanit',sans-serif",fontSize:14,fontWeight:500,color:txtC,lineHeight:1.55,textAlign:"center",overflow:"hidden",wordBreak:"break-word",whiteSpace:"pre-wrap"}}>{d.headline||"หัวข้อข่าวประชาสัมพันธ์"}</div></div></div>})()}       
         {/* Decorations z:1 — style-specific */}
         <div style={{position:"absolute",inset:0,zIndex:1,pointerEvents:"none"}}>{hdrDecos()}</div>
       </div>
