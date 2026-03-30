@@ -336,8 +336,9 @@ const VoiceBtn=({value,onChange})=>{
 const EMPTY={orgName:"",subOrg:"",personName:"",personTitle:"",headline:"",bodyText:"",dateText:"",website:"",address:"",phone:"",profileUrl:"",profilePos:"50% 50%",profileZoom:100,profileSize:116,logos:[],logoSize:42,qrUrl:"",headerTitle:"ประชาสัมพันธ์",headerTitleSize:38,hlColor:"",hlBgColor:"",images:[]};
 
 function App(){
-  const [ck,setCk]=useState("purple");const [sk,setSk]=useState("formal");const [d,setD]=useState(EMPTY);const [scale,setScale]=useState(0.45);const [exporting,setExporting]=useState(false);const [exportMsg,setExportMsg]=useState("");const [loaded,setLoaded]=useState(false);const imgRef=useRef(null);const wrapRef=useRef(null);
+  const [ck,setCk]=useState("purple");const [sk,setSk]=useState("formal");const [d,setD]=useState(EMPTY);const [scale,setScale]=useState(0.45);const [zoomTop, setZoomTop] = useState(0);const [exporting,setExporting]=useState(false);const [exportMsg,setExportMsg]=useState("");const [loaded,setLoaded]=useState(false);const imgRef=useRef(null);const wrapRef=useRef(null);
   const [hue,setHue]=useState(0);
+  const formColRef = useRef(null);
   const [brightness,setBrightness]=useState(100);
   const [saturation,setSaturation]=useState(100);
   const [isPro,setIsPro]=useState(false);
@@ -369,6 +370,24 @@ function App(){
   useEffect(()=>{(async()=>{const saved=await ld();if(saved){if(saved.ck&&COLORS[saved.ck])setCk(saved.ck);if(saved.sk&&STYLES[saved.sk])setSk(saved.sk);if(typeof saved.hue==="number")setHue(saved.hue);if(typeof saved.brightness==="number")setBrightness(saved.brightness);if(typeof saved.saturation==="number")setSaturation(saved.saturation);if(saved.textAlign)setTextAlign(saved.textAlign);if(saved.d)setD({...EMPTY,...saved.d,images:[]});}setLoaded(true)})()},[]);
   useEffect(()=>{if(!loaded)return;const t=setTimeout(()=>sv({ck,sk,hue,brightness,saturation,textAlign,d:{...d,images:[]}}),1000);return()=>clearTimeout(t)},[ck,sk,hue,brightness,saturation,textAlign,d.orgName,d.subOrg,d.personName,d.personTitle,d.headline,d.bodyText,d.dateText,d.website,d.address,d.phone,d.headerTitle,d.headerTitleSize,d.hlColor,d.profileSize,d.logoSize,loaded]);
 
+  useEffect(() => {
+  const updateZoomTop = () => {
+    const el = formColRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    setZoomTop(Math.round(r.bottom)); // ขอบล่างของคอลัมน์ฟอร์ม
+  };
+
+  updateZoomTop();
+  window.addEventListener("resize", updateZoomTop);
+  window.addEventListener("scroll", updateZoomTop, true);
+
+  return () => {
+    window.removeEventListener("resize", updateZoomTop);
+    window.removeEventListener("scroll", updateZoomTop, true);
+  };
+}, []);
+  
   // Google Sheets license check — on load + when tab becomes visible
   const checkPro=useCallback(async()=>{const email=window.__userEmail;if(!email||!LICENSE_SHEET_URL)return;const r=await checkLicenseFromSheet(email);setIsPro(r.ok);setProExpiry(r.exp)},[]);
   useEffect(()=>{checkPro();const h=()=>{if(!document.hidden)checkPro()};document.addEventListener("visibilitychange",h);return()=>document.removeEventListener("visibilitychange",h)},[checkPro]);
@@ -543,7 +562,7 @@ function App(){
 .prev-col{flex:1;display:flex;flex-direction:column;align-items:center;background:#f0f0f5;overflow:auto;padding:12px}
 @media(max-width:850px){.main-wrap{flex-direction:column}.form-col{width:100%;min-width:unset;max-width:unset;flex:none;height:50vh;border-right:none}.prev-col{flex:1;min-height:120px;padding:8px;overflow:auto}}`}</style>
     <div style={{display:"flex",flexDirection:"column",height:"100vh",fontFamily:"'Sarabun',sans-serif",background:"#f5f5fa",color:"#333"}}><div className="main-wrap">
-      <div className="form-col">
+      <div className="form-col" ref={formColRef}>
         {/* Single scrollable area: title + theme + form */}
         <div style={{flex:1,overflowY:"auto",WebkitOverflowScrolling:"touch"}}>
 
@@ -709,8 +728,8 @@ function App(){
 <div style={{
   position: "fixed",
   left: "50%",
-  top: "50%",
-  transform: "translate(-50%, -50%)",
+  top: zoomTop,
+  transform: "translateX(-50%)",
   zIndex: 9999,
   pointerEvents: "none"   // สำคัญ: ไม่บังการ scroll/drag ของ preview
 }}>
