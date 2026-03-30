@@ -705,13 +705,42 @@ function App(){
 
            {/* Preview — scrollable, capsule zoom bar */}
       <div className="prev-col">
-        {/* Capsule zoom bar — sticky */}
-        <div style={{position:"sticky",top:0,zIndex:5,padding:"8px 0",width:"100%",display:"flex",justifyContent:"center"}}>
-          <div style={{display:"flex",alignItems:"center",gap:2,background:"#fff",borderRadius:50,padding:"4px 6px",boxShadow:"0 2px 12px rgba(0,0,0,.08)",border:"1px solid #e8e8e8"}}>
-            <span style={{fontSize:10,color:"#999",padding:"0 6px"}}>🔍</span>
-            {[0.3,0.45,0.6,0.8,1.0,1.2].map(s=>(<button key={s} onClick={()=>setScale(s)} style={{padding:"4px 10px",border:"none",borderRadius:50,background:scale===s?ac:"transparent",color:scale===s?"#fff":"#888",cursor:"pointer",fontSize:11,fontWeight:scale===s?600:400,fontFamily:"'Sarabun',sans-serif",minWidth:38}}>{Math.round(s*100)}%</button>))}
-          </div>
-        </div>
+        {/* FIXED Zoom bar centered on screen */}
+<div style={{
+  position: "fixed",
+  left: "50%",
+  top: "50%",
+  transform: "translate(-50%, -50%)",
+  zIndex: 9999,
+  pointerEvents: "none"   // สำคัญ: ไม่บังการ scroll/drag ของ preview
+}}>
+  <div style={{
+    pointerEvents: "auto", // ให้กดปุ่มได้เฉพาะตัวแถบ
+    display:"flex",
+    alignItems:"center",
+    gap:2,
+    background:"#fff",
+    borderRadius:50,
+    padding:"4px 6px",
+    boxShadow:"0 2px 12px rgba(0,0,0,.08)",
+    border:"1px solid #e8e8e8"
+  }}>
+    <span style={{fontSize:10,color:"#999",padding:"0 6px"}}>🔍</span>
+    {[0.3,0.45,0.6,0.8,1.0,1.2].map(s=>(
+      <button key={s} onClick={()=>setScale(s)}
+        style={{
+          padding:"4px 10px",border:"none",borderRadius:50,
+          background:scale===s?ac:"transparent",
+          color:scale===s?"#fff":"#888",
+          cursor:"pointer",fontSize:11,
+          fontWeight:scale===s?600:400,
+          fontFamily:"'Sarabun',sans-serif",minWidth:38
+        }}>
+        {Math.round(s*100)}%
+      </button>
+    ))}
+  </div>
+</div>
         <div style={{width:Math.ceil(794*scale),height:Math.ceil(1123*scale),flexShrink:0,margin:"8px auto 0"}}>
           <div ref={wrapRef} style={{transform:`scale(${scale})`,transformOrigin:"top left",width:794,height:1123}}>
             <Preview ck={ck} sk={sk} d={d} id="main-preview" hue={hue} brightness={brightness} headerWm={headerWm} headerWmPos={headerWmPos} headerWmZoom={headerWmZoom} headerWmOp={headerWmOp} textAlign={textAlign} isPro={isPro} onImgDrag={onImgDrag} onImgZoom={onImgZoom} onProfileDrag={onProfileDrag} onProfileZoom={onProfileZoom} onHdrWmDrag={p=>setHeaderWmPos(p)} onHdrWmZoom={z=>setHeaderWmZoom(z)} onLogoDrag={onLogoDrag} onLogoZoom={onLogoZoom}/>
