@@ -568,10 +568,38 @@ function App(){
   border-right:1px solid #e8e8e8;
   box-shadow:inset 0 0 0 1px rgba(255,255,255,0.4);
 }
-@media(max-width:850px){.split-bar{width:100%; height:10px; flex:0 0 10px; border-left:none; border-right:none; border-top:1px solid #e8e8e8; border-bottom:1px solid #e8e8e8; background:linear-gradient(to bottom,#ffffff,#f3f3f8,#ffffff);
+@media(max-width:850px){
+  .main-wrap{flex-direction:column}
+
+  .form-col{
+    width:100%;
+    min-width:unset;
+    max-width:unset;
+    flex:none;
+    height:50vh;
+    border-right:none;
   }
-} 
-@media(max-width:850px){.main-wrap{flex-direction:column}.form-col{width:100%;min-width:unset;max-width:unset;flex:none;height:50vh;border-right:none}.prev-col{flex:1;min-height:120px;padding:8px;overflow:auto}}`}</style>
+
+  /* split-bar แนวนอนคั่นระหว่างฟอร์มกับพรีวิว */
+  .split-bar{
+    width:100%;
+    height:10px;
+    flex:0 0 10px;
+    border-left:none;
+    border-right:none;
+    border-top:1px solid #e8e8e8;
+    border-bottom:1px solid #e8e8e8;
+    background:linear-gradient(to bottom,#ffffff,#f3f3f8,#ffffff);
+  }
+
+  .prev-col{
+    flex:1;
+    min-height:120px;
+    padding:8px;
+    overflow:auto;
+    min-height:0; /* แนะนำเพิ่ม เพื่อกัน scroll เพี้ยนใน flex */
+  }
+}`}</style>
     <div style={{display:"flex",flexDirection:"column",height:"100vh",fontFamily:"'Sarabun',sans-serif",background:"#f5f5fa",color:"#333"}}><div className="main-wrap">
       <div className="form-col" ref={formColRef}>
       <div className="split-bar" />  
