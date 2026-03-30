@@ -559,7 +559,7 @@ function App(){
 .sec{margin-bottom:16px}.sec-t{font-family:'Kanit',sans-serif;font-size:13px;font-weight:600;padding:6px 0 8px;border-bottom:1px solid #eee;margin-bottom:10px;display:flex;align-items:center;gap:6px;color:#555}.fld{margin-bottom:10px}
 .main-wrap{display:flex;flex:1;min-height:0;overflow:hidden}
 .form-col{width:50%;min-width:340px;display:flex;flex-direction:column;border-right:none;background:#ffffff}
-.prev-col{flex:1;display:flex;flex-direction:column;align-items:center;background:#f0f0f5;overflow:auto;padding:12px}
+.prev-col{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;background:#f0f0f5;overflow:auto;padding:12px}
 .split-bar{
   width:10px;
   flex:0 0 10px;
@@ -601,10 +601,9 @@ function App(){
   }
 }`}</style>
     <div style={{display:"flex",flexDirection:"column",height:"100vh",fontFamily:"'Sarabun',sans-serif",background:"#f5f5fa",color:"#333"}}><div className="main-wrap">
-      <div className="form-col" ref={formColRef}>
-      <div className="split-bar" />  
-        {/* Single scrollable area: title + theme + form */}
-        <div style={{flex:1,overflowY:"auto",WebkitOverflowScrolling:"touch"}}>
+  <div className="form-col" ref={formColRef}>
+    {/* Single scrollable area: title + theme + form */}
+    <div style={{flex:1,overflowY:"auto",WebkitOverflowScrolling:"touch"}}>
 
           {/* App title on theme gradient background */}
           <div style={{background:`linear-gradient(135deg,${ac},${fc2})`,padding:"16px 18px 14px",position:"relative",overflow:"hidden"}}>
@@ -759,10 +758,13 @@ function App(){
           </div>
           <div style={{height:20}}/>
           </div>{/* end form fields */}
-        </div>{/* end single scroll */}
-      </div>
+                </div>{/* end single scroll */}
+      </div>{/* end form-col */}
 
-           {/* Preview — scrollable, capsule zoom bar */}
+      {/* split-bar ขั้นระหว่างฟอร์ม กับ preview */}
+      <div className="split-bar" />
+
+      {/* Preview — scrollable, capsule zoom bar */}
       <div className="prev-col">
         {/* FIXED Zoom bar centered on screen */}
 <div style={{
@@ -805,7 +807,7 @@ function App(){
             <Preview ck={ck} sk={sk} d={d} id="main-preview" hue={hue} brightness={brightness} headerWm={headerWm} headerWmPos={headerWmPos} headerWmZoom={headerWmZoom} headerWmOp={headerWmOp} textAlign={textAlign} isPro={isPro} onImgDrag={onImgDrag} onImgZoom={onImgZoom} onProfileDrag={onProfileDrag} onProfileZoom={onProfileZoom} onHdrWmDrag={p=>setHeaderWmPos(p)} onHdrWmZoom={z=>setHeaderWmZoom(z)} onLogoDrag={onLogoDrag} onLogoZoom={onLogoZoom}/>
           </div>
         </div>
-        <div style={{height:30,flexShrink:0}}/>
+        <div style={{height:"calc(140px + env(safe-area-inset-bottom))",flexShrink:0}}/>
       </div>
     </div></div>
   </>);
