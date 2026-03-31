@@ -491,10 +491,36 @@ function App(){
     });
     wrap.style.transform=orig;
     const dataUrl=canvas.toDataURL("image/png");
-    const fname=`newsletter_${new Date().toISOString().slice(0,10)}.png`;
-    const a=document.createElement("a");a.href=dataUrl;a.download=fname;document.body.appendChild(a);a.click();document.body.removeChild(a);
-    try{const blob=await(await fetch(dataUrl)).blob();const url=URL.createObjectURL(blob);window.open(url,"_blank")}catch(e){}
-    setExportMsg("✅ ดาวน์โหลดสำเร็จ!");setTimeout(()=>setExportMsg(""),3000);
+const fname=`newsletter_${new Date().toISOString().slice(0,10)}.png`;
+const blob=await(await fetch(dataUrl)).blob();
+const file=new File([blob],fname,{type:"image/png"});
+
+// 1) ลอง Web Share API (รองรับ iOS 15+, Android)
+if(navigator.canShare&&navigator.canShare({files:[file]})){
+  try{
+    await navigator.share({files:[file],title:fname});
+    setExportMsg("✅ แชร์/บันทึกสำเร็จ!");setTimeout(()=>setExportMsg(""),3000);
+  }catch(e){
+    if(e.name!=="AbortError")setExportMsg("❌ "+e.message);
+  }
+}
+// 2) Fallback Desktop/Android: ใช้ <a download>
+else if(!(/iPad|iPhone|iPod/.test(navigator.userAgent))){
+  const a=document.createElement("a");a.href=dataUrl;a.download=fname;document.body.appendChild(a);a.click();document.body.removeChild(a);
+  setExportMsg("✅ ดาวน์โหลดสำเร็จ!");setTimeout(()=>setExportMsg(""),3000);
+}
+// 3) Fallback iOS เก่า: เปิดภาพในแท็บใหม่ให้กดค้างบันทึก
+else{
+  const url=URL.createObjectURL(blob);
+  const w=window.open("","_blank");
+  if(w){
+    w.document.write(`<html><head><title>${fname}</title><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f0f0f5;flex-direction:column;font-family:sans-serif"><p style="color:#888;font-size:14px;margin-bottom:12px">📷 กดค้างที่รูป → บันทึกภาพ</p><img src="${url}" style="max-width:100%;box-shadow:0 4px 20px rgba(0,0,0,.15);border-radius:8px"/></body></html>`);
+    w.document.close();
+  }else{
+    window.location.href=url;
+  }
+  setExportMsg("✅ เปิดภาพแล้ว — กดค้างที่รูปเพื่อบันทึก");setTimeout(()=>setExportMsg(""),5000);
+}
   }catch(err){console.error(err);setExportMsg("❌ "+err.message);if(wrapRef.current)wrapRef.current.style.transform=`scale(${scale})`}setExporting(false)};
 
   const handleReset=()=>{setD(EMPTY);setHue(0);setBrightness(100);setSaturation(100);setHeaderWm("");setHeaderWmPos("50% 50%");setHeaderWmZoom(100);setHeaderWmOp(50);sv({ck,sk,hue:0,brightness:100,saturation:100,textAlign,d:EMPTY})};
