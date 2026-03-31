@@ -655,7 +655,7 @@ else{
             <div style={{display:"flex",gap:5,marginBottom:10,overflowX:"auto",paddingBottom:4,WebkitOverflowScrolling:"touch"}}>
               {Object.entries(STYLES).map(([k,v])=>(<button key={k} onClick={()=>setSk(k)} style={{flexShrink:0,padding:"6px 12px",borderRadius:8,border:sk===k?`2px solid ${ac}`:"2px solid #e8e8e8",background:sk===k?ac+"10":"#fafafa",color:sk===k?"#333":"#888",cursor:"pointer",fontSize:11,fontFamily:"'Sarabun',sans-serif",position:"relative"}}>
                 {v.icon} {v.name}
-                {v.pro&&!isPro&&<span style={{position:"absolute",top:-4,right:-4,fontSize:7,background:"#fef3e2",color:"#e67e22",padding:"1px 4px",borderRadius:6}}>PRO</span>}
+               {v.pro&&!isPro&&<span style={{position:"absolute",top:-8, right:-8, fontSize:10, fontWeight:800, letterSpacing:0.6, background:"linear-gradient(135deg,#ffb84d,#ff7a18)", color:"#fff", padding:"3px 8px", borderRadius:999, boxShadow:"0 4px 12px rgba(0,0,0,.18)",  border:"1px solid rgba(255,255,255,.55)"}}>PRO</span>}
               </button>))}
             </div>
 
