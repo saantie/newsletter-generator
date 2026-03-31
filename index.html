@@ -337,7 +337,7 @@ const VoiceBtn=({value,onChange})=>{
 const EMPTY={orgName:"",subOrg:"",personName:"",personTitle:"",headline:"",bodyText:"",dateText:"",website:"",address:"",phone:"",profileUrl:"",profilePos:"50% 50%",profileZoom:100,profileSize:116,logos:[],logoSize:42,qrUrl:"",headerTitle:"ประชาสัมพันธ์",headerTitleSize:38,hlColor:"",hlBgColor:"",images:[]};
 
 function App(){
-  const [ck,setCk]=useState("purple");const [sk,setSk]=useState("formal");const [d,setD]=useState(EMPTY);const [scale,setScale]=useState(0.45);const [zoomTop, setZoomTop] = useState(0);const [exporting,setExporting]=useState(false);const [exportMsg,setExportMsg]=useState("");const [loaded,setLoaded]=useState(false);const imgRef=useRef(null);const wrapRef=useRef(null);
+  const [ck,setCk]=useState("purple");const [sk,setSk]=useState("formal");const [d,setD]=useState(EMPTY);const [scale,setScale]=useState(0.45);const [zoomTop, setZoomTop] = useState(0);const [exporting,setExporting]=useState(false);const [exportMsg,setExportMsg]=useState("");const [exportBlob,setExportBlob]=useState(null);const [exportFname,setExportFname]=useState("");const [loaded,setLoaded]=useState(false);const imgRef=useRef(null);const wrapRef=useRef(null);
   const [hue,setHue]=useState(0);
   const formColRef = useRef(null);
   const [brightness,setBrightness]=useState(100);
@@ -493,33 +493,18 @@ function App(){
     const dataUrl=canvas.toDataURL("image/png");
 const fname=`newsletter_${new Date().toISOString().slice(0,10)}.png`;
 const blob=await(await fetch(dataUrl)).blob();
-const file=new File([blob],fname,{type:"image/png"});
+const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
+const canShare=navigator.canShare&&navigator.canShare({files:[new File([blob],fname,{type:"image/png"})]});
 
-// 1) ลอง Web Share API (รองรับ iOS 15+, Android)
-if(navigator.canShare&&navigator.canShare({files:[file]})){
-  try{
-    await navigator.share({files:[file],title:fname});
-    setExportMsg("✅ แชร์/บันทึกสำเร็จ!");setTimeout(()=>setExportMsg(""),3000);
-  }catch(e){
-    if(e.name!=="AbortError")setExportMsg("❌ "+e.message);
-  }
-}
-// 2) Fallback Desktop/Android: ใช้ <a download>
-else if(!(/iPad|iPhone|iPod/.test(navigator.userAgent))){
+// Desktop/Android ที่ไม่ใช่ iOS: ใช้ <a download> ตรง ๆ
+if(!isIOS&&!canShare){
   const a=document.createElement("a");a.href=dataUrl;a.download=fname;document.body.appendChild(a);a.click();document.body.removeChild(a);
   setExportMsg("✅ ดาวน์โหลดสำเร็จ!");setTimeout(()=>setExportMsg(""),3000);
 }
-// 3) Fallback iOS เก่า: เปิดภาพในแท็บใหม่ให้กดค้างบันทึก
+// iOS / อุปกรณ์ที่รองรับ Share: เก็บ blob ไว้ให้กดปุ่มแชร์อีกที
 else{
-  const url=URL.createObjectURL(blob);
-  const w=window.open("","_blank");
-  if(w){
-    w.document.write(`<html><head><title>${fname}</title><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f0f0f5;flex-direction:column;font-family:sans-serif"><p style="color:#888;font-size:14px;margin-bottom:12px">📷 กดค้างที่รูป → บันทึกภาพ</p><img src="${url}" style="max-width:100%;box-shadow:0 4px 20px rgba(0,0,0,.15);border-radius:8px"/></body></html>`);
-    w.document.close();
-  }else{
-    window.location.href=url;
-  }
-  setExportMsg("✅ เปิดภาพแล้ว — กดค้างที่รูปเพื่อบันทึก");setTimeout(()=>setExportMsg(""),5000);
+  setExportBlob(blob);setExportFname(fname);
+  setExportMsg("✅ สร้างภาพสำเร็จ! กดปุ่ม 📤 แชร์/บันทึก ด้านล่าง");
 }
   }catch(err){console.error(err);setExportMsg("❌ "+err.message);if(wrapRef.current)wrapRef.current.style.transform=`scale(${scale})`}setExporting(false)};
 
@@ -832,9 +817,42 @@ button:hover{filter:brightness(.96)}
           <div style={{padding:"12px 0",borderTop:`2px solid ${ac}20`}}>
             {exportMsg&&<div style={{padding:"6px 12px",borderRadius:8,marginBottom:8,fontSize:12,textAlign:"center",background:exportMsg.startsWith("✅")?"#e8f5e9":"#fce4ec",color:exportMsg.startsWith("✅")?"#2e7d32":"#c62828"}}>{exportMsg}</div>}
             <div style={{display:"flex",gap:8}}>
-              <button onClick={handleReset} style={{padding:"10px 14px",border:"none",borderRadius:10,background:`linear-gradient(135deg,${ac}20,${fc2}20)`,color:ac,cursor:"pointer",fontSize:13}}>🔄</button>
-              <button onClick={handleExport} disabled={exporting||!d.headline} style={{flex:1,padding:"12px",border:"none",borderRadius:10,background:!d.headline?"#eee":`linear-gradient(135deg,${ac},${fc2})`,color:!d.headline?"#bbb":"#fff",cursor:!d.headline?"default":"pointer",fontSize:15,fontWeight:600,fontFamily:"'Kanit',sans-serif",boxShadow:d.headline?`0 4px 12px ${ac}30`:"none"}}>{exporting?"⏳ กำลังสร้าง...":"📥 ดาวน์โหลด"}</button>
-            </div>
+  <button onClick={handleReset} style={{padding:"10px 14px",border:"none",borderRadius:10,background:`linear-gradient(135deg,${ac}20,${fc2}20)`,color:ac,cursor:"pointer",fontSize:13}}>🔄</button>
+  <button onClick={handleExport} disabled={exporting||!d.headline} style={{flex:1,padding:"12px",border:"none",borderRadius:10,background:!d.headline?"#eee":`linear-gradient(135deg,${ac},${fc2})`,color:!d.headline?"#bbb":"#fff",cursor:!d.headline?"default":"pointer",fontSize:15,fontWeight:600,fontFamily:"'Kanit',sans-serif",boxShadow:d.headline?`0 4px 12px ${ac}30`:"none"}}>{exporting?"⏳ กำลังสร้าง...":"📥 ดาวน์โหลด"}</button>
+</div>
+{exportBlob&&<button onClick={async()=>{
+  try{
+    const file=new File([exportBlob],exportFname,{type:"image/png"});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      await navigator.share({files:[file],title:exportFname});
+      setExportMsg("✅ แชร์/บันทึกสำเร็จ!");
+    }else{
+      const url=URL.createObjectURL(exportBlob);
+      const w=window.open("","_blank");
+      if(w){
+        w.document.write(`<html><head><title>${exportFname}</title><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f0f0f5;flex-direction:column;font-family:sans-serif"><p style="color:#888;font-size:14px;margin-bottom:12px">📷 กดค้างที่รูป → บันทึกภาพ</p><img src="${url}" style="max-width:100%;box-shadow:0 4px 20px rgba(0,0,0,.15);border-radius:8px"/></body></html>`);
+        w.document.close();
+      }
+      setExportMsg("✅ เปิดภาพแล้ว — กดค้างที่รูปเพื่อบันทึก");
+    }
+  }catch(e){if(e.name!=="AbortError")setExportMsg("❌ "+e.message)}
+  setExportBlob(null);setExportFname("");
+  setTimeout(()=>setExportMsg(""),4000);
+}} style={{
+  width:"100%",
+  marginTop:8,
+  padding:"12px",
+  border:"none",
+  borderRadius:10,
+  background:"linear-gradient(135deg,#27ae60,#2ecc71)",
+  color:"#fff",
+  cursor:"pointer",
+  fontSize:15,
+  fontWeight:600,
+  fontFamily:"'Kanit',sans-serif",
+  boxShadow:"0 4px 12px rgba(39,174,96,.3)",
+  animation:"pulse 1s infinite"
+}}>📤 แชร์/บันทึกภาพ</button>}
           </div>
           <div style={{height:20}}/>
           </div>{/* end form fields */}
