@@ -596,8 +596,29 @@ else{
           <div>จำนวน 365 บาท (รายปี)</div>
         </div>
        
-        <button
-  onClick={openPaymentEmail}
+       <button
+  type="button"
+  onClick={(e)=>{
+    e.preventDefault();
+    e.stopPropagation();
+
+    const subj = encodeURIComponent("แจ้งชำระเงิน Newsletter365 PRO");
+    const body = encodeURIComponent(
+`ผู้ใช้: ${window.__userEmail || ""}
+
+แจ้งชำระเงิน Newsletter365 PRO
+- จำนวน: 365 บาท (รายปี)
+- พร้อมเพย์: 0819753130
+- ชื่อบัญชี: นายสันติ สุวรรณโชติ
+
+กรุณาแนบสลิปการโอนเงินในอีเมลนี้ก่อนกดส่ง
+
+รายละเอียดเพิ่มเติม:
+`
+    );
+
+    window.open(`mailto:saantie@gmail.com?subject=${subj}&body=${body}`);
+  }}
   style={{
     width:"100%",
     padding:"12px",
@@ -612,7 +633,7 @@ else{
     marginBottom:8
   }}
 >
-  📧 แจ้งการโอนเงิน (แนบสลิปในอีเมล)
+  💸 แจ้งการโอนเงิน
 </button>
 <div style={{fontSize:10,color:"#e67e22",textAlign:"center",marginBottom:8}}>
   * ระบบจะเปิดหน้าเขียนอีเมลพร้อมข้อความให้ กรุณาแนบสลิปก่อนกดส่ง
