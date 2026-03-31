@@ -540,13 +540,46 @@ else{
           <div style={{fontFamily:"'Kanit',sans-serif",fontSize:20,fontWeight:700,color:"#333"}}>อัพเกรด PRO</div>
           <div style={{fontSize:13,color:"#888",marginTop:4}}>เพียงวันละ 1 บาท (365 บาท/ปี)</div>
         </div>
-        <div style={{background:"#f8f8ff",borderRadius:10,padding:14,marginBottom:16,fontSize:12,color:"#555",lineHeight:1.7}}>
-          <div style={{fontWeight:600,marginBottom:6}}>ฟีเจอร์ PRO ที่ใช้งานอยู่:</div>
-          {STYLES[sk]?.pro&&<div>✦ สไตล์ {STYLES[sk].icon} {STYLES[sk].name}</div>}
-          {hue!==0&&<div>🎛️ Hue {hue}°</div>}
-          {brightness!==100&&<div>☀️ Brightness {brightness}%</div>}
-          {headerWm&&<div>🖼️ ภาพพื้นหลังส่วนหัว</div>}
+        <div style={{background:"#fff5f5",borderRadius:10,padding:14,marginBottom:12,fontSize:12,color:"#c62828",lineHeight:1.7,border:"1px solid #ffd6d6"}}>
+        <div style={{fontWeight:800,marginBottom:6,color:"#b71c1c"}}>⚠️ ฟีเจอร์ PRO ที่ใช้งานอยู่ (บัญชี FREE):</div>
+         {STYLES[sk]?.pro&&<div>✦ สไตล์ {STYLES[sk].icon} {STYLES[sk].name}</div>}
+         {hue!==0&&<div>🎛️ Hue {hue}°</div>}
+         {brightness!==100&&<div>☀️ Brightness {brightness}%</div>}
+         {saturation!==100&&<div>💧 Saturation {saturation}%</div>}
+         {headerWm&&<div>🖼️ ภาพพื้นหลังส่วนหัว</div>}
         </div>
+          <button onClick={()=>{
+         // reset PRO features to free defaults
+        setHue(0);
+        setBrightness(100);
+        setSaturation(100);
+        setHeaderWm("");
+        setHeaderWmPos("50% 50%");
+        setHeaderWmZoom(100);
+        setHeaderWmOp(50);
+
+  // ถ้าเลือก style ที่เป็น PRO ให้เด้งกลับเป็น style ฟรี
+        if(STYLES[sk]?.pro) setSk("formal");
+
+        setShowProPopup(false);
+        setExportMsg("✅ รีเซ็ตฟีเจอร์ PRO แล้ว — กดดาวน์โหลดอีกครั้ง");
+        setTimeout(()=>setExportMsg(""),3500);
+        }} style={{
+      width:"100%",
+      padding:"10px 12px",
+      borderRadius:10,
+      border:"1px solid #ffd6d6",
+      background:"#fff",
+      color:"#c62828",
+      cursor:"pointer",
+      fontSize:12,
+      fontWeight:700,
+      fontFamily:"'Kanit',sans-serif",
+      marginBottom:12
+      }}>
+        🧹 ล้าง/รีเซ็ตฟีเจอร์ PRO ที่ใช้ทั้งหมด
+      </button>
+        
         <div style={{background:"#fffbe6",borderRadius:10,padding:14,marginBottom:16,fontSize:12,color:"#6a5500",lineHeight:1.7}}>
           <div style={{fontWeight:600}}>ช่องทางชำระเงิน:</div>
           <div>พร้อมเพย์ 0819753130</div>
@@ -565,7 +598,7 @@ else{
     </div>}
 
     {/* PWA Install Banner */}
-    {showInstall&&!isStandalone&&<div style={{position:"fixed",bottom:16,left:16,right:16,zIndex:998,background:"#fff",borderRadius:14,padding:"16px 18px",boxShadow:"0 8px 30px rgba(0,0,0,.15)",border:"1px solid #e8e8e8"}}>
+    {showInstall&&!isStandalone&&<div style={{  position:"fixed",  bottom:16,left:16,right:16,  zIndex:998,  background:"#fff",  borderRadius:14,  padding:"16px 18px",  boxShadow:"0 8px 30px rgba(0,0,0,.15)",  border:"1px solid rgba(0,0,0,.06)",  animation:"installBounce .45s ease-out, installPulse 1.6s ease-in-out .6s 2"}}>
       <div style={{display:"flex",alignItems:"center",gap:12}}>
         <div style={{fontSize:32}}>📰</div>
         <div style={{flex:1}}>
@@ -582,11 +615,20 @@ else{
     </div>}
 
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-    <style>{`*{box-sizing:border-box;margin:0;padding:0}::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px}::-webkit-scrollbar-track{background:#f0f0f0}button{transition:all .15s}button:hover{filter:brightness(.96)}
-.sec{margin-bottom:16px}.sec-t{font-family:'Kanit',sans-serif;font-size:13px;font-weight:600;padding:6px 0 8px;border-bottom:1px solid #eee;margin-bottom:10px;display:flex;align-items:center;gap:6px;color:#555}.fld{margin-bottom:10px}
+   <style>{`*{box-sizing:border-box;margin:0;padding:0}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px}
+::-webkit-scrollbar-track{background:#f0f0f0}
+button{transition:all .15s}
+button:hover{filter:brightness(.96)}
+.sec{margin-bottom:16px}
+.sec-t{font-family:'Kanit',sans-serif;font-size:13px;font-weight:600;padding:6px 0 8px;border-bottom:1px solid #eee;margin-bottom:10px;display:flex;align-items:center;gap:6px;color:#555}
+.fld{margin-bottom:10px}
+
 .main-wrap{display:flex;flex:1;min-height:0;overflow:hidden}
 .form-col{width:50%;min-width:340px;display:flex;flex-direction:column;border-right:none;background:#ffffff}
 .prev-col{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;background:#f0f0f5;overflow:auto;padding:12px}
+
 .split-bar{
   width:10px;
   flex:0 0 10px;
@@ -595,6 +637,7 @@ else{
   border-right:1px solid #e8e8e8;
   box-shadow:inset 0 0 0 1px rgba(255,255,255,0.4);
 }
+
 @media(max-width:850px){
   .main-wrap{flex-direction:column}
 
@@ -607,7 +650,6 @@ else{
     border-right:none;
   }
 
-  /* split-bar แนวนอนคั่นระหว่างฟอร์มกับพรีวิว */
   .split-bar{
     width:100%;
     height:10px;
@@ -621,12 +663,24 @@ else{
 
   .prev-col{
     flex:1;
-    min-height:120px;
+    min-height:0;
     padding:8px;
     overflow:auto;
-    min-height:0; /* แนะนำเพิ่ม เพื่อกัน scroll เพี้ยนใน flex */
   }
-}`}</style>
+}
+
+/* keyframes สำหรับ Pop up ขยับเด้ง */
+@keyframes installBounce{
+  0%{transform:translateY(18px);opacity:0}
+  60%{transform:translateY(-4px);opacity:1}
+  80%{transform:translateY(2px)}
+  100%{transform:translateY(0)}
+}
+@keyframes installPulse{
+  0%,100%{box-shadow:0 8px 30px rgba(0,0,0,.15)}
+  50%{box-shadow:0 14px 44px rgba(0,0,0,.22)}
+}
+`}</style>
     <div style={{display:"flex",flexDirection:"column",height:"100vh",fontFamily:"'Sarabun',sans-serif",background:"#f5f5fa",color:"#333"}}><div className="main-wrap">
   <div className="form-col" ref={formColRef}>
     {/* Single scrollable area: title + theme + form */}
@@ -639,7 +693,7 @@ else{
               <span style={{fontSize:26}}>📰</span> Newsletter365
               {isPro?<span style={{fontSize:10,background:"linear-gradient(135deg,#f39c12,#e67e22)",color:"#fff",padding:"2px 10px",borderRadius:10,fontFamily:"'Sarabun',sans-serif",fontWeight:600}}>⭐ PRO{proExpiry?` (${proExpiry})`:""}</span>:<span style={{fontSize:10,background:"rgba(255,255,255,.25)",color:"#fff",padding:"2px 10px",borderRadius:10,fontFamily:"'Sarabun',sans-serif"}}>FREE</span>}
             </div>
-            <div style={{position:"relative",fontSize:11,color:"rgba(255,255,255,.75)",marginTop:2}}>สร้างจดหมายข่าวประชาสัมพันธ์</div>
+            <div style={{position:"relative",fontSize:11,color:"rgba(255,255,255,.75)",marginTop:2}}>ข่าวไว ทันใจ นำหน้าทุกการสื่อสาร  </div>
           </div>
 
           {/* Theme settings */}
