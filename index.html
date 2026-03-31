@@ -337,7 +337,7 @@ const VoiceBtn=({value,onChange})=>{
 const EMPTY={orgName:"",subOrg:"",personName:"",personTitle:"",headline:"",bodyText:"",dateText:"",website:"",address:"",phone:"",profileUrl:"",profilePos:"50% 50%",profileZoom:100,profileSize:116,logos:[],logoSize:42,qrUrl:"",headerTitle:"ประชาสัมพันธ์",headerTitleSize:38,hlColor:"",hlBgColor:"",images:[]};
 
 function App(){
-  const [ck,setCk]=useState("purple");const [sk,setSk]=useState("formal");const [d,setD]=useState(EMPTY);const [scale,setScale]=useState(0.45);const [zoomTop, setZoomTop] = useState(0);const [exporting,setExporting]=useState(false);const [exportMsg,setExportMsg]=useState("");const [exportBlob,setExportBlob]=useState(null);const [exportFname,setExportFname]=useState("");const [loaded,setLoaded]=useState(false);const imgRef=useRef(null);const wrapRef=useRef(null);
+  const [ck,setCk]=useState("purple");const [sk,setSk]=useState("formal");const [d,setD]=useState(EMPTY);const [scale,setScale]=useState(0.45);const [exporting,setExporting]=useState(false);const [exportMsg,setExportMsg]=useState("");const [exportBlob,setExportBlob]=useState(null);const [exportFname,setExportFname]=useState("");const [loaded,setLoaded]=useState(false);const imgRef=useRef(null);const wrapRef=useRef(null);
   const [hue,setHue]=useState(0);
   const formColRef = useRef(null);
   const [brightness,setBrightness]=useState(100);
@@ -370,24 +370,7 @@ function App(){
   useEffect(()=>{(async()=>{const saved=await ld();if(saved){if(saved.ck&&COLORS[saved.ck])setCk(saved.ck);if(saved.sk&&STYLES[saved.sk])setSk(saved.sk);if(typeof saved.hue==="number")setHue(saved.hue);if(typeof saved.brightness==="number")setBrightness(saved.brightness);if(typeof saved.saturation==="number")setSaturation(saved.saturation);if(saved.textAlign)setTextAlign(saved.textAlign);if(saved.d)setD({...EMPTY,...saved.d,images:[]});}setLoaded(true)})()},[]);
   useEffect(()=>{if(!loaded)return;const t=setTimeout(()=>sv({ck,sk,hue,brightness,saturation,textAlign,d:{...d,images:[]}}),1000);return()=>clearTimeout(t)},[ck,sk,hue,brightness,saturation,textAlign,d.orgName,d.subOrg,d.personName,d.personTitle,d.headline,d.bodyText,d.dateText,d.website,d.address,d.phone,d.headerTitle,d.headerTitleSize,d.hlColor,d.profileSize,d.logoSize,loaded]);
 
-  useEffect(() => {
-  const updateZoomTop = () => {
-    const el = formColRef.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    setZoomTop(Math.round(r.bottom+6)); // ขอบล่างของคอลัมน์ฟอร์ม
-  };
-
-  updateZoomTop();
-  window.addEventListener("resize", updateZoomTop);
-  window.addEventListener("scroll", updateZoomTop, true);
-
-  return () => {
-    window.removeEventListener("resize", updateZoomTop);
-    window.removeEventListener("scroll", updateZoomTop, true);
-  };
-}, []);
-  
+ 
   // Google Sheets license check — on load + when tab becomes visible
   const checkPro=useCallback(async()=>{const email=window.__userEmail;if(!email||!LICENSE_SHEET_URL)return;const r=await checkLicenseFromSheet(email);setIsPro(r.ok);setProExpiry(r.exp)},[]);
   useEffect(()=>{checkPro();const h=()=>{if(!document.hidden)checkPro()};document.addEventListener("visibilitychange",h);return()=>document.removeEventListener("visibilitychange",h)},[checkPro]);
@@ -962,7 +945,7 @@ button:hover{filter:brightness(.96)}
     ))}
   </div>
 </div>
-)}
+
         <div style={{width:Math.ceil(794*scale),height:Math.ceil(1123*scale),flexShrink:0,margin:"8px auto 0"}}>
           <div ref={wrapRef} style={{transform:`scale(${scale})`,transformOrigin:"top left",width:794,height:1123}}>
             <Preview ck={ck} sk={sk} d={d} id="main-preview" hue={hue} brightness={brightness} headerWm={headerWm} headerWmPos={headerWmPos} headerWmZoom={headerWmZoom} headerWmOp={headerWmOp} textAlign={textAlign} isPro={isPro} onImgDrag={onImgDrag} onImgZoom={onImgZoom} onProfileDrag={onProfileDrag} onProfileZoom={onProfileZoom} onHdrWmDrag={p=>setHeaderWmPos(p)} onHdrWmZoom={z=>setHeaderWmZoom(z)} onLogoDrag={onLogoDrag} onLogoZoom={onLogoZoom}/>
