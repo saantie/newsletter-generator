@@ -924,43 +924,44 @@ button:hover{filter:brightness(.96)}
 
       {/* Preview — scrollable, capsule zoom bar */}
       <div className="prev-col">
-       {/* FIXED Zoom bar centered on screen */}
-{!showProPopup && !showInstall && !exporting && (
+  {{/* Zoom bar — sticky top of preview column */}
+<div style={{
+  position:"sticky",
+  top:0,
+  zIndex:99,
+  display:"flex",
+  justifyContent:"center",
+  padding:"6px 0 2px",
+  flexShrink:0
+}}>
   <div style={{
-    position: "fixed",
-    left: "50%",
-    top: zoomTop,
-    transform: "translateX(-50%)",
-    zIndex: 300,
-    pointerEvents: "none"
+    display:"flex",
+    alignItems:"center",
+    gap:2,
+    background:"rgba(255,255,255,0.85)",
+    backdropFilter:"blur(8px)",
+    WebkitBackdropFilter:"blur(8px)",
+    borderRadius:50,
+    padding:"4px 6px",
+    boxShadow:"0 4px 14px rgba(0,0,0,0.10)",
+    border:"1px solid rgba(0,0,0,0.06)"
   }}>
-    <div style={{
-      pointerEvents: "auto",
-      display:"flex",
-      alignItems:"center",
-      gap:2,
-      background: "rgba(255,255,255,0.25)",
-      borderRadius:50,
-      padding:"4px 6px",
-      boxShadow: "0 6px 18px rgba(0,0,0,0.10)",
-      border: "1px solid rgba(255,255,255,0.25)"
-    }}>
-      <span style={{fontSize:10,color:"#999",padding:"0 6px"}}>🔍</span>
-      {[0.3,0.45,0.6,0.8,1.0,1.2].map(s=>(
-        <button key={s} onClick={()=>setScale(s)}
-          style={{
-            padding:"4px 10px",border:"none",borderRadius:50,
-            background:scale===s?ac:"transparent",
-            color:scale===s?"#fff":"#888",
-            cursor:"pointer",fontSize:11,
-            fontWeight:scale===s?600:400,
-            fontFamily:"'Sarabun',sans-serif",minWidth:38
-          }}>
-          {Math.round(s*100)}%
-        </button>
-      ))}
-    </div>
+    <span style={{fontSize:10,color:"#999",padding:"0 6px"}}>🔍</span>
+    {[0.3,0.45,0.6,0.8,1.0,1.2].map(s=>(
+      <button key={s} onClick={()=>setScale(s)}
+        style={{
+          padding:"4px 10px",border:"none",borderRadius:50,
+          background:scale===s?ac:"transparent",
+          color:scale===s?"#fff":"#888",
+          cursor:"pointer",fontSize:11,
+          fontWeight:scale===s?600:400,
+          fontFamily:"'Sarabun',sans-serif",minWidth:38
+        }}>
+        {Math.round(s*100)}%
+      </button>
+    ))}
   </div>
+</div>
 )}
         <div style={{width:Math.ceil(794*scale),height:Math.ceil(1123*scale),flexShrink:0,margin:"8px auto 0"}}>
           <div ref={wrapRef} style={{transform:`scale(${scale})`,transformOrigin:"top left",width:794,height:1123}}>
