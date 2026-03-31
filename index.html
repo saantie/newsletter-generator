@@ -351,51 +351,6 @@ function App(){
   const [headerWmOp,setHeaderWmOp]=useState(50);
   const [showProPopup,setShowProPopup]=useState(false);
   const [slipImg,setSlipImg]=useState("");
-  const shareSlip = async () => {
-  if(!slipImg){ setExportMsg("❌ กรุณาแนบสลิปก่อน"); return; }
-
-  const email = (window.__userEmail || "");
-  const subj = "แจ้งชำระเงิน Newsletter PRO";
-  const msg =
-`แจ้งชำระเงิน Newsletter PRO
-
-ผู้ใช้: ${email}
-จำนวน: 365 บาท/ปี
-ช่องทาง: พร้อมเพย์ 0819753130 (นายสันติ สุวรรณโชติ)
-
-หมายเหตุ/ข้อความเพิ่มเติม:
-`;
-
-  // slipImg เป็น dataURL
-  const blob = await (await fetch(slipImg)).blob();
-  const file = new File([blob], `slip_${new Date().toISOString().slice(0,10)}.png`, { type: blob.type || "image/png" });
-
-  // 1) ใช้ Web Share (แนบไฟล์ได้) — ผู้ใช้เลือกแอพ Mail/Outlook/ฯลฯ เอง
-  if(navigator.canShare && navigator.canShare({ files: [file] })){
-    try{
-      await navigator.share({
-        title: subj,
-        text: msg,
-        files: [file]
-      });
-      setExportMsg("✅ เปิดหน้าส่งให้แล้ว (เลือกแอพเมล์/แอพที่ต้องการได้)");
-      setTimeout(()=>setExportMsg(""),4000);
-      return;
-    }catch(e){
-      if(e.name !== "AbortError"){
-        setExportMsg("❌ "+e.message);
-        setTimeout(()=>setExportMsg(""),5000);
-      }
-      return;
-    }
-  }
-
-  // 2) Fallback: mailto (แนบไฟล์ไม่ได้ ต้องแนบเอง)
-  const to = "saantie@gmail.com"; // เปลี่ยนได้
-  const body = encodeURIComponent(msg + "\n(แนบสลิปในอีเมลนี้ด้วย)");
-  const subject = encodeURIComponent(subj);
-  window.open(`mailto:${to}?subject=${subject}&body=${body}`);
-};
   const [showColorCtrl,setShowColorCtrl]=useState(false);
   const [installPrompt,setInstallPrompt]=useState(null);
   const [showInstall,setShowInstall]=useState(false);
@@ -621,9 +576,7 @@ else{
           {slipImg?<div style={{position:"relative",width:100,height:70,borderRadius:8,overflow:"hidden",border:"1px solid #ddd"}}><img src={slipImg} style={{width:"100%",height:"100%",objectFit:"cover"}} alt="slip"/><button onClick={()=>setSlipImg("")} style={{position:"absolute",top:2,right:2,width:18,height:18,borderRadius:"50%",background:"rgba(0,0,0,.5)",border:"none",color:"#fff",cursor:"pointer",fontSize:9}}>✕</button></div>
           :<button onClick={()=>{const inp=document.createElement("input");inp.type="file";inp.accept="image/*";inp.onchange=e=>{const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=ev=>setSlipImg(ev.target.result);r.readAsDataURL(f)};inp.click()}} style={{padding:"8px 16px",borderRadius:8,border:"2px dashed #ddd",background:"#fafafa",color:"#888",cursor:"pointer",fontSize:12}}>📎 แนบสลิป</button>}
         </div>
-        <button onClick={()=>{const subj=encodeURIComponent("แจ้งชำระเงิน Newsletter P<button onClick={shareSlip} style={{width:"100%",padding:"10px",border:"none",borderRadius:10,background:`linear-gradient(135deg,${ac},${fc2})`,color:"#fff",fontSize:14,fontWeight:700,fontFamily:"'Kanit',sans-serif",cursor:"pointer"}}>
-  📩 ส่งสลิป/แจ้งชำระเงิน
-</button>
+        <button onClick={()=>{const subj=encodeURIComponent("แจ้งชำระเงิน Newsletter PRO");const body=encodeURIComponent(`ผู้ใช้: ${userEmail}\nชำระเงิน 365 บาท/ปี\nพร้อมเพย์ 0819753130 นายสันติ สุวรรณโชติ\n\n⚠️ กรุณาแนบสลิปการโอนเงินก่อนส่ง`);window.open(`https://mail.google.com/mail/?view=cm&to=saantie@gmail.com&su=${subj}&body=${body}`,"_blank");}} style={{width:"100%",padding:"12px",border:"none",borderRadius:10,background:"linear-gradient(135deg,#e67e22,#f39c12)",color:"#fff",fontSize:15,fontWeight:600,fontFamily:"'Kanit',sans-serif",cursor:"pointer",marginBottom:4}}>📧 เปิด Gmail แจ้งชำระเงิน</button>
         <div style={{fontSize:10,color:"#e67e22",textAlign:"center",marginBottom:8}}>⚠️ อย่าลืมแนบสลิปก่อนกดส่ง</div>
         <button onClick={()=>setShowProPopup(false)} style={{width:"100%",padding:"8px",border:"1px solid #ddd",borderRadius:10,background:"#fff",color:"#888",cursor:"pointer",fontSize:12}}>ปิด</button>
       </div>
