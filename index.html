@@ -334,7 +334,10 @@ const VoiceBtn=({value,onChange})=>{
   return<button onClick={start} style={{padding:"3px 6px",borderRadius:6,border:rec?"2px solid #e74c3c":"1px solid #ddd",background:rec?"#fce4ec":"#fafafa",color:rec?"#e74c3c":"#bbb",cursor:"pointer",fontSize:10,flexShrink:0,animation:rec?"pulse 1s infinite":"none"}} title="พิมพ์ด้วยเสียง">{rec?"⏹":"🎤"}</button>;
 };
 
-const EMPTY={orgName:"",subOrg:"",personName:"",personTitle:"",headline:"",bodyText:"",dateText:"",website:"",address:"",phone:"",profileUrl:"",profilePos:"50% 50%",profileZoom:100,profileSize:116,logos:[],logoSize:42,qrUrl:"",headerTitle:"ประชาสัมพันธ์",headerTitleSize:38,hlColor:"",hlBgColor:"",images:[]};
+const EMPTY={orgName:"",subOrg:"",personName:"",personTitle:"",headline:"",bodyText:"",dateText:"",website:"",address:"",phone:"",profileUrl:"",profilePos:"50% 50%",profileZoom:100,profileSize:116,logos:[],logoSize:42,qrUrl:"",headerTitle:"ประชาสัมพันธ์",headerTitleSize:38,hlColor:"",hlBgColor:"",topMainRatio: 2,
+topSideSplit: 0.5,
+botCols: 3,
+botRowSplit: 0.5,images:[]};
 
 function App(){
   const [ck,setCk]=useState("purple");const [sk,setSk]=useState("formal");const [d,setD]=useState(EMPTY);const [scale,setScale]=useState(0.45);const [exporting,setExporting]=useState(false);const [exportMsg,setExportMsg]=useState("");const [exportBlob,setExportBlob]=useState(null);const [exportFname,setExportFname]=useState("");const [loaded,setLoaded]=useState(false);const imgRef=useRef(null);const wrapRef=useRef(null);
@@ -845,7 +848,53 @@ button:hover{filter:brightness(.96)}
               setTimeout(()=>{if(recRef.current){recRef.current.abort();recRef.current=null;setIsRecording(false)}},120000)
             }} style={{padding:"3px 10px",borderRadius:8,border:isRecording?"2px solid #e74c3c":"1px solid #ddd",background:isRecording?"#fce4ec":"#fafafa",color:isRecording?"#e74c3c":"#888",cursor:"pointer",fontSize:10,display:"flex",alignItems:"center",gap:3,animation:isRecording?"pulse 1s infinite":"none"}}>{isRecording?"⏹️ หยุดบันทึก":"🎤 พิมพ์ด้วยเสียง"}</button></div><TextArea value={d.bodyText} onChange={v=>set("bodyText",v)} placeholder={"บรรทัดที่ 1...\nบรรทัดที่ 2..."} rows={6} ac={ac}/>{isRecording&&<div style={{fontSize:10,color:"#e74c3c",marginTop:4,display:"flex",alignItems:"center",gap:4}}>🔴 กำลังฟัง... พูดได้เลย</div>}</div>
           </div>
-          <div className="sec"><div className="sec-t" style={{color:ac}}>📷 รูปภาพ — ลาก + เลื่อน scroll ซูมบน preview</div>
+          <div className="sec"><div className="sec-t" style={{color:ac}}>📷 รูปภาพ — ลาก + เลื่อน scroll ซูมบน preview</div> <div style={{background:ac+"06",border:`1px solid ${ac}12`,borderRadius:12,padding:"10px 12px",margin:"8px 0 10px"}}>
+  <div style={{fontFamily:"'Kanit',sans-serif",fontWeight:700,fontSize:12,color:ac,marginBottom:6}}>🧩 จัด Layout รูป (เป็นกลุ่ม)</div>
+
+  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+    <div style={{background:"#fff",border:"1px solid #eee",borderRadius:10,padding:"10px 10px"}}>
+      <div style={{fontSize:11,color:"#555",fontFamily:"'Kanit',sans-serif",fontWeight:600}}>กลุ่มบน: รูปเด่น (กว้างขึ้น)</div>
+      <div style={{display:"flex",alignItems:"center",gap:8,marginTop:6}}>
+        <input type="range" min="1" max="4" step="0.1" value={d.topMainRatio||2}
+          onChange={e=>set("topMainRatio",Number(e.target.value))} style={{flex:1}}/>
+        <span style={{fontSize:10,color:"#888",minWidth:36,textAlign:"right"}}>{(d.topMainRatio||2).toFixed(1)}</span>
+      </div>
+    </div>
+
+    <div style={{background:"#fff",border:"1px solid #eee",borderRadius:10,padding:"10px 10px"}}>
+      <div style={{fontSize:11,color:"#555",fontFamily:"'Kanit',sans-serif",fontWeight:600}}>กลุ่มบน: รูป #2 (สูงขึ้น)</div>
+      <div style={{display:"flex",alignItems:"center",gap:8,marginTop:6}}>
+        <input type="range" min="0.3" max="0.7" step="0.01" value={d.topSideSplit??0.5}
+          onChange={e=>set("topSideSplit",Number(e.target.value))} style={{flex:1}}/>
+        <span style={{fontSize:10,color:"#888",minWidth:36,textAlign:"right"}}>{Math.round((d.topSideSplit??0.5)*100)}%</span>
+      </div>
+    </div>
+  </div>
+
+  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginTop:10}}>
+    <div style={{background:"#fff",border:"1px solid #eee",borderRadius:10,padding:"10px 10px"}}>
+      <div style={{fontSize:11,color:"#555",fontFamily:"'Kanit',sans-serif",fontWeight:600}}>กลุ่มล่าง: จำนวนคอลัมน์</div>
+      <div style={{display:"flex",gap:6,marginTop:8}}>
+        {[2,3].map(n=>(
+          <button key={n} onClick={()=>set("botCols",n)}
+            style={{flex:1,padding:"7px 8px",borderRadius:10,border:(d.botCols||3)===n?`2px solid ${ac}`:"1px solid #ddd",background:(d.botCols||3)===n?ac+"10":"#fafafa",color:"#666",cursor:"pointer",fontSize:11,fontWeight:700,fontFamily:"'Kanit',sans-serif"}}>
+            {n} คอลัมน์
+          </button>
+        ))}
+      </div>
+      <div style={{fontSize:10,color:"#999",marginTop:6}}>ถ้ามี 1–2 ภาพ: 1 ภาพเต็มแถว / 2 ภาพซ้าย-ขวาอัตโนมัติ</div>
+    </div>
+
+    <div style={{background:"#fff",border:"1px solid #eee",borderRadius:10,padding:"10px 10px"}}>
+      <div style={{fontSize:11,color:"#555",fontFamily:"'Kanit',sans-serif",fontWeight:600}}>กลุ่มล่าง: แถวบนสูงขึ้น</div>
+      <div style={{display:"flex",alignItems:"center",gap:8,marginTop:6}}>
+        <input type="range" min="0.35" max="0.65" step="0.01" value={d.botRowSplit??0.5}
+          onChange={e=>set("botRowSplit",Number(e.target.value))} style={{flex:1}}/>
+        <span style={{fontSize:10,color:"#888",minWidth:36,textAlign:"right"}}>{Math.round((d.botRowSplit??0.5)*100)}%</span>
+      </div>
+    </div>
+  </div>
+</div>
             <div style={{fontSize:11,color:ac,marginBottom:8,padding:"6px 12px",background:ac+"08",borderRadius:10,border:`1px solid ${ac}15`}}>{imgInfo}</div>
             <div style={{display:"flex",flexDirection:"column",gap:6,marginBottom:8}}>{d.images.map((img,i)=>(<div key={i} style={{display:"flex",gap:8,alignItems:"center",background:"#fafafa",borderRadius:10,padding:8,border:`1px solid ${i<3?ac+"30":"#e8e8e8"}`}}>
               <div style={{width:48,height:36,borderRadius:6,overflow:"hidden",flexShrink:0,backgroundImage:`url(${img.url})`,backgroundSize:img.zoom>100?`${img.zoom}%`:"cover",backgroundPosition:img.pos}}/>
