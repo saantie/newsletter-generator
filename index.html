@@ -282,7 +282,8 @@ useLayoutEffect(()=>{const el=bodyBoxRef.current;if(!el)return;const sizes=[17,1
 
       {/* คอลัมน์ขวา */}
       {topImgs.length>1&&(()=>{
-        const splitPct=Math.round(((d.topSideSplit??0.5)*100));
+       const split=Math.max(0.3,Math.min(0.7,(d.topSideSplit??0.5)));
+       const splitPct=Math.round(split*100);
         return (
           <div style={{flex:1,display:"flex",flexDirection:"column",gap:10}}>
             {/* รูป #2 */}
@@ -293,7 +294,7 @@ useLayoutEffect(()=>{const el=bodyBoxRef.current;if(!el)return;const sizes=[17,1
               onDrag={onImgDrag?p=>onImgDrag(1,p):null}
               onZoom={onImgZoom?z=>onImgZoom(1,z):null}
               style={topImgs[2]
-                ? {height:`calc(${splitPct}% - 5px)`,borderRadius:12}
+                ? {height:`calc(${splitPct}% - 6px)`,borderRadius:12}
                 : {flex:1,borderRadius:12}
               }
             />
@@ -315,33 +316,99 @@ useLayoutEffect(()=>{const el=bodyBoxRef.current;if(!el)return;const sizes=[17,1
   </div>
 )}
             {topImgs.length>0&&<div style={{display:"flex",justifyContent:"center",padding:"4px 0"}}><FI src={divSrc} w={400} h={16} style={{position:"relative"}}/></div>}
-            {/* FEATURE 5: Date font 18px (bigger) */}
-            <div style={{padding:topImgs.length>0?"4px 12px 4px":"8px 12px 4px",flex:1,minHeight:0}}><div style={{borderLeft:`${c.sp.bodyBorder} ${c.ac}`,paddingLeft:16,display:"flex",flexDirection:"column",height:"100%",minHeight:0}}>
-              <div style={{flex:1,minHeight:0}}>
-  <div
-    ref={bodyBoxRef}
-    style={{
-      fontSize: bodyFont,
-      lineHeight: 1.8,
-      color:"#1a1a2e",
-      height:"100%",
-      overflow:"hidden"   // <- ตัด (เลือก a)
-    }}
-  >
-    {(d.bodyText||"เนื้อหาจดหมายข่าว...").split("\n").map((line,i,arr)=>
-      <div key={i} style={bodyStyle(line,i,arr)}>{line||"\u00A0"}</div>
-    )}
+   {/* FEATURE 5: Date + Body (auto-fit font, clamp at 13, cut overflow) */}
+<div style={{padding:topImgs.length>0?"4px 12px 4px":"8px 12px 4px",flex:1,minHeight:0}}>
+  <div style={{borderLeft:`${c.sp.bodyBorder} ${c.ac}`,paddingLeft:16,display:"flex",flexDirection:"column",height:"100%",minHeight:0}}>
+    {d.dateText&&<div style={{fontSize:18,fontWeight:600,color:c.ac,marginBottom:4,fontFamily:"'Kanit',sans-serif",flexShrink:0}}>{d.dateText}</div>}
+    <div style={{flex:1,minHeight:0}}>
+      <div ref={bodyBoxRef} style={{fontSize:bodyFont,lineHeight:1.8,color:"#1a1a2e",height:"100%",overflow:"hidden"}}>
+        {(d.bodyText||"เนื้อหาจดหมายข่าว...").split("\n").map((line,i,arr)=>
+          <div key={i} style={bodyStyle(line,i,arr)}>{line||"\u00A0"}</div>
+        )}
+      </div>
+    </div>
   </div>
 </div>
-              {/* FEATURE 4: Text align toggle */}
-              <div style={{fontSize:17,lineHeight:1.8,color:"#1a1a2e"}}>{(d.bodyText||"เนื้อหาจดหมายข่าว...").split("\n").map((line,i,arr)=><div key={i} style={bodyStyle(line,i,arr)}>{line||"\u00A0"}</div>)}</div>
             </div></div>
-            {botImgs.length>0&&<div style={{display:"flex",justifyContent:"center",padding:"4px 0"}}><FI src={divSrc} w={400} h={16} style={{position:"relative"}}/></div>}
-            {botImgs.length>0&&(<div style={{flex:1,padding:"2px 8px 4px",display:"flex",flexDirection:"column",gap:6,minHeight:60}}>
-              <div style={{display:"flex",gap:8,flex:1}}>{botImgs.slice(0,3).map((img,i)=><CropImg key={i} src={img.url} pos={img.pos} zoom={img.zoom||100} onDrag={onImgDrag?p=>onImgDrag(i+3,p):null} onZoom={onImgZoom?z=>onImgZoom(i+3,z):null} style={{flex:1,borderRadius:c.sp.imgR,border:`1px solid ${c.ac}20`,minHeight:0,boxShadow:"0 2px 6px rgba(0,0,0,0.06)"}}/>)}</div>
-              {botImgs.length>3&&<div style={{display:"flex",gap:8,flex:1}}>{botImgs.slice(3,6).map((img,i)=><CropImg key={i} src={img.url} pos={img.pos} zoom={img.zoom||100} onDrag={onImgDrag?p=>onImgDrag(i+6,p):null} onZoom={onImgZoom?z=>onImgZoom(i+6,z):null} style={{flex:1,borderRadius:c.sp.imgR,border:`1px solid ${c.ac}20`,minHeight:0,boxShadow:"0 2px 6px rgba(0,0,0,0.06)"}}/>)}</div>}
-            </div>)}
-            {botImgs.length===0&&<div style={{flex:1}}/>}
+            {botImgs.length>0&&(()=>{
+  const n=botImgs.length;
+
+  // clamp heights for bottom group
+  const groupH = (n<=2)
+    ? "clamp(150px, 22vh, 240px)"   // 1–2 ภาพ: ให้สูงขึ้นนิดเพื่อสวย
+    : "clamp(160px, 26vh, 280px)";  // 3–6 ภาพ: เผื่อ 2 แถว
+
+  // 1–2 ภาพ: fix เป็น 2 คอลัมน์เสมอ (ตามที่คุณเลือก)
+  const cols = (n<=2) ? 2 : ((d.botCols||3)===2 ? 2 : 3);
+
+  const hasTwoRows = n > cols;               // ถ้ามากกว่าคอลัมน์ -> มีแถว 2
+  const split = Math.max(0.35,Math.min(0.65,(d.botRowSplit??0.5)));
+  const splitPct = Math.round(split*100);
+  const row1H = hasTwoRows ? `calc(${splitPct}% - 4px)` : "100%"; // -gap/2
+
+  const crop = (img,idx,style={}) => (
+    <CropImg
+      key={idx}
+      src={img.url}
+      pos={img.pos}
+      zoom={img.zoom||100}
+      onDrag={onImgDrag?p=>onImgDrag(idx+3,p):null}   // +3 เพราะ botImgs เริ่มหลัง top 0..2
+      onZoom={onImgZoom?z=>onImgZoom(idx+3,z):null}
+      style={{
+        borderRadius:c.sp.imgR,
+        border:`1px solid ${c.ac}20`,
+        boxShadow:"0 2px 6px rgba(0,0,0,0.06)",
+        ...style
+      }}
+    />
+  );
+
+  // container ของกลุ่มล่าง (ไม่แย่งพื้นที่ข้อความ)
+  const Wrap = ({children}) => (
+    <div style={{flexShrink:0,padding:"2px 8px 4px",height:groupH}}>
+      {children}
+    </div>
+  );
+
+  if(n===1){
+    return (
+      <Wrap>
+        {crop(botImgs[0],0,{width:"100%",height:"100%"})}
+      </Wrap>
+    );
+  }
+
+  if(n===2){
+    return (
+      <Wrap>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,height:"100%"}}>
+          {crop(botImgs[0],0,{width:"100%",height:"100%"})}
+          {crop(botImgs[1],1,{width:"100%",height:"100%"})}
+        </div>
+      </Wrap>
+    );
+  }
+
+  // n >= 3
+  const row1 = botImgs.slice(0, cols);
+  const row2 = botImgs.slice(cols, cols*2);
+
+  return (
+    <Wrap>
+      <div style={{display:"flex",flexDirection:"column",gap:8,height:"100%"}}>
+        <div style={{display:"grid",gridTemplateColumns:`repeat(${cols},1fr)`,gap:8,height:row1H}}>
+          {row1.map((img,i)=>crop(img,i,{width:"100%",height:"100%"}))}
+        </div>
+        {row2.length>0&&(
+          <div style={{display:"grid",gridTemplateColumns:`repeat(${cols},1fr)`,gap:8,flex:1,minHeight:0}}>
+            {row2.map((img,i)=>crop(img,i+cols,{width:"100%",height:"100%"}))}
+          </div>
+        )}
+      </div>
+    </Wrap>
+  );
+})()}
+{botImgs.length===0&&<div style={{flexShrink:0,height:0}}/>}
           </div>
         </div>
       </div>
