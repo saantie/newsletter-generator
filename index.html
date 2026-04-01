@@ -496,7 +496,7 @@ const TextArea = ({ value, onChange, placeholder, rows = 4, ac }) => (
     }}
   />
 );
-  const ImgUp = ({ label, icon, src, onUpload, onRemove, ac, h = 80 }) => {    
+const ImgUp = ({ label, icon, src, onUpload, onRemove, ac, h = 80 }) => {
   const ref = useRef(null);
 
   const pickFile = () => {
