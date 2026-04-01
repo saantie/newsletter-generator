@@ -824,7 +824,7 @@ button:hover{filter:brightness(.96)}
                 <div style={{fontSize:9,color:"#888",textAlign:"center",marginTop:1}}>{brightness}%{brightness!==100&&<button onClick={()=>setBrightness(100)} style={{marginLeft:6,padding:"1px 6px",border:"1px solid #ddd",borderRadius:8,background:"#fafafa",color:"#888",cursor:"pointer",fontSize:8}}>รีเซ็ต</button>}</div>
                 {/* Saturation */}
                 <div style={{fontSize:10,color:"#888",marginTop:8,marginBottom:4}}>💧 ความอิ่มสี</div>
-                <input type="range" min="0" max="200" value={saturation} onChange={e=>setSaturation(Number(e.target.value))} style={{width:"100%",height:8,borderRadius:4,appearance:"none",background:`linear-gradient(90deg,#ccc,${ac},${ac}ff)`,cursor:"pointer"}}/>
+                <input type="range" min="-20" max="200" value={saturation} onChange={e=>setSaturation(Number(e.target.value))} style={{width:"100%",height:8,borderRadius:4,appearance:"none",background:`linear-gradient(90deg,#ccc,${ac},${ac}ff)`,cursor:"pointer"}}/>
                 <div style={{fontSize:9,color:"#888",textAlign:"center",marginTop:1}}>{saturation}%{saturation!==100&&<button onClick={()=>setSaturation(100)} style={{marginLeft:6,padding:"1px 6px",border:"1px solid #ddd",borderRadius:8,background:"#fafafa",color:"#888",cursor:"pointer",fontSize:8}}>รีเซ็ต</button>}</div>
                 {/* Header watermark */}
                 <div style={{fontSize:10,color:"#888",marginTop:8,marginBottom:4}}>🖼️ ภาพพื้นหลังส่วนหัว</div>
@@ -919,7 +919,7 @@ button:hover{filter:brightness(.96)}
               <div style={{flex:1,fontSize:11,color:"#888"}}>{i===0?"ซ้าย (เด่น)":i<3?`บน ${i+1}`:`ล่าง ${i-2}`}{img.zoom>100?` 🔍${img.zoom}%`:""}</div>
               <button onClick={()=>rmImg(i)} style={{padding:"4px 10px",borderRadius:8,background:"#fff",border:"1px solid #f0d0d0",color:"#e74c3c",cursor:"pointer",fontSize:11,flexShrink:0}}>✕</button>
             </div>))}</div>
-            {d.images.length<9&&<button onClick={()=>imgRef.current?.click()} style={{width:"100%",padding:"12px",borderRadius:10,border:"2px dashed #ddd",background:"#fafafa",color:"#aaa",cursor:"pointer",fontSize:13}}>+ เพิ่มรูป</button>}
+            {d.images.length<9&&<button onClick={()=>imgRef.current?.click()} style={{width:"100%",padding:"12px",borderRadius:10,border:"2px dashed #ddd",background:"#ffead1",color:"#aaa",cursor:"pointer",fontSize:16}}>🖼️ + เพิ่มรูป</button>}
             <input ref={imgRef} type="file" accept="image/*" multiple onChange={e=>{Array.from(e.target.files).forEach(f=>{const r=new FileReader();r.onload=ev=>addImg(ev.target.result);r.readAsDataURL(f)});e.target.value=""}} style={{display:"none"}}/>
           </div>
           <div className="sec"><div className="sec-t" style={{color:ac}}>📍 ติดต่อ</div><div className="fld"><Label>เว็บไซต์</Label><Input value={d.website} onChange={v=>set("website",v)} placeholder="www.example.com" ac={ac} voice/></div><div className="fld"><Label>ที่อยู่</Label><Input value={d.address} onChange={v=>set("address",v)} placeholder="ที่อยู่สำนักงาน" ac={ac} voice/></div><div className="fld"><Label>เบอร์โทร</Label><Input value={d.phone} onChange={v=>set("phone",v)} placeholder="042-897-037" ac={ac} voice/></div><ImgUp label="QR Code" icon="📱" src={d.qrUrl} onUpload={v=>set("qrUrl",v)} onRemove={()=>set("qrUrl","")} ac={ac} h={80}/></div>
