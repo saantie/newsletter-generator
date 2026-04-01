@@ -18,7 +18,7 @@ const ALLOWED_DOMAINS=[];
 firebase.initializeApp(FIREBASE_CONFIG);const auth=firebase.auth();const googleProvider=new firebase.auth.GoogleAuthProvider();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{});}
 </script><script type="text/babel">
-const { useState, useRef, useCallback, useMemo, useEffect } = React;
+const { useState, useRef, useCallback, useMemo, useEffect, useLayoutEffect } = React;
 const SK="newsletter-form-data";
 const sv=async(d)=>{try{localStorage.setItem(SK,JSON.stringify(d))}catch(e){}};
 const ld=async()=>{try{const r=localStorage.getItem(SK);return r?JSON.parse(r):null}catch(e){return null}};
@@ -207,7 +207,10 @@ function Preview({ck,sk,d,id,hue=0,brightness=100,saturation=100,headerWm="",hea
     if(textAlign==="left"||len<20) return {textAlign:"left",minHeight:line.trim()===""?"0.5em":undefined};
     return {textAlign:"justify",textAlignLast:isLast?"left":(len>50?"justify":"left"),textJustify:"distribute",overflowWrap:"break-word"};
   };
-
+const bodyBoxRef=useRef(null);
+const [bodyFont,setBodyFont]=useState(17);
+useLayoutEffect(()=>{const el=bodyBoxRef.current;if(!el)return;const sizes=[17,16,15,14,13];for(const fs of sizes){el.style.fontSize=fs+"px";if(el.scrollHeight<=el.clientHeight+1){setBodyFont(fs);return}}setBodyFont(13)},[d.bodyText,d.dateText,sk,ck,hue,brightness,saturation,textAlign,(d.images||[]).length,d.topMainRatio,d.topSideSplit,d.botCols,d.botRowSplit]);
+  
   return(
     <div id={id} style={{width:794,height:1123,background:"#fff",fontFamily:"'Sarabun',sans-serif",position:"relative",overflow:"hidden",boxSizing:"border-box",backgroundImage:bg,backgroundSize:bgSz}}>
       {/* Corners */}
@@ -264,14 +267,72 @@ function Preview({ck,sk,d,id,hue=0,brightness=100,saturation=100,headerWm="",hea
         {/* FIX: Content layer z:1 — solid white bg (not rgba) for html2canvas */}
         <div style={{position:"relative",zIndex:1,display:"flex",flexDirection:"column",height:"100%",minHeight:0,padding:"14px 20px 0"}}>
           <div style={{flex:1,display:"flex",flexDirection:"column",minHeight:0,background:"#ffffffb3",borderRadius:`${c.sp.contR}px ${c.sp.contR}px 0 0`,padding:"14px 14px 8px",boxShadow:`0 8px 32px ${c.ac}15`,border:"1px solid rgba(255,255,255,0.5)",borderBottom:"none"}}>
-            {topImgs.length>0&&(<div style={{padding:"2px 8px 4px",flexShrink:0}}><div style={{display:"flex",gap:10,height:220}}>
-              <CropImg src={topImgs[0].url} pos={topImgs[0].pos} zoom={topImgs[0].zoom||100} onDrag={onImgDrag?p=>onImgDrag(0,p):null} onZoom={onImgZoom?z=>onImgZoom(0,z):null} style={{flex:2,borderRadius:c.sp.imgR,border:`2px solid ${c.ac}30`,boxShadow:"0 4px 16px rgba(0,0,0,0.12)"}} />
-              {topImgs.slice(1).map((img,i)=>(<CropImg key={i} src={img.url} pos={img.pos} zoom={img.zoom||100} onDrag={onImgDrag?p=>onImgDrag(i+1,p):null} onZoom={onImgZoom?z=>onImgZoom(i+1,z):null} style={{flex:1,borderRadius:c.sp.imgR,border:`2px solid ${c.ac}25`,boxShadow:"0 2px 8px rgba(0,0,0,0.08)"}}/>))}
-            </div></div>)}
+            {topImgs.length>0&&(
+  <div style={{padding:"2px 8px 4px",flexShrink:0}}>
+    <div style={{display:"flex",gap:10,height:"clamp(140px, 20vh, 220px)"}}>
+      {/* รูปเด่น (ซ้าย) */}
+      <CropImg
+        src={topImgs[0].url}
+        pos={topImgs[0].pos}
+        zoom={topImgs[0].zoom||100}
+        onDrag={onImgDrag?p=>onImgDrag(0,p):null}
+        onZoom={onImgZoom?z=>onImgZoom(0,z):null}
+        style={{flex:(d.topMainRatio||2),borderRadius:12}}
+      />
+
+      {/* คอลัมน์ขวา */}
+      {topImgs.length>1&&(()=>{
+        const splitPct=Math.round(((d.topSideSplit??0.5)*100));
+        return (
+          <div style={{flex:1,display:"flex",flexDirection:"column",gap:10}}>
+            {/* รูป #2 */}
+            <CropImg
+              src={topImgs[1].url}
+              pos={topImgs[1].pos}
+              zoom={topImgs[1].zoom||100}
+              onDrag={onImgDrag?p=>onImgDrag(1,p):null}
+              onZoom={onImgZoom?z=>onImgZoom(1,z):null}
+              style={topImgs[2]
+                ? {height:`calc(${splitPct}% - 5px)`,borderRadius:12}
+                : {flex:1,borderRadius:12}
+              }
+            />
+            {/* รูป #3 */}
+            {topImgs[2]&&(
+              <CropImg
+                src={topImgs[2].url}
+                pos={topImgs[2].pos}
+                zoom={topImgs[2].zoom||100}
+                onDrag={onImgDrag?p=>onImgDrag(2,p):null}
+                onZoom={onImgZoom?z=>onImgZoom(2,z):null}
+                style={{flex:1,borderRadius:12}}
+              />
+            )}
+          </div>
+        );
+      })()}
+    </div>
+  </div>
+)}
             {topImgs.length>0&&<div style={{display:"flex",justifyContent:"center",padding:"4px 0"}}><FI src={divSrc} w={400} h={16} style={{position:"relative"}}/></div>}
             {/* FEATURE 5: Date font 18px (bigger) */}
-            <div style={{padding:topImgs.length>0?"4px 12px 4px":"8px 12px 4px",flexShrink:botImgs.length>0?0:1}}><div style={{borderLeft:`${c.sp.bodyBorder} ${c.ac}`,paddingLeft:16}}>
-              {d.dateText&&<div style={{fontSize:18,fontWeight:600,color:c.ac,marginBottom:4,fontFamily:"'Kanit',sans-serif"}}>{d.dateText}</div>}
+            <div style={{padding:topImgs.length>0?"4px 12px 4px":"8px 12px 4px",flex:1,minHeight:0}}><div style={{borderLeft:`${c.sp.bodyBorder} ${c.ac}`,paddingLeft:16,display:"flex",flexDirection:"column",height:"100%",minHeight:0}}>
+              <div style={{flex:1,minHeight:0}}>
+  <div
+    ref={bodyBoxRef}
+    style={{
+      fontSize: bodyFont,
+      lineHeight: 1.8,
+      color:"#1a1a2e",
+      height:"100%",
+      overflow:"hidden"   // <- ตัด (เลือก a)
+    }}
+  >
+    {(d.bodyText||"เนื้อหาจดหมายข่าว...").split("\n").map((line,i,arr)=>
+      <div key={i} style={bodyStyle(line,i,arr)}>{line||"\u00A0"}</div>
+    )}
+  </div>
+</div>
               {/* FEATURE 4: Text align toggle */}
               <div style={{fontSize:17,lineHeight:1.8,color:"#1a1a2e"}}>{(d.bodyText||"เนื้อหาจดหมายข่าว...").split("\n").map((line,i,arr)=><div key={i} style={bodyStyle(line,i,arr)}>{line||"\u00A0"}</div>)}</div>
             </div></div>
