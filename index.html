@@ -465,8 +465,37 @@ useLayoutEffect(()=>{
 /* ─── Form Helpers (Light UI) ─── */
 const Label=({children})=><label style={{display:"block",fontSize:12,fontWeight:600,color:"#555",marginBottom:4,fontFamily:"'Kanit',sans-serif"}}>{children}</label>;
 const Input=({value,onChange,placeholder,ac,voice})=>(<div style={{display:"flex",gap:4,alignItems:"center"}}><input value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder} style={{flex:1,padding:"9px 12px",border:"1px solid #ddd",borderRadius:10,background:"#fff",color:"#333",fontSize:13.5,outline:"none",fontFamily:"'Sarabun',sans-serif",boxShadow:"0 1px 3px rgba(0,0,0,.04)"}} onFocus={e=>{e.target.style.borderColor=ac;e.target.style.boxShadow=`0 0 0 3px ${ac}18`}} onBlur={e=>{e.target.style.borderColor="#ddd";e.target.style.boxShadow="0 1px 3px rgba(0,0,0,.04)"}}/>{voice&&<VoiceBtn value={value} onChange={onChange}/>}</div>);
-const TextArea=({value,onChange,placeholder,rows=4,ac})=>(<textarea value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder} rows={rows} style={{width:"100%",padding:"9px 12px",border:"1px solid #ddd",borderRadius:10,background:"#fff",color:"#333",fontSize:13.5,outline:"none",resize:"vertical",fontFamily:"'Sarabun',sans-serif",lineHeight:1.6,whiteSpace:"pre-wrap",boxShadow:"0 1px 3px rgba(0,0,0,.04)"}} onFocus={e=>{e.target.style.borderColor=ac;e.target.style.boxShadow=`0 0 0 3px ${ac}18`}} onBlur={e=>{e.target.style.borderColor="#ddd";e.target.style.boxShadow="0 1px 3px rgba(0,0,0,.04)"}}/>);
-const ImgUp = ({ label, icon, src, onUpload, onRemove, ac, h = 80 }) => {
+const TextArea = ({ value, onChange, placeholder, rows = 4, ac }) => (
+  <textarea
+    value={value}
+    onChange={(e) => onChange(e.target.value)}
+    placeholder={placeholder}
+    rows={rows}
+    style={{
+      width: "100%",
+      padding: "9px 12px",
+      border: "1px solid #ddd",
+      borderRadius: 10,
+      background: "#fff",
+      color: "#333",
+      fontSize: 13.5,
+      outline: "none",
+      resize: "vertical",
+      fontFamily: "'Sarabun',sans-serif",
+      lineHeight: 1.6,
+      whiteSpace: "pre-wrap",
+      boxShadow: "0 1px 3px rgba(0,0,0,.04)",
+    }}
+    onFocus={(e) => {
+      e.target.style.borderColor = ac;
+      e.target.style.boxShadow = `0 0 0 3px ${ac}18`;
+    }}
+    onBlur={(e) => {
+      e.target.style.borderColor = "#ddd";
+      e.target.style.boxShadow = "0 1px 3px rgba(0,0,0,.04)";
+    }}
+  />
+);
   const ref = useRef(null);
 
   const pickFile = () => {
