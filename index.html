@@ -351,8 +351,8 @@ useLayoutEffect(()=>{
   </div>
 </div>
           </div></div> 
-        <>
-            {botImgs.length>0&&(()=>{
+<>
+{botImgs.length>0&&(()=>{
   const n=botImgs.length;
 
   // clamp heights for bottom group
@@ -431,11 +431,11 @@ useLayoutEffect(()=>{
   );
 })()}
 {botImgs.length===0&&<div style={{flexShrink:0,height:0}}/>}
+    </>
           </div>
         </div>
       </div>
-   </>
-
+ 
       {/* Strips */}
       <div style={{position:"absolute",top:HEADER_H,left:0,right:0,height:sH,background:c.stripT,zIndex:3,filter:bf}}/>
       <div style={{position:"absolute",bottom:FOOTER_H,left:0,right:0,height:sH,background:c.stripB,zIndex:3,filter:bf}}/>
