@@ -483,10 +483,7 @@ const VoiceBtn=({value,onChange})=>{
   return<button onClick={start} style={{padding:"3px 6px",borderRadius:6,border:rec?"2px solid #e74c3c":"1px solid #ddd",background:rec?"#fce4ec":"#fafafa",color:rec?"#e74c3c":"#bbb",cursor:"pointer",fontSize:10,flexShrink:0,animation:rec?"pulse 1s infinite":"none"}} title="พิมพ์ด้วยเสียง">{rec?"⏹":"🎤"}</button>;
 };
 
-const EMPTY={orgName:"",subOrg:"",personName:"",personTitle:"",headline:"",bodyText:"",dateText:"",website:"",address:"",phone:"",profileUrl:"",profilePos:"50% 50%",profileZoom:100,profileSize:116,logos:[],logoSize:42,qrUrl:"",headerTitle:"ประชาสัมพันธ์",headerTitleSize:38,hlColor:"",hlBgColor:"",topMainRatio: 2,
-topSideSplit: 0.5,
-botCols: 3,
-botRowSplit: 0.5,images:[]};
+const EMPTY={orgName:"",subOrg:"",personName:"",personTitle:"",headline:"",bodyText:"",dateText:"",website:"",address:"",phone:"",profileUrl:"",profilePos:"50% 50%",profileZoom:100,profileSize:116,logos:[],logoSize:42,qrUrl:"",headerTitle:"ประชาสัมพันธ์",headerTitleSize:38,hlColor:"",hlBgColor:"",topMainRatio:2,topSideSplit:0.5,botCols:3,botRowSplit:0.5,images:[]};
 
 function App(){
   const [ck,setCk]=useState("purple");const [sk,setSk]=useState("formal");const [d,setD]=useState(EMPTY);const [scale,setScale]=useState(0.45);const [exporting,setExporting]=useState(false);const [exportMsg,setExportMsg]=useState("");const [exportBlob,setExportBlob]=useState(null);const [exportFname,setExportFname]=useState("");const [loaded,setLoaded]=useState(false);const imgRef=useRef(null);const wrapRef=useRef(null);
