@@ -405,14 +405,30 @@ function Preview({ck,sk,d,id,hue=0,brightness=100,saturation=100,headerWm="",hea
         };
         const svgStyle=(top,btm)=>({position:"absolute",...(top!==undefined?{top}:{bottom:btm}),left:0,zIndex:10,display:"block",filter:bf,pointerEvents:"none"});
         return(<>
-          <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" style={svgStyle(HEADER_H-H/2,undefined)}>
-            <defs><linearGradient id="stg1" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor={c.h1||c.ac}/><stop offset="100%" stopColor={c.fc2}/></linearGradient></defs>
-            <path d={ribbon(false)} fill="url(#stg1)"/>
-          </svg>
-          <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" style={svgStyle(undefined,FOOTER_H-H/2)}>
-            <defs><linearGradient id="stg2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor={c.h1||c.ac}/><stop offset="100%" stopColor={c.fc2}/></linearGradient></defs>
-            <path d={ribbon(true)} fill="url(#stg2)"/>
-          </svg>
+          <svg width={794} height={137} viewBox="0 0 794 137"
+  preserveAspectRatio="none"
+  style={{position:"absolute", top:HEADER_H-68, left:0, zIndex:10, pointerEvents:"none", filter:bf}}>
+  <defs>
+    <linearGradient id="stg1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stopColor={c.h1||c.ac}/>
+      <stop offset="100%" stopColor={c.fc2}/>
+    </linearGradient>
+  </defs>
+  <path d="M794 100.707V0C794 0 743.579 100.615 418.052 51.2283C71.1866 -1.39574 1 64.8529 1 64.8529V120.742C1 120.742 66.6746 30.2963 418.052 100.707C769.429 171.117 794 100.707 794 100.707Z"
+    fill="url(#stg1)"/>
+</svg>
+          <svg width={794} height={137} viewBox="0 0 794 137"
+  preserveAspectRatio="none"
+  style={{position:"absolute", bottom:FOOTER_H-68, left:0, zIndex:10, pointerEvents:"none", filter:bf, transform:"scaleY(-1)"}}>
+  <defs>
+    <linearGradient id="stg2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stopColor={c.h1||c.ac}/>
+      <stop offset="100%" stopColor={c.fc2}/>
+    </linearGradient>
+  </defs>
+  <path d="M794 100.707V0C794 0 743.579 100.615 418.052 51.2283C71.1866 -1.39574 1 64.8529 1 64.8529V120.742C1 120.742 66.6746 30.2963 418.052 100.707C769.429 171.117 794 100.707 794 100.707Z"
+    fill="url(#stg2)"/>
+</svg>
         </>);
       })()}
 
