@@ -302,7 +302,7 @@ const stripDef=STRIP_PATHS[sk]||null;
         </div>)})()}
                 {/* FIX: Headline — auto-width & auto-height, shrinks/expands with text หัวข้อข่าว*/}
          {(()=>{const hs=c.sp.hlStyle;const hlLeft=(d.profileSize||116)+60;const base={position:"absolute",bottom:55,left:hlLeft,right:26,display:"flex",justifyContent:"center",zIndex:2,overflow:"visible"};
-        const capsule={borderRadius:c.sp.hlR,padding:"6px 6px",position:"relative",display:"inline-block",maxWidth:"100%"};
+        const capsule={borderRadius:c.sp.hlR,padding:"6px 6px",position:"relative",display:"inline-block",maxWidth:"80%"};
         const hlS=hs==="border"?{...capsule,border:`2px solid ${c.ac}60`,backdropFilter:"blur(4px)"}
         :hs==="flat"?{...capsule}:hs==="glow"?{...capsule,boxShadow:`0 4px 20px ${c.ac}40, 0 0 40px ${c.ac}15`}:{...capsule,boxShadow:"0 4px 12px rgba(0,0,0,.12)"};
         const bgC=d.hlBgColor||(hs==="border"?"rgba(255,255,255,0.2)":c.hlBg);
@@ -470,19 +470,29 @@ const VoiceBtn=({value,onChange})=>{
     const r=new SR();r.lang="th-TH";r.continuous=false;r.interimResults=true;
     finalRef.current="";
     r.onresult=e=>{
-      let interim="";
-      for(let i=e.resultIndex;i<e.results.length;i++){
-        if(e.results[i].isFinal)finalRef.current+=e.results[i][0].transcript;
-        else interim=e.results[i][0].transcript;
-      }
-      onChange(baseRef.current+finalRef.current+interim);
-    };
+  let interim="";
+  for(let i=e.resultIndex;i<e.results.length;i++){
+    if(e.results[i].isFinal)finalRef.current+=e.results[i][0].transcript;
+    else interim=e.results[i][0].transcript;
+  }
+  // แสดงทั้ง final+interim ตลอดเวลา
+  onChange(baseRef.current+finalRef.current+interim);
+};
     r.onend=()=>{
-      if(finalRef.current)baseRef.current+=finalRef.current;
-      finalRef.current="";rrRef.current=null;
-      if(recRef.current){setTimeout(()=>{if(recRef.current)startSession();},80);}
-      else setRec(false);
-    };
+  // บันทึก finalRef ลง baseRef ก่อน restart
+  if(finalRef.current){
+    baseRef.current+=finalRef.current;
+    finalRef.current="";
+  }
+  rrRef.current=null;
+  // restart ทันทีไม่มี delay — ลด gap บน Android
+  if(recRef.current){
+    try{startSession();}
+    catch(e){recRef.current=false;setRec(false);}
+  }else{
+    setRec(false);
+  }
+};
     r.onerror=(e)=>{if(e.error==="no-speech"||e.error==="aborted")return;stopAll();};
     rrRef.current=r;try{r.start();}catch(e){stopAll();}
   };
