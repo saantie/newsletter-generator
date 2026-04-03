@@ -418,11 +418,11 @@ const stripDef=STRIP_PATHS[sk]||null;
     :<path d={ribbonFallback} fill={`url(#${id})`}/>;
   return(<>
     <svg width={794} height={stripH} viewBox={`0 0 794 ${stripH}`} preserveAspectRatio="none"
-      style={{position:"absolute",top:HEADER_H-offset-30,left:0,zIndex:10,display:"block",pointerEvents:"none",filter:bf}}>
+      style={{position:"absolute",top:HEADER_H-offset-28,left:0,zIndex:10,display:"block",pointerEvents:"none",filter:bf}}>
       {grad("stg1")}{renderPaths("stg1")}
     </svg>
     <svg width={794} height={stripH} viewBox={`0 0 794 ${stripH}`} preserveAspectRatio="none"
-      style={{position:"absolute",bottom:FOOTER_H-offset-30,left:0,zIndex:10,display:"block",pointerEvents:"none",filter:bf}}>
+      style={{position:"absolute",bottom:FOOTER_H-offset+28,left:0,zIndex:10,display:"block",pointerEvents:"none",filter:bf}}>
       {grad("stg2")}{renderPaths("stg2")}
     </svg>
   </>);
