@@ -311,8 +311,8 @@ function Preview({ck,sk,d,id,hue=0,brightness=100,saturation=100,headerWm="",hea
         <div style={{position:"absolute",inset:0,backgroundImage:getStyleBg(sk,"#ffffff",0.03),backgroundSize:getStyleBgSize(sk)}}/>
         {/* Decoration layer z:0 — style-specific */}
         <div style={{position:"absolute",inset:0,zIndex:0,pointerEvents:"none",overflow:"hidden"}}>{contentDecos()}</div>
-        {/* Content layer z:1 */}
-        <div style={{position:"relative",zIndex:1,padding:"30px 20px 0"}}>
+        {/* Content layer z:1 ส่วนพื้นหลังกล่องขาวเนื้อหา*/}
+        <div style={{position:"relative",zIndex:1,padding:"40px 20px 0"}}> 
           <div style={{display:"flex",flexDirection:"column",background:"#ffffffb3",borderRadius:c.sp.contR,padding:"10px 14px 6px",boxShadow:`0 8px 32px ${c.ac}15`,border:"1px solid rgba(255,255,255,0.5)"}}>
 
             {/* ── TOP IMAGES ── */}
