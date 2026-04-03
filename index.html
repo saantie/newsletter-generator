@@ -467,7 +467,9 @@ const VoiceBtn=({value,onChange})=>{
   const startSession=()=>{
     if(!recRef.current)return;
     const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-    const r=new SR();r.lang="th-TH";r.continuous=false;r.interimResults=true;
+    const r=new SR();
+    const isAndroid=/Android/i.test(navigator.userAgent);
+    r.lang="th-TH";r.continuous=false;r.interimResults=!isAndroid;
     finalRef.current="";
     r.onresult=e=>{
   let interim="";
