@@ -408,11 +408,11 @@ function Preview({ck,sk,d,id,hue=0,brightness=100,saturation=100,headerWm="",hea
         const grad=(id)=><defs><linearGradient id={id} x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor={c.h1||c.ac}/><stop offset="100%" stopColor={c.fc2}/></linearGradient></defs>;
         return(<>
           <svg width={794} height={stripH} viewBox={`0 0 794 ${stripH}`} preserveAspectRatio="none"
-            style={{position:"absolute",top:HEADER_H-offset+20,left:0,zIndex:10,display:"block",pointerEvents:"none",filter:bf}}>
+            style={{position:"absolute",top:HEADER_H-offset-20,left:0,zIndex:10,display:"block",pointerEvents:"none",filter:bf}}>
             {grad("stg1")}<path d={stripPathD} fill="url(#stg1)"/>
           </svg>
           <svg width={794} height={stripH} viewBox={`0 0 794 ${stripH}`} preserveAspectRatio="none"
-            style={{position:"absolute",bottom:FOOTER_H-offset-20,left:0,zIndex:10,display:"block",pointerEvents:"none",filter:bf}}>
+            style={{position:"absolute",bottom:FOOTER_H-offset+20,left:0,zIndex:10,display:"block",pointerEvents:"none",filter:bf}}>
             {grad("stg2")}<path d={stripPathD} fill="url(#stg2)"/>
           </svg>
         </>);
