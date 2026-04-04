@@ -1243,7 +1243,7 @@ function LoginScreen(){
     </div></div>)}
 /* ─── Apps Script endpoint สำหรับ auto-register user ─── */
 /* วาง URL หลัง deploy Apps Script แล้ว — ดูใน admin-license.html */
-const APPS_SCRIPT_URL=""; /* ← วาง URL ที่นี่ เช่น "https://script.google.com/macros/s/XXX/exec" */
+const APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbxbs_6eqpLXd4-d6emvc_jHoczaB5gCCdL0KY0L1ab12LPyFdJ06Xq7dNUkdnplcKc9/exec"; /* ← วาง URL ที่นี่ เช่น "https://script.google.com/macros/s/XXX/exec" */
 const REG_KEY="nl365reg2025"; /* ← ต้องตรงกับใน Apps Script */
 const autoRegister=async(email)=>{
   if(!APPS_SCRIPT_URL||!email)return;
