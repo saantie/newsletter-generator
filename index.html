@@ -570,7 +570,10 @@ const stripDef=STRIP_PATHS[sk]||null;
           if(!svgRaw.includes('<defs>'))
             svg=svg.replace(/<svg([^>]*)>/,`<svg$1><defs>${gradDef}</defs>`);
           // flip สำหรับ strip ล่าง
-          if(flip) svg=svg.replace(/<svg([^>]*?)>/,(m,attrs)=>`<svg${attrs} style="transform:scaleY(-1)">`);
+           if(flip) svg=svg.replace(
+    /(<svg[^>]*>)/,
+    `$1<g transform="scale(1,-1) translate(0,-${stripH})">`
+  ).replace(/<\/svg>/, `</g></svg>`);
           return `data:image/svg+xml,${encodeURIComponent(svg)}`;
         };
 
