@@ -115,18 +115,7 @@ const FIGMA_STRIPS={
   sakura:  null,
   galaxy:  null,
 };
-  formal:  null, // ← วาง Figma SVG pattern สำหรับ formal ที่นี่
-  modern:  null, // ← วาง Figma SVG pattern สำหรับ modern ที่นี่
-  elegant: null, // ← วาง Figma SVG pattern สำหรับ elegant ที่นี่
-  nature:  null, // ← วาง Figma SVG pattern สำหรับ nature ที่นี่
-  minimal: null,
-  retro:   null,
-  ocean:   null,
-  sunset:  null,
-  sakura:  null,
-  galaxy:  null,
-};
-
+  
 /* Style-specific bg pattern selector — Figma ก่อน ถ้าไม่มีใช้ built-in */
 const getStyleBg=(sk,color,op)=>{
   if(FIGMA_BG[sk]) return FIGMA_BG[sk]; // ← Figma override
