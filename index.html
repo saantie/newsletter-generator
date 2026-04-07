@@ -336,7 +336,7 @@ function Preview({ck,sk,d,id,hue=0,brightness=100,saturation=100,headerWm="",hea
     window.addEventListener("mousemove",mv);window.addEventListener("mouseup",up);window.addEventListener("touchmove",mv,{passive:false});window.addEventListener("touchend",up);
   };
   const sH=c.sp.stripH;
-  const stripH=126; /* Figma SVG height */
+  const stripH=137; /* Figma SVG height */
   const STRIP_PATHS={
   formal:{paths:["M0.999999 78.6223V121C0.999999 121 42.1036 65.8913 418.052 106.056C794 146.22 794 106.056 794 106.056V4C794 4 820.916 106.011 401.5 72.5C0.999999 40.5 0.999999 78.6223 0.999999 78.6223Z"]},
   modern:{paths:[
@@ -357,7 +357,7 @@ function Preview({ck,sk,d,id,hue=0,brightness=100,saturation=100,headerWm="",hea
   galaxy:{paths:[]},
 };
   /* fallback ribbon path ใช้เมื่อยังไม่มี Figma path */
-const W794=794,H126=stripH;
+const W794=794,H137=stripH;
 const ribbonFallback=`M0,${H137*0.25} Q${W794*0.25},${H137*-0.15} ${W794*0.5},${H137*0.25} Q${W794*0.75},${H137*0.65} ${W794},${H137*0.25} L${W794},${H137*0.75} Q${W794*0.75},${H137*1.15} ${W794*0.5},${H137*0.75} Q${W794*0.25},${H137*0.35} 0,${H137*0.75} Z`;
 const stripDef=STRIP_PATHS[sk]||null;
   const contentH=1123-HEADER_H-FOOTER_H;
