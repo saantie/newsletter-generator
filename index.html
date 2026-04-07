@@ -104,48 +104,9 @@ const sunRay=(w,h,c)=>`data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http
       ถ้าอยากให้สีตาม theme → แทนที่ fill="#XXXXXX" ใน path ด้วย fill="THEME"
    ════════════════════════════════════════════════════════════════ */
 const FIGMA_STRIPS={
-  formal: `<svg width="794" height="126" viewBox="0 0 794 126" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="794" height="126" fill="#F5F5F5"/>
-<g clip-path="url(#clip0_0_1)">
-<rect width="794" height="126" fill="white"/>
-<path d="M0.999999 78.6223V121C0.999999 121 42.1036 65.8913 418.052 106.056C794 146.22 794 106.056 794 106.056V4C794 4 820.916 106.011 401.5 72.5C0.999999 40.5 0.999999 78.6223 0.999999 78.6223Z" fill="THEME"/>
-</g>
-<defs>
-<clipPath id="clip0_0_1">
-<rect width="794" height="126" fill="white"/>
-</clipPath>
-</defs>
-</svg>`
-,
+  formal: null,
   modern:  null,
-  elegant: `<svg width="810" height="101" viewBox="0 0 810 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_d_28_2)">
-<g filter="url(#filter1_d_28_2)">
-<path d="M802 90.623C802 93.2268 797.995 81.4018 790.986 83.5713C786.648 86.6452 789.985 87.9108 782.476 81.4014C778.557 78.0046 778.47 74.8917 768.458 74.8916C758.445 74.8916 757.945 84.1134 737.419 78.1465C716.893 72.1795 682.496 81.5935 647.305 81.4014C565.573 80.955 443.551 68.383 438.042 74.3496C433.036 71.3188 430.032 71.095 426.527 74.3496C419.018 78.1468 416.515 75.977 413.511 74.3496C410.521 72.7297 409.515 78.0971 409.506 78.1465L405 81.4014L400.494 78.1465C400.485 78.0971 399.479 72.7297 396.489 74.3496C393.485 75.977 390.982 78.1468 383.473 74.3496C379.968 71.095 376.964 71.3188 371.958 74.3496C366.449 68.383 244.427 80.955 162.695 81.4014C127.504 81.5935 93.1069 72.1795 72.5811 78.1465C52.0554 84.1134 51.5546 74.8916 41.542 74.8916C31.5297 74.8917 31.443 78.0046 27.5244 81.4014C20.015 87.9108 23.3525 86.6452 19.0137 83.5713C12.005 81.4018 8 93.2268 8 90.623V6C8 6 14.5078 7.0849 14.5078 25.5283C14.5078 43.9719 41.5428 54.8647 68.0762 42.8867C68.0762 42.8867 72.5813 55.9055 103.62 52.1084C106.123 64.5849 129.498 62.8386 162.695 60.2461C218.265 55.9065 258.315 60.2453 298.365 64.585C338.337 68.9161 371.826 55.9574 371.958 55.9062C371.958 55.9062 376.464 62.4155 381.971 60.2461C383.473 57.5338 389.981 52.1091 394.987 55.9062C396.919 57.3712 398.492 60.2456 400.494 54.8652C400.494 51.0362 404.972 47.79 405 47.7695L405.193 47.917C406.056 48.5925 409.506 51.5043 409.506 54.8652C411.508 60.2456 413.081 57.3712 415.013 55.9062C420.019 52.1091 426.527 57.5338 428.029 60.2461C433.536 62.4155 438.042 55.9062 438.042 55.9062C438.174 55.9574 471.663 68.9161 511.635 64.585C551.685 60.2453 591.735 55.9065 647.305 60.2461C680.502 62.8386 703.877 64.5849 706.38 52.1084C737.419 55.9055 741.925 42.8867 741.925 42.8867C768.458 54.8645 795.492 43.9718 795.492 25.5283C795.492 7.0849 802 6 802 6V90.623Z" fill="THEME"/>
-</g>
-</g>
-<defs>
-<filter id="filter0_d_28_2" x="0" y="0" width="810" height="101" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feOffset dy="2"/>
-<feGaussianBlur stdDeviation="4"/>
-<feComposite in2="hardAlpha" operator="out"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_28_2"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_28_2" result="shape"/>
-</filter>
-<filter id="filter1_d_28_2" x="5" y="6" width="802" height="92.9997" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feOffset dx="1" dy="4"/>
-<feGaussianBlur stdDeviation="2"/>
-<feComposite in2="hardAlpha" operator="out"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_28_2" result="shape"/>
-</filter>
-</defs>
-</svg>`,
+  elegant: null,
   nature:  null,
   minimal: null,
   retro:   null,
