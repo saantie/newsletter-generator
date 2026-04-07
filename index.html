@@ -115,7 +115,19 @@ const FIGMA_STRIPS={
   sakura:  null,
   galaxy:  null,
 };
-
+const FIGMA_BG={
+  formal:  null,
+  modern:  null,
+  elegant: null,
+  nature:  null,
+  minimal: null,
+  retro:   null,
+  ocean:   null,
+  sunset:  null,
+  sakura:  null,
+  galaxy:  null,
+};
+  
 /* Style-specific bg pattern selector — Figma ก่อน ถ้าไม่มีใช้ built-in */
 const getStyleBg=(sk,color,op)=>{
   if(FIGMA_BG[sk]) return FIGMA_BG[sk]; // ← Figma override
