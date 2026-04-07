@@ -44,27 +44,7 @@ const triSvg=(s,c)=>`data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http:/
 const crossSvg=(s,c)=>`data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='${s}' height='${s}' viewBox='0 0 40 40'><path d='M20 5V35M5 20H35' stroke='${c}' stroke-width='1.5' opacity='.4'/><path d='M12 12L28 28M28 12L12 28' stroke='${c}' stroke-width='.8' opacity='.2'/></svg>`)}`;
 const modCornerSvg=(s,c)=>`data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='${s}' height='${s}' viewBox='0 0 80 80'><path d='M5 5H40' stroke='${c}' stroke-width='2.5' opacity='.4'/><path d='M5 5V40' stroke='${c}' stroke-width='2.5' opacity='.4'/><path d='M5 15H25' stroke='${c}' stroke-width='1.2' opacity='.25'/><path d='M15 5V25' stroke='${c}' stroke-width='1.2' opacity='.25'/><circle cx='5' cy='5' r='3.5' fill='${c}' opacity='.4'/></svg>`)}`;
 const modDividerSvg=(w,c)=>`data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='16' viewBox='0 0 400 16'><path d='M40 8H360' stroke='${c}' stroke-width='1' opacity='.2' stroke-dasharray='12,8'/><rect x='188' y='2' width='12' height='12' rx='1' stroke='${c}' stroke-width='1.2' fill='${c}' fill-opacity='.06' opacity='.4' transform='rotate(45 194 8)'/><circle cx='160' cy='8' r='3' fill='${c}' opacity='.2'/><circle cx='240' cy='8' r='3' fill='${c}' opacity='.2'/></svg>`)}`;
-const W=w||794,H=h||8,sw=W/8;
-  let p;
-  if(shape==="wave"){
-    p=flip
-      ?`M0,${H} L${W},${H} L${W},${H*0.55} Q${W*0.75},${H*-0.45} ${W*0.5},${H*0.55} Q${W*0.25},${H*1.55} 0,${H*0.55} Z`
-      :`M0,0 L${W},0 L${W},${H*0.45} Q${W*0.75},${H*1.45} ${W*0.5},${H*0.45} Q${W*0.25},${H*-0.55} 0,${H*0.45} Z`;
-  }else if(shape==="zigzag"){
-    if(!flip)p=`M0,0 L${W},0 L${W},${H} L${7*sw},0 L${6*sw},${H} L${5*sw},0 L${4*sw},${H} L${3*sw},0 L${2*sw},${H} L${sw},0 L0,${H} Z`;
-    else p=`M0,${H} L${W},${H} L${W},0 L${7*sw},${H} L${6*sw},0 L${5*sw},${H} L${4*sw},0 L${3*sw},${H} L${2*sw},0 L${sw},${H} L0,0 Z`;
-  }else if(shape==="curtain"){
-    const cw=W/5;
-    if(!flip){let d=`M0,0 L${W},0`;for(let i=4;i>=0;i--){const cx=(i+0.5)*cw;d+=` Q${cx+cw*.25},${H*.05} ${(i+1)*cw},${H*.8} Q${cx},${H*1.55} ${i*cw},${H*.8}`;}p=d+` L0,0 Z`;}
-    else{let d=`M0,${H} L${W},${H}`;for(let i=4;i>=0;i--){const cx=(i+0.5)*cw;d+=` Q${cx+cw*.25},${H*.95} ${(i+1)*cw},${H*.2} Q${cx},${H*-.55} ${i*cw},${H*.2}`;}p=d+` L0,${H} Z`;}
-  }else if(shape==="notch"){
-    const cx=W/2,nw=W*.09;
-    p=flip
-      ?`M0,${H} L${W},${H} L${W},${H*.28} L${cx+nw},${H*.28} Q${cx},${H*-.55} ${cx-nw},${H*.28} L0,${H*.28} Z`
-      :`M0,0 L${W},0 L${W},${H*.72} L${cx+nw},${H*.72} Q${cx},${H*1.55} ${cx-nw},${H*.72} L0,${H*.72} Z`;
-  }else{p=`M0,0 L${W},0 L${W},${H} L0,${H} Z`;}
-  return `data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='${W}' height='${H}' viewBox='0 0 ${W} ${H}' preserveAspectRatio='none'><defs><linearGradient id='sg' x1='0' y1='0' x2='1' y2='0'><stop offset='0%' stop-color='${c1}'/><stop offset='100%' stop-color='${c2}'/></linearGradient></defs><path d='${p}' fill='url(%23sg)'/></svg>`)}`;
-};
+
 const bgPat=(color,op=0.035)=>`url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><circle cx='60' cy='60' r='1.5' fill='${color}' opacity='${op}'/><circle cx='0' cy='0' r='1' fill='${color}' opacity='${op*.6}'/><circle cx='120' cy='0' r='1' fill='${color}' opacity='${op*.6}'/><path d='M0 60h120M60 0v120' stroke='${color}' stroke-width='.25' opacity='${op*.35}'/></svg>`)}")`;
 const modBgPat=(color,op=0.06)=>`url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'><path d='M0 0L100 100M100 0L0 100' stroke='${color}' stroke-width='.3' opacity='${op*.5}'/><rect x='25' y='25' width='50' height='50' rx='4' stroke='${color}' stroke-width='.5' fill='none' opacity='${op*.4}'/><circle cx='50' cy='50' r='2.5' fill='${color}' opacity='${op}'/></svg>`)}")`;
 
