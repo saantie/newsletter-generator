@@ -618,7 +618,7 @@ const stripDef=STRIP_PATHS[sk]||null;
         const srcB=figmaSvgRaw?makeFigmaSrc(figmaSvgRaw,stopsB,true):makeSvg(true);
         return(<>
           <img src={srcT} style={imgStyle(HEADER_H-offset-28,undefined,false)} alt=""/>
-          <img src={srcB} style={imgStyle(undefined,FOOTER_H-offset-10,true)}  alt=""/>
+          <img src={srcB} style={imgStyle(undefined,FOOTER_H-offset+28,true)}  alt=""/>
         </>);
       })()}
 
