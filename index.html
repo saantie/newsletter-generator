@@ -578,21 +578,11 @@ const stripDef=STRIP_PATHS[sk]||null;
           // ถ้าไม่มี <defs> ให้สร้างใหม่
           if(!svgRaw.includes('<defs>'))
             svg=svg.replace(/<svg([^>]*)>/,`<svg$1><defs>${gradDef}</defs>`);
-          // flip สำหรับ strip ล่าง
-if(flip){
-  if(svg.includes('clip-path="url(')){
-    // มี <g clip-path> — ใส่ transform ที่ g นั้น
-    svg=svg.replace(
-      /<g clip-path="([^"]*)">/,
-      `<g clip-path="$1" transform="scale(1,-1) translate(0,-${stripH})">`
-    );
-  } else {
-    // ไม่มี clip-path — wrap ทั้งหมดด้วย <g transform>
-    svg=svg
-      .replace(/(<svg[^>]*>)/, `$1<g transform="scale(1,-1) translate(0,-${stripH})">`)
-      .replace(/<\/svg>/, `</g></svg>`);
-  }
-}
+         // flip สำหรับ strip ล่าง
+          if(flip) svg=svg.replace(
+            /<g clip-path="([^"]*)">/,
+            `<g clip-path="$1" transform="scale(1,-1) translate(0,-${stripH})">`
+          );
           return `data:image/svg+xml,${encodeURIComponent(svg)}`;
         };
 
