@@ -949,6 +949,8 @@ else{
   const handleReset=()=>{setD(EMPTY);setHue(0);setBrightness(100);setSaturation(100);setHeaderWm("");setHeaderWmPos("50% 50%");setHeaderWmZoom(100);setHeaderWmOp(50);sv({ck,sk,hue:0,brightness:100,saturation:100,textAlign,d:EMPTY})};
   const shifted=shiftColors(COLORS[ck],hue);
   const ac=shifted.pri,fc2=shifted.sec;
+  const ac6=(ac||"#888888").slice(0,7);   // ← เพิ่มบรรทัดนี้
+  const fc6=(fc2||"#aaaaaa").slice(0,7);  // ← เพิ่มบรรทัดนี้
   const imgInfo=useMemo(()=>{const top=(d.topImages||[]).length,bot=(d.botImages||[]).length;if(!top&&!bot)return"ยังไม่มีรูป";let t="";if(top)t+=`${top} โซนบน`;if(bot)t+=(t?` + `:"")+`${bot} โซนล่าง`;return t},[d.topImages?.length,d.botImages?.length]);
 
   const userEmail=window._nl365?.email||"";
@@ -1285,11 +1287,11 @@ button:hover{filter:brightness(.96)}
   width:"100%",
   padding:"8px 12px",
   borderRadius:8,
-  border:`1px solid ${ac}40`,
+  border:`1px solid ${ac6}40`,
   background:showColorCtrl
-    ?`linear-gradient(135deg,${ac},${fc2})`
-    :`linear-gradient(135deg,${ac}18,${fc2}18)`,
-  color:showColorCtrl?"#fff":ac,
+  ?`linear-gradient(135deg,${ac6},${fc6})`
+  :`linear-gradient(135deg,${ac6}18,${fc6}18)`,
+  color:showColorCtrl?"#fff":ac6,
   cursor:"pointer",
   fontSize:11,
   fontFamily:"'Kanit',sans-serif",
