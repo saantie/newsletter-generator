@@ -1166,7 +1166,26 @@ button:hover{filter:brightness(.96)}
     overflow:auto;
   }
 }
-
+/* ── Landscape บนมือถือ (เหมือน iPad) ── */
+@media(max-width:850px) and (orientation:landscape){
+  .main-wrap{flex-direction:row !important}
+  .form-col{
+    width:45% !important;
+    height:100% !important;
+    flex:none !important;
+    min-width:unset !important;
+    max-width:unset !important;
+  }
+  .split-bar{
+    width:6px !important;
+    height:100% !important;
+    cursor:ew-resize !important;
+  }
+  .prev-col{
+    flex:1 !important;
+    height:100% !important;
+  }
+}
 /* keyframes สำหรับ Pop up ขยับเด้ง */
 @keyframes installBounce{
   0%{transform:translateY(18px);opacity:0}
