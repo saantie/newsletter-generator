@@ -772,7 +772,7 @@ function App(){
   const [showInstall,setShowInstall]=useState(false);
   const isStandalone=window.matchMedia("(display-mode: standalone)").matches||window.navigator.standalone;
   const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
-const isLandscape=window.innerWidth>window.innerHeight;
+
   // PWA install prompt (Android/Desktop Chrome)
   useEffect(()=>{
     if(isStandalone)return;
