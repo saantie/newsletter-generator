@@ -1281,7 +1281,22 @@ button:hover{filter:brightness(.96)}
 
             {/* Collapsible: กำหนดสีเอง */}
             <div style={{marginTop:6,marginBottom:6}}>
-             <button onClick={()=>setShowColorCtrl(!showColorCtrl)} style={{width:"100%",padding:"8px 12px",borderRadius:8,border:`1px solid ${ac}40`,background:showColorCtrl?ac+"30":`${ac}10`,color:showColorCtrl?ac:ac+"99",cursor:"pointer",fontSize:11,fontFamily:"'Kanit',sans-serif",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+             <button onClick={()=>setShowColorCtrl(!showColorCtrl)} style={{
+  width:"100%",
+  padding:"8px 12px",
+  borderRadius:8,
+  border:`1px solid ${ac}40`,
+  background:showColorCtrl
+    ?`linear-gradient(135deg,${ac},${fc2})`
+    :`linear-gradient(135deg,${ac}18,${fc2}18)`,
+  color:showColorCtrl?"#fff":ac,
+  cursor:"pointer",
+  fontSize:11,
+  fontFamily:"'Kanit',sans-serif",
+  display:"flex",
+  alignItems:"center",
+  justifyContent:"space-between"
+}}>
                 <span>🎨 กำหนดสีเอง/แทรกภาพส่วนหัว {!isPro&&<span style={{  fontSize:10,  fontWeight:800,  letterSpacing:0.6,  color:"#fff",  background:"linear-gradient(135deg,#ffb84d,#ff7a18)",  padding:"3px 8px",  borderRadius:999,  marginLeft:6,  boxShadow:"0 4px 12px rgba(0,0,0,.16)",  border:"1px solid rgba(255,255,255,.55)"}}>PRO</span>}</span> <span style={{transform:showColorCtrl?"rotate(180deg)":"none",transition:"transform .2s"}}>▾</span>
               </button>
               {showColorCtrl&&<div style={{padding:"10px 0",borderBottom:"1px solid #eee"}}>
