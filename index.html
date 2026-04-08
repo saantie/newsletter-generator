@@ -380,10 +380,22 @@ const stripDef=null;
   const divSrc=sk==="modern"||sk==="retro"||sk==="galaxy"?mDiv:divider1;
 
   const bodyStyle=(line,i,arr)=>{
-    const len=line.length; const isLast=i===arr.length-1;
-    if(textAlign==="left"||len<20) return {textAlign:"left",minHeight:line.trim()===""?"0.5em":undefined};
-    return {textAlign:"justify",textAlignLast:isLast?"left":(len>50?"justify":"left"),textJustify:"inter-character",WebkitTextJustify:"inter-character",overflowWrap:"break-word"};
+  const len=line.length;
+  const isLast=i===arr.length-1;
+  const isEmpty=line.trim()==="";
+  if(textAlign==="left"||len<20) return {textAlign:"left",minHeight:isEmpty?"0.5em":undefined};
+  // บรรทัดสุดท้ายของ paragraph (ก่อน Enter หรือบรรทัดสุดท้ายจริง) → ชิดซ้าย
+  const nextIsEmpty=arr[i+1]?.trim()==="";
+  const isLastOfParagraph=isLast||nextIsEmpty;
+  return {
+    textAlign:"justify",
+    textAlignLast: isLastOfParagraph?"left":"justify",
+    textJustify:"inter-character",
+    WebkitTextJustify:"inter-character",
+    overflowWrap:"break-word",
+    minHeight:isEmpty?"0.5em":undefined
   };
+};
 
   return(
     <div id={id} style={{width:794,height:1123,background:"#fff",fontFamily:"'Sarabun',sans-serif",position:"relative",overflow:"hidden",boxSizing:"border-box",backgroundImage:bg,backgroundSize:bgSz}}>
