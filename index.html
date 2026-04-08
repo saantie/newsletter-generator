@@ -731,28 +731,33 @@ const EMPTY={orgName:"",subOrg:"",personName:"",personTitle:"",headline:"",bodyT
 function App(){
   const [ck,setCk]=useState("purple");const [sk,setSk]=useState("formal");const [d,setD]=useState(EMPTY);const [scale,setScale]=useState(0.45);const [exporting,setExporting]=useState(false);const [exportMsg,setExportMsg]=useState("");const [exportBlob,setExportBlob]=useState(null);const [exportFname,setExportFname]=useState("");const [loaded,setLoaded]=useState(false);const imgRef=useRef(null);const topImgRef=useRef(null);const botImgRef=useRef(null);const wrapRef=useRef(null);
   const [formH,setFormH]=useState(null);
- const handleSplitDrag=useCallback((e)=>{
-  e.preventDefault();
-  const isLandscape=window.innerWidth>window.innerHeight;
-  const startPos=isLandscape
-    ?(e.touches?e.touches[0].clientX:e.clientX)
-    :(e.touches?e.touches[0].clientY:e.clientY);
-  const startH=formColRef.current
-    ?(isLandscape?formColRef.current.offsetWidth:formColRef.current.offsetHeight)
-    :(isLandscape?window.innerWidth*0.45:window.innerHeight*0.5);
-  const mv=(ev)=>{
-    ev.preventDefault();
-    const cp=isLandscape
-      ?(ev.touches?ev.touches[0].clientX:ev.clientX)
-      :(ev.touches?ev.touches[0].clientY:ev.clientY);
-    const limit=isLandscape?window.innerWidth:window.innerHeight;
-    setFormH(Math.max(120,Math.min(limit-160,startH+(cp-startPos))));
-  };
-  const up=()=>{window.removeEventListener("mousemove",mv);window.removeEventListener("mouseup",up);window.removeEventListener("touchmove",mv);window.removeEventListener("touchend",up);};
-  window.addEventListener("mousemove",mv);window.addEventListener("mouseup",up);window.addEventListener("touchmove",mv,{passive:false});window.addEventListener("touchend",up);
-},[]);
-    const up=()=>{window.removeEventListener("mousemove",mv);window.removeEventListener("mouseup",up);window.removeEventListener("touchmove",mv);window.removeEventListener("touchend",up);};
-    window.addEventListener("mousemove",mv);window.addEventListener("mouseup",up);window.addEventListener("touchmove",mv,{passive:false});window.addEventListener("touchend",up);
+  const handleSplitDrag=useCallback((e)=>{
+    e.preventDefault();
+    const isLandscape=window.innerWidth>window.innerHeight;
+    const startPos=isLandscape
+      ?(e.touches?e.touches[0].clientX:e.clientX)
+      :(e.touches?e.touches[0].clientY:e.clientY);
+    const startH=formColRef.current
+      ?(isLandscape?formColRef.current.offsetWidth:formColRef.current.offsetHeight)
+      :(isLandscape?window.innerWidth*0.45:window.innerHeight*0.5);
+    const mv=(ev)=>{
+      ev.preventDefault();
+      const cp=isLandscape
+        ?(ev.touches?ev.touches[0].clientX:ev.clientX)
+        :(ev.touches?ev.touches[0].clientY:ev.clientY);
+      const limit=isLandscape?window.innerWidth:window.innerHeight;
+      setFormH(Math.max(120,Math.min(limit-160,startH+(cp-startPos))));
+    };
+    const up=()=>{
+      window.removeEventListener("mousemove",mv);
+      window.removeEventListener("mouseup",up);
+      window.removeEventListener("touchmove",mv);
+      window.removeEventListener("touchend",up);
+    };
+    window.addEventListener("mousemove",mv);
+    window.addEventListener("mouseup",up);
+    window.addEventListener("touchmove",mv,{passive:false});
+    window.addEventListener("touchend",up);
   },[]);
   const [hue,setHue]=useState(0);
   const formColRef = useRef(null);
