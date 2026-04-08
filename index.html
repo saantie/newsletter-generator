@@ -338,7 +338,7 @@ function Preview({ck,sk,d,id,hue=0,brightness=100,saturation=100,headerWm="",hea
     /* fallback ribbon path ใช้เมื่อยังไม่มี Figma path */
 const W794=794,H137=stripH;
 const ribbonFallback=`M0,${H137*0.25} Q${W794*0.25},${H137*-0.15} ${W794*0.5},${H137*0.25} Q${W794*0.75},${H137*0.65} ${W794},${H137*0.25} L${W794},${H137*0.75} Q${W794*0.75},${H137*1.15} ${W794*0.5},${H137*0.75} Q${W794*0.25},${H137*0.35} 0,${H137*0.75} Z`;
-const stripDef=STRIP_PATHS[sk]||null;
+const stripDef=null;
   const contentH=1123-HEADER_H-FOOTER_H;
   const rose1=roseSvg(60,c.fc,c.fc2),rose2=roseSvg(45,c.fc2,c.fc4),rose3=roseSvg(70,c.fc,c.fc3);const daisy1=daisySvg(35,c.fc2),daisy2=daisySvg(25,c.fc3),daisy3=daisySvg(30,c.fc4);const sakura1=sakuraSvg(28,c.fc2),sakura2=sakuraSvg(22,c.fc3);const leaf1=leafSvg(20,c.leaf),leaf2=leafSvg(16,c.leaf);const swirl1=swirlSvg(120,40,c.fc),swirl2=swirlSvg(100,30,c.fc2);const corner1=cornerSvg(80,c.ac);const divider1=dividerSvg(400,c.ac);
   const hex1=hexSvg(60,c.ac),hex2=hexSvg(45,c.fc2),hex3=hexSvg(35,c.fc3);const ring1=circleRingSvg(55,c.ac),ring2=circleRingSvg(40,c.fc2),ring3=circleRingSvg(30,c.fc3);const dia1=diamondSvg(45,c.ac),dia2=diamondSvg(35,c.fc2),dia3=diamondSvg(25,c.fc3);const tri1=triSvg(40,c.ac),tri2=triSvg(30,c.fc2);const cross1=crossSvg(28,c.ac),cross2=crossSvg(20,c.fc2);const dots1=dotGridSvg(120,40,c.fc);const mCorner=modCornerSvg(80,c.ac);const mDiv=modDividerSvg(400,c.ac);
