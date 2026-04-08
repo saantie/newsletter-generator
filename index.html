@@ -1268,7 +1268,7 @@ button:hover{filter:brightness(.96)}
           <div style={{padding:"14px 18px 0"}}>
             <div style={{fontSize:11,color:"#888",marginBottom:5}}>🎨 เฉดสี</div>
             <div style={{display:"grid",gridTemplateColumns:"repeat(6,1fr)",gap:5,marginBottom:10}}>
-              {Object.entries(COLORS).map(([k,v])=>(<button key={k} onClick={()=>setCk(k)setHue(0);setBrightness(100);setSaturation(100)} style={{padding:"5px 0",borderRadius:8,border:ck===k?`2px solid ${v.pri}`:"2px solid #e8e8e8",background:ck===k?v.pri+"12":"#fafafa",color:ck===k?"#333":"#999",cursor:"pointer",fontSize:9,fontFamily:"'Sarabun',sans-serif",display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
+              {Object.entries(COLORS).map(([k,v])=>(<button key={k} onClick={()=>{setCk(k);setHue(0);setBrightness(100);setSaturation(100);}} style={{padding:"5px 0",borderRadius:8,border:ck===k?`2px solid ${v.pri}`:"2px solid #e8e8e8",background:ck===k?v.pri+"12":"#fafafa",color:ck===k?"#333":"#999",cursor:"pointer",fontSize:9,fontFamily:"'Sarabun',sans-serif",display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
                 <img src={dropSvg(v.h1,v.h2)} width={20} height={28} alt="" style={{filter:ck===k?"drop-shadow(0 2px 4px rgba(0,0,0,.2))":"none"}}/>
                 <div>{v.name}</div>
               </button>))}
