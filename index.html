@@ -650,7 +650,7 @@ const RGBPick=({val,onChange})=>{
     "#fbe9e7","#ffab91","#e64a19","#bf360c","#efebe9","#a1887f","#6d4c41","#3e2723",
     "#ffeaa7","#f39c12","#d35400","#4a3728"];
   return(<span style={{position:"relative",display:"inline-block"}}>
-    <button onClick={()=>setOpen(!open)} style={{width:18,height:18,borderRadius:4,border:"1px solid #ccc",background:val||"linear-gradient(135deg,#f00,#0f0,#00f)",cursor:"pointer",padding:0,verticalAlign:"middle"}}/>
+    <button onClick={()=>setOpen(!open)} style={{width:32,height:18,borderRadius:999,border:"1px solid #ccc",background:val||"linear-gradient(135deg,#f00,#0f0,#00f)",cursor:"pointer",padding:0,verticalAlign:"middle"}}/>
     {open&&<>
       <div onClick={()=>setOpen(false)} style={{position:"fixed",inset:0,zIndex:8888}}/>
       <div style={{position:"absolute",top:22,left:0,zIndex:8889,background:"#fff",borderRadius:10,padding:8,boxShadow:"0 8px 24px rgba(0,0,0,.2)",display:"grid",gridTemplateColumns:"repeat(8,22px)",gap:3,width:218}}>
@@ -1152,10 +1152,23 @@ button:hover{filter:brightness(.96)}
   box-shadow:2px 0 8px rgba(0,0,0,0.08),-1px 0 4px rgba(0,0,0,0.04);
   cursor:ew-resize;
   position:relative;
+  touch-action:none;     
+  user-select:none; 
 }
-.split-bar::after{
-  content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  width:4px;height:32px;border-radius:2px;background:rgba(0,0,0,0.18);
+.split-bar{
+  width:6px;
+  flex:0 0 6px;
+  background:#f0f0f5;
+  box-shadow:2px 0 8px rgba(0,0,0,0.08),-1px 0 4px rgba(0,0,0,0.04);
+  cursor:ew-resize;
+  position:relative;
+  touch-action:none;
+  user-select:none;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
 }
 
 @media(max-width:850px){
@@ -1179,9 +1192,21 @@ button:hover{filter:brightness(.96)}
     border-top:none;border-bottom:none;
     background:#eeeef4;
   }
-  .split-bar::after{
-    width:36px;height:4px;border-radius:2px;background:rgba(0,0,0,0.22);
-  }
+  .split-bar{
+  width:100%;
+  height:18px;
+  flex:0 0 18px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.10),0 -1px 4px rgba(0,0,0,0.04);
+  cursor:ns-resize;
+  background:#eeeef4;
+  touch-action:none;
+  user-select:none;
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+}
 
   .prev-col{
     flex:1;
@@ -1257,7 +1282,7 @@ button:hover{filter:brightness(.96)}
 
             {/* Collapsible: กำหนดสีเอง */}
             <div style={{marginTop:6,marginBottom:6}}>
-              <button onClick={()=>setShowColorCtrl(!showColorCtrl)} style={{width:"100%",padding:"8px 12px",borderRadius:8,border:"1px solid #e8e8e8",background:showColorCtrl?ac+"10":"#fafafa",color:showColorCtrl?ac:"#888",cursor:"pointer",fontSize:11,fontFamily:"'Kanit',sans-serif",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+             <button onClick={()=>setShowColorCtrl(!showColorCtrl)} style={{width:"100%",padding:"8px 12px",borderRadius:8,border:`1px solid ${ac}40`,background:showColorCtrl?ac+"30":`${ac}10`,color:showColorCtrl?ac:ac+"99",cursor:"pointer",fontSize:11,fontFamily:"'Kanit',sans-serif",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                 <span>🎨 กำหนดสีเอง/แทรกภาพส่วนหัว {!isPro&&<span style={{  fontSize:10,  fontWeight:800,  letterSpacing:0.6,  color:"#fff",  background:"linear-gradient(135deg,#ffb84d,#ff7a18)",  padding:"3px 8px",  borderRadius:999,  marginLeft:6,  boxShadow:"0 4px 12px rgba(0,0,0,.16)",  border:"1px solid rgba(255,255,255,.55)"}}>PRO</span>}</span> <span style={{transform:showColorCtrl?"rotate(180deg)":"none",transition:"transform .2s"}}>▾</span>
               </button>
               {showColorCtrl&&<div style={{padding:"10px 0",borderBottom:"1px solid #eee"}}>
@@ -1299,7 +1324,7 @@ button:hover{filter:brightness(.96)}
           {/* Form fields */}
           <div style={{padding:"14px 18px 0"}}>
           <div className="sec"><div className="sec-t" style={{color:ac}}>🏢 หน่วยงาน</div>
-          <div className="fld"><div style={{display:"flex",alignItems:"center",marginBottom:4}}><Label>ชื่อจดหมายข่าว</Label><RGBPick val={d.headerTitleColor||"#ffffff"} onChange={v=>set("headerTitleColor",v)}/></div><div style={{display:"flex",gap:6,alignItems:"center"}}><div style={{flex:1}}><Input value={d.headerTitle} onChange={v=>set("headerTitle",v)} placeholder="ประชาสัมพันธ์" ac={ac}/></div><div style={{display:"flex",alignItems:"center",gap:2,flexShrink:0}}><button onClick={()=>set("headerTitleSize",Math.max(20,(d.headerTitleSize||38)-2))} style={{width:28,height:28,borderRadius:6,border:"1px solid #ddd",background:"#fafafa",color:"#888",cursor:"pointer",fontSize:14,display:"flex",alignItems:"center",justifyContent:"center"}}>−</button><span style={{fontSize:10,color:"#888",minWidth:28,textAlign:"center"}}>{d.headerTitleSize||38}</span><button onClick={()=>set("headerTitleSize",Math.min(50,(d.headerTitleSize||38)+2))} style={{width:28,height:28,borderRadius:6,border:"1px solid #ddd",background:"#fafafa",color:"#888",cursor:"pointer",fontSize:14,display:"flex",alignItems:"center",justifyContent:"center"}}>+</button></div></div></div>
+          <div className="fld"><div style={{display:"flex",alignItems:"center",marginBottom:4,gap:6}}><Label>ชื่อจดหมายข่าว</Label><RGBPick val={d.headerTitleColor||"#ffffff"} onChange={v=>set("headerTitleColor",v)}/></div><div style={{display:"flex",gap:6,alignItems:"center"}}><div style={{flex:1}}><Input value={d.headerTitle} onChange={v=>set("headerTitle",v)} placeholder="ประชาสัมพันธ์" ac={ac}/></div><div style={{display:"flex",alignItems:"center",gap:2,flexShrink:0}}><button onClick={()=>set("headerTitleSize",Math.max(20,(d.headerTitleSize||38)-2))} style={{width:28,height:28,borderRadius:6,border:"1px solid #ddd",background:"#fafafa",color:"#888",cursor:"pointer",fontSize:14,display:"flex",alignItems:"center",justifyContent:"center"}}>−</button><span style={{fontSize:10,color:"#888",minWidth:28,textAlign:"center"}}>{d.headerTitleSize||38}</span><button onClick={()=>set("headerTitleSize",Math.min(50,(d.headerTitleSize||38)+2))} style={{width:28,height:28,borderRadius:6,border:"1px solid #ddd",background:"#fafafa",color:"#888",cursor:"pointer",fontSize:14,display:"flex",alignItems:"center",justifyContent:"center"}}>+</button></div></div></div>
           <div className="fld"><div style={{display:"flex",alignItems:"center",marginBottom:4}}><Label>ชื่อหน่วยงาน *</Label><ColorPick val={d.tcOrgName} onChange={v=>set("tcOrgName",v)} ac={ac}/></div><Input value={d.orgName} onChange={v=>set("orgName",v)} placeholder="" ac={ac} voice/></div>
           <div className="fld"><div style={{display:"flex",alignItems:"center",marginBottom:4}}><Label>หน่วยงานย่อย</Label><ColorPick val={d.tcSubOrg} onChange={v=>set("tcSubOrg",v)} ac={ac}/></div><Input value={d.subOrg} onChange={v=>set("subOrg",v)} placeholder="" ac={ac} voice/></div>
           <div style={{display:"flex",gap:10}}>
@@ -1326,23 +1351,25 @@ button:hover{filter:brightness(.96)}
           <div className="fld"><div style={{display:"flex",alignItems:"center",marginBottom:4}}><Label>ชื่อ-สกุล</Label><ColorPick val={d.tcPersonName} onChange={v=>set("tcPersonName",v)} ac={ac}/></div><Input value={d.personName} onChange={v=>set("personName",v)} placeholder="" ac={ac} voice/></div>
           <div className="fld"><div style={{display:"flex",alignItems:"center",marginBottom:4}}><Label>ตำแหน่ง (2 บรรทัด)</Label><ColorPick val={d.tcPersonTitle} onChange={v=>set("tcPersonTitle",v)} ac={ac}/></div><div style={{display:"flex",gap:4}}><div style={{flex:1}}><TextArea value={d.personTitle} onChange={v=>set("personTitle",v)} placeholder="" rows={2} ac={ac}/></div><VoiceBtn value={d.personTitle} onChange={v=>set("personTitle",v)}/></div></div></div>
           <div className="sec"><div className="sec-t" style={{color:ac}}>📝 เนื้อหา</div>
-            <div className="fld"><Label>หัวข้อข่าว *</Label><div style={{display:"flex",gap:4}}><div style={{flex:1}}><TextArea value={d.headline} onChange={v=>set("headline",v)} placeholder="หัวข้อกิจกรรม" rows={2} ac={ac}/></div><VoiceBtn value={d.headline} onChange={v=>set("headline",v)}/></div>
-              <div style={{display:"flex",gap:6,marginTop:4,alignItems:"center",flexWrap:"wrap"}}>
-                <span style={{fontSize:10,color:"#888"}}>Text:</span>
-                <button onClick={()=>set("hlColor","")} style={{width:18,height:18,borderRadius:4,border:!d.hlColor?`2px solid ${ac}`:"1px solid #ddd",background:"linear-gradient(135deg,#4a0e2e,#5a1a1a)",cursor:"pointer"}} title="Auto"/>
-                <button onClick={()=>set("hlColor","#ffffff")} style={{width:18,height:18,borderRadius:4,border:d.hlColor==="#ffffff"?`2px solid ${ac}`:"1px solid #ddd",background:"#fff",cursor:"pointer"}} title="White"/>
-                <button onClick={()=>set("hlColor","#111111")} style={{width:18,height:18,borderRadius:4,border:d.hlColor==="#111111"?`2px solid ${ac}`:"1px solid #ddd",background:"#111",cursor:"pointer"}} title="Black"/>
-                <button onClick={()=>set("hlColor","#4a3728")} style={{width:18,height:18,borderRadius:4,border:d.hlColor==="#4a3728"?`2px solid ${ac}`:"1px solid #ddd",background:"#4a3728",cursor:"pointer"}} title="Brown"/>
-                <span style={{fontSize:10,color:"#888",marginLeft:4}}>BG:</span>
-                <button onClick={()=>set("hlBgColor","")} style={{width:18,height:18,borderRadius:4,border:!d.hlBgColor?`2px solid ${ac}`:"1px solid #ddd",background:`linear-gradient(135deg,${ac}50,${fc2}50)`,cursor:"pointer"}} title="Auto (ตาม theme)"/>
-                <input type="color" value={d.hlBgColor||ac} onChange={e=>set("hlBgColor",e.target.value)} style={{width:18,height:18,borderRadius:4,border:"1px solid #ddd",padding:0,cursor:"pointer"}}/>
-                {d.hlBgColor&&<button onClick={()=>set("hlBgColor","")} style={{fontSize:8,color:"#888",background:"#fafafa",border:"1px solid #ddd",borderRadius:4,padding:"1px 4px",cursor:"pointer"}}>ล้าง</button>}
-              </div></div>
+            <div className="fld">
+  <div style={{display:"flex",alignItems:"center",marginBottom:4}}>
+    <Label>หัวข้อข่าว *</Label>
+    <span style={{fontSize:10,color:"#888",marginLeft:6}}>Text:</span>
+    <button onClick={()=>set("hlColor","")} style={{width:16,height:16,borderRadius:"50%",border:!d.hlColor?`2px solid ${ac}`:"1px solid #ddd",background:"linear-gradient(135deg,#4a0e2e,#5a1a1a)",cursor:"pointer",marginLeft:3}} title="Auto"/>
+    <button onClick={()=>set("hlColor","#ffffff")} style={{width:16,height:16,borderRadius:"50%",border:d.hlColor==="#ffffff"?`2px solid ${ac}`:"1px solid #ddd",background:"#fff",cursor:"pointer",marginLeft:2}} title="White"/>
+    <button onClick={()=>set("hlColor","#111111")} style={{width:16,height:16,borderRadius:"50%",border:d.hlColor==="#111111"?`2px solid ${ac}`:"1px solid #ddd",background:"#111",cursor:"pointer",marginLeft:2}} title="Black"/>
+    <button onClick={()=>set("hlColor","#4a3728")} style={{width:16,height:16,borderRadius:"50%",border:d.hlColor==="#4a3728"?`2px solid ${ac}`:"1px solid #ddd",background:"#4a3728",cursor:"pointer",marginLeft:2}} title="Brown"/>
+    <span style={{fontSize:10,color:"#888",marginLeft:4}}>BG:</span>
+    <button onClick={()=>set("hlBgColor","")} style={{width:16,height:16,borderRadius:"50%",border:!d.hlBgColor?`2px solid ${ac}`:"1px solid #ddd",background:`linear-gradient(135deg,${ac}50,${fc2}50)`,cursor:"pointer",marginLeft:3}} title="Auto"/>
+    <input type="color" value={d.hlBgColor||ac} onChange={e=>set("hlBgColor",e.target.value)} style={{width:16,height:16,borderRadius:"50%",border:"1px solid #ddd",padding:0,cursor:"pointer",marginLeft:2}}/>
+    {d.hlBgColor&&<button onClick={()=>set("hlBgColor","")} style={{fontSize:8,color:"#888",background:"#fafafa",border:"1px solid #ddd",borderRadius:4,padding:"1px 4px",cursor:"pointer",marginLeft:2}}>ล้าง</button>}
+  </div>
+  <div style={{display:"flex",gap:4}}>
+    <div style={{flex:1}}><TextArea value={d.headline} onChange={v=>set("headline",v)} placeholder="หัวข้อกิจกรรม" rows={2} ac={ac}/></div>
+    <VoiceBtn value={d.headline} onChange={v=>set("headline",v)}/>
+  </div>
+</div>
             <div className="fld"><div style={{display:"flex",alignItems:"center",marginBottom:4}}><Label>วันที่</Label><ColorPick val={d.tcDateText} onChange={v=>set("tcDateText",v)} ac={ac}/></div><Input value={d.dateText} onChange={v=>set("dateText",v)} placeholder="วันที่ 13 มีนาคม 2569" ac={ac} voice/></div>
-            <div style={{display:"flex",gap:4,marginBottom:8}}>
-              <button onClick={()=>setTextAlign("distribute")} style={{flex:1,padding:"5px",borderRadius:8,border:textAlign==="distribute"?`2px solid ${ac}`:"2px solid #e8e8e8",background:textAlign==="distribute"?ac+"10":"#fafafa",color:textAlign==="distribute"?"#333":"#999",cursor:"pointer",fontSize:11}}>Thai Distributed</button>
-              <button onClick={()=>setTextAlign("left")} style={{flex:1,padding:"5px",borderRadius:8,border:textAlign==="left"?`2px solid ${ac}`:"2px solid #e8e8e8",background:textAlign==="left"?ac+"10":"#fafafa",color:textAlign==="left"?"#333":"#999",cursor:"pointer",fontSize:11}}>ชิดซ้าย</button>
-            </div>
             <div className="fld"><div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div style={{display:"flex",alignItems:"center"}}><Label>เนื้อหา</Label><ColorPick val={d.tcBodyText} onChange={v=>set("tcBodyText",v)} ac={ac}/></div><button onClick={()=>{
               if(isRecording){if(recRef.current){try{recRef.current.abort();}catch(e){}recRef.current=null;}setIsRecording(false);return;}
               if(!("webkitSpeechRecognition" in window||"SpeechRecognition" in window)){setExportMsg("❌ เบราว์เซอร์ไม่รองรับ");return;}
@@ -1380,6 +1407,10 @@ button:hover{filter:brightness(.96)}
               setIsRecording(true);startBodySession();
               setTimeout(()=>{if(recRef.current){try{recRef.current.abort();}catch(e){}recRef.current=null;}setIsRecording(false);},120000);
             }} style={{padding:"5px 12px",borderRadius:8,border:isRecording?"2px solid #e74c3c":"1px solid #ddd",background:isRecording?"#fce4ec":"#fafafa",color:isRecording?"#e74c3c":"#888",cursor:"pointer",fontSize:11,display:"flex",alignItems:"center",gap:3,animation:isRecording?"pulse 1s infinite":"none",minHeight:34}}>{isRecording?"⏹️ หยุดบันทึก":"🎤 พิมพ์ด้วยเสียง"}</button></div><TextArea value={d.bodyText} onChange={v=>set("bodyText",v)} placeholder={"บรรทัดที่ 1...\nบรรทัดที่ 2..."} rows={6} ac={ac}/>{isRecording&&<div style={{fontSize:10,color:"#e74c3c",marginTop:4,display:"flex",alignItems:"center",gap:4}}>🔴 กำลังฟัง... พูดได้เลย</div>}</div>
+          <div style={{display:"flex",gap:4,marginBottom:8}}>
+              <button onClick={()=>setTextAlign("distribute")} style={{flex:1,padding:"5px",borderRadius:8,border:textAlign==="distribute"?`2px solid ${ac}`:"2px solid #e8e8e8",background:textAlign==="distribute"?ac+"10":"#fafafa",color:textAlign==="distribute"?"#333":"#999",cursor:"pointer",fontSize:11}}>Thai Distributed</button>
+              <button onClick={()=>setTextAlign("left")} style={{flex:1,padding:"5px",borderRadius:8,border:textAlign==="left"?`2px solid ${ac}`:"2px solid #e8e8e8",background:textAlign==="left"?ac+"10":"#fafafa",color:textAlign==="left"?"#333":"#999",cursor:"pointer",fontSize:11}}>ชิดซ้าย</button>
+         </div>
           </div>
           <div className="sec"><div className="sec-t" style={{color:ac}}>📷 รูปภาพกิจกรรม</div>
             {/* โซนบน: 1-3 รูป */}
@@ -1448,7 +1479,9 @@ button:hover{filter:brightness(.96)}
       </div>{/* end form-col */}
 
       {/* split-bar — draggable to resize form/preview */}
-      <div className="split-bar" onMouseDown={handleSplitDrag} onTouchStart={handleSplitDrag} />
+     <div className="split-bar" onMouseDown={handleSplitDrag} onTouchStart={handleSplitDrag} style={{touchAction:"none",background:`${ac}18`}}>
+  {[0,1,2].map(i=><div key={i} style={{width:5,height:5,borderRadius:"50%",background:ac,opacity:0.7,flexShrink:0}}/>)}
+</div>
 
       {/* Preview — scrollable, capsule zoom bar */}
       <div className="prev-col">
