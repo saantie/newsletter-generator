@@ -664,7 +664,7 @@ const RGBPick=({val,onChange})=>{
 const ColorPick=({val,onChange})=>(
   <span style={{display:"inline-flex",gap:3,marginLeft:6,verticalAlign:"middle",alignItems:"center"}}>
     {[{c:"#ffffff",t:"ขาว"},{c:"#111111",t:"ดำ"},{c:"#4a3728",t:"น้ำตาล"}].map(o=>(
-      <button key={o.c} onClick={()=>onChange(val===o.c?"":o.c)} title={o.t} style={{width:16,height:16,borderRadius:4,border:val===o.c?`2px solid #333`:"1px solid #ccc",background:o.c,cursor:"pointer",padding:0,flexShrink:0}}/>
+      <button key={o.c} onClick={()=>onChange(val===o.c?"":o.c)} title={o.t} style={{width:16,height:16,borderRadius:"50%",border:val===o.c?`2px solid #333`:"1px solid #ccc",background:o.c,cursor:"pointer",padding:0,flexShrink:0}}/>
     ))}
     <RGBPick val={val} onChange={onChange}/>
   </span>
