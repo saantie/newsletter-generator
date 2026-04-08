@@ -579,10 +579,10 @@ const stripDef=STRIP_PATHS[sk]||null;
           if(!svgRaw.includes('<defs>'))
             svg=svg.replace(/<svg([^>]*)>/,`<svg$1><defs>${gradDef}</defs>`);
           // flip สำหรับ strip ล่าง
-           if(flip) svg=svg.replace(
-    /(<svg[^>]*>)/,
-    `$1<g transform="scale(1,-1) translate(0,-${stripH})">`
-  ).replace(/<\/svg>/, `</g></svg>`);
+          if(flip) svg=svg.replace(
+            /<g clip-path="([^"]*)">/,
+            `<g clip-path="$1" transform="scale(1,-1) translate(0,-${stripH})">`
+          );
           return `data:image/svg+xml,${encodeURIComponent(svg)}`;
         };
 
