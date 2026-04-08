@@ -435,8 +435,7 @@ const stripDef=null;
                 {/* FIX: Headline — auto-width & auto-height, shrinks/expands with text หัวข้อข่าว*/}
          {(()=>{const hs=c.sp.hlStyle;const hlLeft=(d.profileSize||116)+60;const base={position:"absolute",bottom:55,left:hlLeft,right:26,display:"flex",justifyContent:"center",zIndex:2,overflow:"visible"};
         const capsule={borderRadius:c.sp.hlR,padding:"6px 6px",position:"relative",display:"inline-block",maxWidth:"80%"};
-        const hlS=hs==="border"?{...capsule,border:`2px solid ${c.ac}60`,backdropFilter:"blur(4px)"}
-        :hs==="flat"?{...capsule}:hs==="glow"?{...capsule,boxShadow:`0 4px 20px ${c.ac}40, 0 0 40px ${c.ac}15`}:{...capsule,boxShadow:"0 4px 12px rgba(0,0,0,.12)"};
+        const hlS=hs==="border"?{...capsule,backdropFilter:"blur(4px)",boxShadow:`0 4px 16px rgba(0,0,0,.18), 0 2px 8px ${c.ac}30`}:hs==="flat"?{...capsule,boxShadow:"0 4px 12px rgba(0,0,0,.12)"}:hs==="glow"?{...capsule,boxShadow:`0 4px 20px ${c.ac}40, 0 0 40px ${c.ac}15, 0 2px 8px rgba(0,0,0,.2)`}:{...capsule,boxShadow:`0 4px 16px rgba(0,0,0,.18), 0 2px 8px ${c.ac}25`};
         const bgC=d.hlBgColor||(hs==="border"?"rgba(255,255,255,0.2)":c.hlBg);
         const txtC=d.hlColor||(hs==="border"?"#fff":c.hlTxt);
         return<div style={base}><div style={hlS}><div style={{position:"absolute",inset:0,background:bgC,filter:bf,borderRadius:c.sp.hlR}}/><div style={{position:"relative",fontFamily:"'Kanit',sans-serif",fontSize:14,fontWeight:500,color:txtC,lineHeight:1.55,textAlign:"center",overflow:"hidden",wordBreak:"break-word",whiteSpace:"pre-wrap"}}>{d.headline||"หัวข้อข่าวประชาสัมพันธ์"}</div></div></div>})()}       
