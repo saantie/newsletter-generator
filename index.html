@@ -731,11 +731,26 @@ const EMPTY={orgName:"",subOrg:"",personName:"",personTitle:"",headline:"",bodyT
 function App(){
   const [ck,setCk]=useState("purple");const [sk,setSk]=useState("formal");const [d,setD]=useState(EMPTY);const [scale,setScale]=useState(0.45);const [exporting,setExporting]=useState(false);const [exportMsg,setExportMsg]=useState("");const [exportBlob,setExportBlob]=useState(null);const [exportFname,setExportFname]=useState("");const [loaded,setLoaded]=useState(false);const imgRef=useRef(null);const topImgRef=useRef(null);const botImgRef=useRef(null);const wrapRef=useRef(null);
   const [formH,setFormH]=useState(null);
-  const handleSplitDrag=useCallback((e)=>{
-    e.preventDefault();
-    const startY=e.touches?e.touches[0].clientY:e.clientY;
-    const startH=formColRef.current?.offsetHeight||(window.innerHeight*0.5);
-    const mv=(ev)=>{ev.preventDefault();const cy=ev.touches?ev.touches[0].clientY:ev.clientY;setFormH(Math.max(120,Math.min(window.innerHeight-160,startH+(cy-startY))));};
+ const handleSplitDrag=useCallback((e)=>{
+  e.preventDefault();
+  const isLandscape=window.innerWidth>window.innerHeight;
+  const startPos=isLandscape
+    ?(e.touches?e.touches[0].clientX:e.clientX)
+    :(e.touches?e.touches[0].clientY:e.clientY);
+  const startH=formColRef.current
+    ?(isLandscape?formColRef.current.offsetWidth:formColRef.current.offsetHeight)
+    :(isLandscape?window.innerWidth*0.45:window.innerHeight*0.5);
+  const mv=(ev)=>{
+    ev.preventDefault();
+    const cp=isLandscape
+      ?(ev.touches?ev.touches[0].clientX:ev.clientX)
+      :(ev.touches?ev.touches[0].clientY:ev.clientY);
+    const limit=isLandscape?window.innerWidth:window.innerHeight;
+    setFormH(Math.max(120,Math.min(limit-160,startH+(cp-startPos))));
+  };
+  const up=()=>{window.removeEventListener("mousemove",mv);window.removeEventListener("mouseup",up);window.removeEventListener("touchmove",mv);window.removeEventListener("touchend",up);};
+  window.addEventListener("mousemove",mv);window.addEventListener("mouseup",up);window.addEventListener("touchmove",mv,{passive:false});window.addEventListener("touchend",up);
+},[]);
     const up=()=>{window.removeEventListener("mousemove",mv);window.removeEventListener("mouseup",up);window.removeEventListener("touchmove",mv);window.removeEventListener("touchend",up);};
     window.addEventListener("mousemove",mv);window.addEventListener("mouseup",up);window.addEventListener("touchmove",mv,{passive:false});window.addEventListener("touchend",up);
   },[]);
@@ -757,7 +772,7 @@ function App(){
   const [showInstall,setShowInstall]=useState(false);
   const isStandalone=window.matchMedia("(display-mode: standalone)").matches||window.navigator.standalone;
   const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
-
+const isLandscape=window.innerWidth>window.innerHeight;
   // PWA install prompt (Android/Desktop Chrome)
   useEffect(()=>{
     if(isStandalone)return;
@@ -1199,7 +1214,8 @@ button:hover{filter:brightness(.96)}
 }
 `}</style>
     <div style={{display:"flex",flexDirection:"column",height:"100vh",fontFamily:"'Sarabun',sans-serif",background:"#f5f5fa",color:"#333"}}><div className="main-wrap">
-  <div className="form-col" ref={formColRef} style={formH?{height:formH}:{}} onTouchStart={e=>{const t=e.touches[0];if(formColRef.current?.scrollTop===0)formColRef.current._ptr={y:t.clientY,done:false}}} onTouchMove={e=>{const fc=formColRef.current;if(!fc?._ptr||fc._ptr.done)return;const dy=e.touches[0].clientY-fc._ptr.y;if(dy>80){fc._ptr.done=true;checkPro(true).then(r=>{if(r===true)setExportMsg("✅ PRO แล้ว!");else setExportMsg("🔄 Refreshed");setTimeout(()=>setExportMsg(""),2500);})}}} onTouchEnd={()=>{if(formColRef.current?._ptr)formColRef.current._ptr=null}}>
+  <div className="form-col" ref={formColRef} 
+  style={formH?(isLandscape?{width:formH}:{height:formH}):{}} onTouchStart={e=>{const t=e.touches[0];if(formColRef.current?.scrollTop===0)formColRef.current._ptr={y:t.clientY,done:false}}} onTouchMove={e=>{const fc=formColRef.current;if(!fc?._ptr||fc._ptr.done)return;const dy=e.touches[0].clientY-fc._ptr.y;if(dy>80){fc._ptr.done=true;checkPro(true).then(r=>{if(r===true)setExportMsg("✅ PRO แล้ว!");else setExportMsg("🔄 Refreshed");setTimeout(()=>setExportMsg(""),2500);})}}} onTouchEnd={()=>{if(formColRef.current?._ptr)formColRef.current._ptr=null}}>
     {/* Single scrollable area: title + theme + form */}
     <div style={{flex:1,overflowY:"auto",WebkitOverflowScrolling:"touch"}}>
 
