@@ -1516,7 +1516,7 @@ button:hover{filter:brightness(.96)}
                 :`linear-gradient(${deg}deg,${c1Pv},${c2Pv})`;
               return(<div style={{marginTop:6,padding:"8px 0 2px",borderTop:"1px solid #f0f0f0"}}>
                 <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:6}}>
-                  <span style={{fontSize:10,color:"#888",flexShrink:0}}>↔ ทิศทาง gradient strip</span>
+                  <span style={{fontSize:16,color:"#888",flexShrink:0}}>↔ ทิศทางสี แถบขั้น ส่วนหัวท้าย (gradient strip)</span>
                   {/* On/Off toggle */}
                   <button onClick={()=>setStripGradOn(v=>!v)} style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:4,padding:"3px 10px",borderRadius:999,border:`1px solid ${stripGradOn?ac:"#ddd"}`,background:stripGradOn?`${ac}15`:"#fafafa",color:stripGradOn?ac:"#bbb",cursor:"pointer",fontSize:10,fontWeight:600,flexShrink:0,transition:"all .15s"}}>
                     <span style={{width:22,height:12,borderRadius:6,background:stripGradOn?ac:"#ddd",display:"inline-block",position:"relative",transition:"background .15s",flexShrink:0}}>
@@ -1551,7 +1551,7 @@ button:hover{filter:brightness(.96)}
           <div style={{padding:"14px 18px 0"}}>
           {/* ── ส่วนหัว: หน่วยงาน + ผู้บริหาร ── */}
           <div style={{border:`1.5px solid ${ac}30`,borderRadius:14,padding:"10px 12px 4px",marginBottom:14,background:`${ac}04`}}>
-          <div className="sec"><div className="sec-t" style={{color:ac}}>🏢 หน่วยงาน</div>
+          <div className="sec"><div className="sec-t" style={{color:ac}}>🏢 ข้อมูลองค์กร/หน่วยงาน </div>
           <div className="fld"><div style={{display:"flex",alignItems:"center",marginBottom:4,gap:6}}><Label c={ac}>ชื่อจดหมายข่าว</Label><RGBPick val={d.headerTitleColor||"#ffffff"} onChange={v=>set("headerTitleColor",v)}/></div><div style={{display:"flex",gap:6,alignItems:"center"}}><div style={{flex:1}}><Input value={d.headerTitle} onChange={v=>set("headerTitle",v)} placeholder="ประชาสัมพันธ์" ac={ac}/></div><div style={{display:"flex",alignItems:"center",gap:2,flexShrink:0}}><button onClick={()=>set("headerTitleSize",Math.max(20,(d.headerTitleSize||38)-2))} style={{width:28,height:28,borderRadius:6,border:"1px solid #ddd",background:"#fafafa",color:"#888",cursor:"pointer",fontSize:14,display:"flex",alignItems:"center",justifyContent:"center"}}>−</button><span style={{fontSize:10,color:"#888",minWidth:28,textAlign:"center"}}>{d.headerTitleSize||38}</span><button onClick={()=>set("headerTitleSize",Math.min(50,(d.headerTitleSize||38)+2))} style={{width:28,height:28,borderRadius:6,border:"1px solid #ddd",background:"#fafafa",color:"#888",cursor:"pointer",fontSize:14,display:"flex",alignItems:"center",justifyContent:"center"}}>+</button></div></div></div>
           <div className="fld"><div style={{display:"flex",alignItems:"center",marginBottom:4}}><Label c={ac}>ชื่อหน่วยงาน *</Label><ColorPick val={d.tcOrgName} onChange={v=>set("tcOrgName",v)} ac={ac}/></div><Input value={d.orgName} onChange={v=>set("orgName",v)} placeholder="" ac={ac} voice/></div>
           <div className="fld"><div style={{display:"flex",alignItems:"center",marginBottom:4}}><Label c={ac}>หน่วยงานย่อย</Label><ColorPick val={d.tcSubOrg} onChange={v=>set("tcSubOrg",v)} ac={ac}/></div><Input value={d.subOrg} onChange={v=>set("subOrg",v)} placeholder="" ac={ac} voice/></div>
@@ -1603,7 +1603,7 @@ button:hover{filter:brightness(.96)}
   </div>
 </div>
             <div className="fld"><div style={{display:"flex",alignItems:"center",marginBottom:4}}><Label c={ac}>วันที่</Label><ColorPick val={d.tcDateText} onChange={v=>set("tcDateText",v)} ac={ac}/></div><Input value={d.dateText} onChange={v=>set("dateText",v)} placeholder="วันที่ 13 มีนาคม 2569" ac={ac} voice/></div>
-            <div className="fld"><div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div style={{display:"flex",alignItems:"center"}}><Label c={ac}>เนื้อหา</Label><ColorPick val={d.tcBodyText} onChange={v=>set("tcBodyText",v)} ac={ac}/></div><button onClick={()=>{
+            <div className="fld"><div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div style={{display:"flex",alignItems:"center"}}><Label c={ac}>เนื้อหา (Enter 2 ครั้งเพื่อขึ้นย่อหน้าใหม่)</Label><ColorPick val={d.tcBodyText} onChange={v=>set("tcBodyText",v)} ac={ac}/></div><button onClick={()=>{
               if(isRecording){if(recRef.current){try{recRef.current.abort();}catch(e){}recRef.current=null;}setIsRecording(false);return;}
               if(!("webkitSpeechRecognition" in window||"SpeechRecognition" in window)){setExportMsg("❌ เบราว์เซอร์ไม่รองรับ");return;}
               bodyBeforeRec.current=d.bodyText||"";
