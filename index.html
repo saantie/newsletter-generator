@@ -1185,12 +1185,12 @@ else{
           <div>1 เดือน 50 บาท · 6 เดือน 240 บาท · 1 ปี 365 บาท</div>
           <div style={{marginTop:8,paddingTop:8,borderTop:"1px dashed #e0c060"}}>
             <button onClick={()=>{
-              const appDesc="🗞️ Newsletter365 — แอพสร้างจดหมายข่าวสวยงามสำหรับราชการไทย ใช้งานบนมือถือหรือคอมพิวเตอร์ ไม่ต้องติดตั้ง สร้างได้ภายใน 5 นาที!";
-              const shareUrl="https://saantie.github.io/newsletter-generator/";
-              const txt=`${appDesc}\n🔗 ลองใช้ฟรีได้เลย: ${shareUrl}\n\n📧 แชร์แล้วส่ง e-mail มาบอกเรา รับ Pro 6 เดือนฟรี!`;
+              const appDesc="🗞️ Newsletter365 — แอพสร้างจดหมายข่าวสวยงามสำหรับใช้งานได้ทั้ง ios, Android และ Windows สร้างได้ภายใน 5 นาที!";
+              const shareUrl="https://saantie.github.io/newsletter-generator/ จดหมายข่าวสร้างง่าย เสร็จไวจนเพื่อนต้องถาม";
+              const txt=`${appDesc}\n🔗 ลองใช้ฟรีได้เลย: ${shareUrl}\n\n📧 แชร์แล้วส่ง e-mail มาบอกเรา เพื่อรับ Pro 6 เดือนฟรี!`;
               const canWebShare=typeof navigator.share==="function"&&/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
               if(canWebShare){
-                navigator.share({title:"Newsletter365 — แอพสร้างจดหมายข่าวราชการไทย",text:txt,url:shareUrl}).catch(()=>{});
+                navigator.share({title:"Newsletter365 — แอพสร้างจดหมายข่าว",text:txt,url:shareUrl}).catch(()=>{});
               }else{
                 navigator.clipboard?.writeText(txt).then(()=>{setExportMsg("✅ คัดลอกข้อความ+ลิงค์แล้ว! วางแชร์ได้เลย");setTimeout(()=>setExportMsg(""),3000);}).catch(()=>{
                   const ta=document.createElement("textarea");ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand("copy");document.body.removeChild(ta);
@@ -1199,7 +1199,7 @@ else{
               }
             }} style={{width:"100%",padding:"9px 10px",borderRadius:10,border:"1px solid #ffe082",background:"linear-gradient(135deg,#fffde7,#fff8e1)",color:"#f57f17",cursor:"pointer",fontSize:12,fontWeight:600,display:"flex",alignItems:"center",gap:8,animation:"shareGlow 2s ease-in-out infinite"}}>
               <img src="./icons/icon-192x192.png" style={{width:20,height:20,borderRadius:5,objectFit:"cover",flexShrink:0}} alt=""/>
-              🔗 แชร์แอพ → รับ Pro 6 เดือนฟรี!
+              🔗 แชร์แอพ → เพื่อรับ Pro 6 เดือนฟรี!
             </button>
           </div>
         </div>
@@ -1264,7 +1264,7 @@ else{
         <img src="./icons/icon-192x192.png" style={{width:40,height:40,borderRadius:10,objectFit:"cover"}} alt="Newsletter365"/>
         <div style={{flex:1}}>
           <div style={{fontFamily:"'Kanit',sans-serif",fontSize:14,fontWeight:600,color:"#333"}}>ติดตั้งเป็นแอพ</div>
-          <div style={{fontSize:11,color:"#888"}}>ใช้งานเต็มจอ ไม่มี URL bar</div>
+          <div style={{fontSize:11,color:"#888"}}>ใช้งานเต็มจอ ไม่มี URL bar เข้าใช้งานง่าย ไม่ต้องจำลิงค์</div>
         </div>
         <button onClick={()=>setShowInstall(false)} style={{padding:"6px",border:"none",background:"transparent",color:"#ccc",cursor:"pointer",fontSize:16,flexShrink:0}}>✕</button>
       </div>
@@ -1521,7 +1521,7 @@ button:hover{filter:brightness(.96)}
                 :`linear-gradient(${deg}deg,${c1Pv},${c2Pv})`;
               return(<div style={{marginTop:6,padding:"8px 0 2px",borderTop:"1px solid #f0f0f0"}}>
                 <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:6}}>
-                  <span style={{fontSize:10,color:"#888",flexShrink:0}}>↔ ทิศทาง gradient strip</span>
+                  <span style={{fontSize:14,color:"#888",flexShrink:0}}>↔ ทิศทางสี แถบขั้นหัว/ท้าย (gradient strip)</span>
                   {/* On/Off toggle */}
                   <button onClick={()=>setStripGradOn(v=>!v)} style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:4,padding:"3px 10px",borderRadius:999,border:`1px solid ${stripGradOn?ac:"#ddd"}`,background:stripGradOn?`${ac}15`:"#fafafa",color:stripGradOn?ac:"#bbb",cursor:"pointer",fontSize:10,fontWeight:600,flexShrink:0,transition:"all .15s"}}>
                     <span style={{width:22,height:12,borderRadius:6,background:stripGradOn?ac:"#ddd",display:"inline-block",position:"relative",transition:"background .15s",flexShrink:0}}>
@@ -1556,7 +1556,7 @@ button:hover{filter:brightness(.96)}
           <div style={{padding:"14px 18px 0"}}>
           {/* ── ส่วนหัว: หน่วยงาน + ผู้บริหาร ── */}
           <div style={{border:`1.5px solid ${ac}30`,borderRadius:14,padding:"10px 12px 4px",marginBottom:14,background:`${ac}04`}}>
-          <div className="sec"><div className="sec-t" style={{color:ac}}>🏢 หน่วยงาน</div>
+          <div className="sec"><div className="sec-t" style={{color:ac}}>🏢 ข้อมูลองค์กร/หน่วยงาน</div>
           <div className="fld"><div style={{display:"flex",alignItems:"center",marginBottom:4,gap:6}}><Label c={ac}>ชื่อจดหมายข่าว</Label><RGBPick val={d.headerTitleColor||"#ffffff"} onChange={v=>set("headerTitleColor",v)}/></div><div style={{display:"flex",gap:6,alignItems:"center"}}><div style={{flex:1}}><Input value={d.headerTitle} onChange={v=>set("headerTitle",v)} placeholder="ประชาสัมพันธ์" ac={ac}/></div><div style={{display:"flex",alignItems:"center",gap:2,flexShrink:0}}><button onClick={()=>set("headerTitleSize",Math.max(20,(d.headerTitleSize||38)-2))} style={{width:28,height:28,borderRadius:6,border:"1px solid #ddd",background:"#fafafa",color:"#888",cursor:"pointer",fontSize:14,display:"flex",alignItems:"center",justifyContent:"center"}}>−</button><span style={{fontSize:10,color:"#888",minWidth:28,textAlign:"center"}}>{d.headerTitleSize||38}</span><button onClick={()=>set("headerTitleSize",Math.min(50,(d.headerTitleSize||38)+2))} style={{width:28,height:28,borderRadius:6,border:"1px solid #ddd",background:"#fafafa",color:"#888",cursor:"pointer",fontSize:14,display:"flex",alignItems:"center",justifyContent:"center"}}>+</button></div></div></div>
           <div className="fld"><div style={{display:"flex",alignItems:"center",marginBottom:4}}><Label c={ac}>ชื่อหน่วยงาน *</Label><ColorPick val={d.tcOrgName} onChange={v=>set("tcOrgName",v)} ac={ac}/></div><Input value={d.orgName} onChange={v=>set("orgName",v)} placeholder="" ac={ac} voice/></div>
           <div className="fld"><div style={{display:"flex",alignItems:"center",marginBottom:4}}><Label c={ac}>หน่วยงานย่อย</Label><ColorPick val={d.tcSubOrg} onChange={v=>set("tcSubOrg",v)} ac={ac}/></div><Input value={d.subOrg} onChange={v=>set("subOrg",v)} placeholder="" ac={ac} voice/></div>
@@ -1607,8 +1607,8 @@ button:hover{filter:brightness(.96)}
     <VoiceBtn value={d.headline} onChange={v=>set("headline",v)}/>
   </div>
 </div>
-            <div className="fld"><div style={{display:"flex",alignItems:"center",marginBottom:4}}><Label c={ac}>วันที่</Label><ColorPick val={d.tcDateText} onChange={v=>set("tcDateText",v)} ac={ac}/></div><Input value={d.dateText} onChange={v=>set("dateText",v)} placeholder="วันที่ 13 มีนาคม 2569" ac={ac} voice/></div>
-            <div className="fld"><div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div style={{display:"flex",alignItems:"center"}}><Label c={ac}>เนื้อหา</Label><ColorPick val={d.tcBodyText} onChange={v=>set("tcBodyText",v)} ac={ac}/></div><button onClick={()=>{
+            <div className="fld"><div style={{display:"flex",alignItems:"center",marginBottom:4}}><Label c={ac}>วันที่หรือหัวข้อ</Label><ColorPick val={d.tcDateText} onChange={v=>set("tcDateText",v)} ac={ac}/></div><Input value={d.dateText} onChange={v=>set("dateText",v)} placeholder="วันที่ 13 มีนา......." ac={ac} voice/></div>
+            <div className="fld"><div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div style={{display:"flex",alignItems:"center"}}><Label c={ac}>เนื้อหา (กด Enter 2 ครั้ง เพื่อขึ้นย่อหน้าใหม่) </Label><ColorPick val={d.tcBodyText} onChange={v=>set("tcBodyText",v)} ac={ac}/></div><button onClick={()=>{
               /* ── หยุด ── */
               if(isRecording){
                 bodyWantRec.current=false;
