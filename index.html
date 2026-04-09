@@ -426,6 +426,23 @@ const stripDef=null;
       {/* Corners */}
       {cornerSrc&&<div style={{position:"absolute",inset:0,zIndex:0,pointerEvents:"none"}}>
         <FI src={cornerSrc} w={80} h={80} style={{top:HEADER_H+sH+4,left:4}}/><FI src={cornerSrc} w={80} h={80} style={{top:HEADER_H+sH+4,right:4,transform:"scaleX(-1)"}}/><FI src={cornerSrc} w={80} h={80} style={{bottom:FOOTER_H+sH+4,left:4,transform:"scaleY(-1)"}}/><FI src={cornerSrc} w={80} h={80} style={{bottom:FOOTER_H+sH+4,right:4,transform:"scale(-1,-1)"}}/>
+      {/* A4 CONTENT background (อยู่ layer ล่างสุด) */}
+<div style={{
+  position:"absolute",
+  inset:0,
+  zIndex:-5,
+  pointerEvents:"none",
+  background:c.cbg,     // พื้นหลัง content เดิม
+  filter:bf
+}}/>
+<div style={{
+  position:"absolute",
+  inset:0,
+  zIndex:-4,
+  pointerEvents:"none",
+  backgroundImage:getStyleBg(sk,"#ffffff",0.03),
+  backgroundSize:getStyleBgSize(sk)
+}}/>
       </div>}
 
       {/* HEADER */}
