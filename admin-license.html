@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Newsletter365 — Admin</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:#f0f4ff;min-height:100vh;color:#333}
+.topbar{background:linear-gradient(135deg,#7b3fa0,#9b6abf);padding:14px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+.topbar h1{color:#fff;font-size:18px;font-weight:700}
+.topbar .sub{color:rgba(255,255,255,.7);font-size:11px;margin-left:auto}
+.main{max-width:1150px;margin:24px auto;padding:0 16px}
+.card{background:#fff;border-radius:14px;padding:20px 24px;box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:18px}
+.card-title{font-size:14px;font-weight:700;color:#555;margin-bottom:14px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+label{display:block;font-size:11px;font-weight:600;color:#888;margin-bottom:4px}
+input[type=text],input[type=password],input[type=date]{width:100%;padding:9px 12px;border:1px solid #e0e0e0;border-radius:8px;font-size:13px;outline:none;font-family:inherit;background:#fafafa}
+input:focus{border-color:#7b3fa0;box-shadow:0 0 0 3px #7b3fa018;background:#fff}
+.btn{padding:8px 16px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:5px}
+.btn-primary{background:linear-gradient(135deg,#7b3fa0,#9b6abf);color:#fff;box-shadow:0 2px 8px rgba(123,63,160,.25)}
+.btn-outline{background:#fff;color:#7b3fa0;border:1px solid #d4a0d8}
+.btn-sm{padding:5px 11px;font-size:12px;border-radius:6px}
+.btn-save{background:#e8f5e9;color:#2e7d32;border:1px solid #c8e6c9}
+.btn-saved{background:#ede7f6;color:#7b3fa0;border:1px solid #ce93d8;cursor:default}
+.btn-saving{background:#fff8e1;color:#f57f17;border:1px solid #ffe082;cursor:wait}
+.btn-err{background:#fce4ec;color:#c62828;border:1px solid #f48fb1}
+.search-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.search-row input{flex:1;min-width:180px}
+.count{font-size:12px;color:#888;white-space:nowrap}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead tr{background:#f8f0ff}
+th{padding:9px 10px;text-align:left;font-size:11px;font-weight:700;color:#7b3fa0;white-space:nowrap;border-bottom:2px solid #e0d0f0}
+tbody tr{border-bottom:1px solid #f5f5f5}
+tbody tr:hover{background:#fdf8ff}
+td{padding:8px 10px;vertical-align:middle}
+.email-td{font-weight:600;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hash-chip{font-family:monospace;font-size:10px;color:#7b3fa0;background:#f3e5f5;padding:2px 7px;border-radius:4px;cursor:pointer;display:inline-block;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle}
+.hash-chip:hover{background:#e1bee7}
+.badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-pro{background:#e8f5e9;color:#2e7d32}
+.badge-free{background:#f5f5f5;color:#999}
+.badge-exp{background:#fce4ec;color:#c62828}
+.st{font-size:11px;white-space:nowrap}
+.st-ok{color:#2e7d32}.st-err{color:#c62828}.st-ing{color:#f57f17}
+.exp-input{padding:6px 8px;font-size:12px;min-width:120px;width:120px}
+.empty-state{text-align:center;padding:36px;color:#bbb;font-size:14px}
+.script-wrap{background:#1e1e2e;border-radius:10px;overflow:hidden}
+.script-head{background:#313244;padding:8px 14px;display:flex;justify-content:space-between;align-items:center}
+.script-head span{color:#cdd6f4;font-size:12px;font-family:monospace}
+.script-body{padding:16px;font-family:monospace;font-size:11px;line-height:1.7;color:#cdd6f4;overflow-x:auto;white-space:pre}
+.kw{color:#cba6f7}.str{color:#a6e3a1}.cm{color:#6c7086}.fn{color:#89b4fa}
+@media(max-width:768px){.grid3{grid-template-columns:1fr}.main{padding:0 8px}th,td{padding:6px 7px}table{font-size:12px}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <img src="./icons/icon-192x192.png" style="width:30px;height:30px;border-radius:7px;object-fit:cover" alt="" onerror="this.style.display='none'">
+  <h1>Newsletter365 — Admin License</h1>
+  <span class="sub" id="syncLabel">—</span>
+</div>
+
+<div class="main">
+
+  <div class="card">
+    <div class="card-title">⚙️ ตั้งค่าการเชื่อมต่อ</div>
+    <div class="grid3" style="grid-template-columns:1fr 1fr">
+      <div><label>Apps Script URL</label><input id="scriptUrl" type="text" placeholder="https://script.google.com/macros/s/.../exec" oninput="saveConf()"></div>
+      <div><label>Admin Key</label><input id="adminKey" type="password" placeholder="รหัสลับ Admin" oninput="saveConf()"></div>
+    </div>
+    <div style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <button id="loadBtn" class="btn btn-primary" onclick="loadAll()">🔄 โหลด / รีเฟรช</button>
+      <span id="loadMsg" style="font-size:13px"></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">👥 ผู้ใช้งานทั้งหมด</div>
+    <div class="search-row">
+      <input type="text" id="q" placeholder="🔍 ค้นหา Email..." oninput="render()">
+      <span class="count" id="cnt">0 รายการ</span>
+      <button class="btn btn-outline btn-sm" onclick="chkAll(true)">☑ เลือกทั้งหมด</button>
+      <button class="btn btn-outline btn-sm" onclick="chkAll(false)">☐ ยกเลิก</button>
+      <button class="btn btn-primary btn-sm" onclick="saveChecked()">💾 บันทึกที่เลือก</button>
+    </div>
+    <!-- เพิ่ม email ด้วยตนเอง (สำหรับ user ที่มีใน Firebase แต่ยังไม่ได้ login หลัง deploy) -->
+    <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center;background:#fffde7;border:1px solid #ffe082;border-radius:10px;padding:10px 14px;flex-wrap:wrap">
+      <span style="font-size:12px;color:#f57f17;white-space:nowrap">➕ เพิ่ม Email ด้วยตนเอง</span>
+      <input type="email" id="manualEmail" placeholder="user@gmail.com" style="flex:1;min-width:180px;padding:7px 11px;border:1px solid #ffe082;border-radius:7px;font-size:13px;outline:none">
+      <button class="btn btn-sm" style="background:#f57f17;color:#fff;border:none" onclick="addManual()">+ เพิ่ม</button>
+      <span style="font-size:11px;color:#888">ใช้สำหรับ user ที่มีใน Firebase แต่ยังไม่ได้ login หลังตั้งค่า Apps Script</span>
+    </div>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr>
+          <th><input type="checkbox" id="chkMaster" onchange="chkAll(this.checked)"></th>
+          <th>#</th>
+          <th>Email</th>
+          <th>วันสมัคร</th>
+          <th>สถานะ PRO</th>
+          <th>Hash (คลิกเพื่อคัดลอก)</th>
+          <th>วันหมดอายุ</th>
+          <th>บันทึก</th>
+          <th>ผลลัพธ์</th>
+        </tr></thead>
+        <tbody id="tbody">
+          <tr><td colspan="9"><div class="empty-state">กดปุ่ม "โหลด/รีเฟรช" เพื่อดูรายการ</div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📜 Google Apps Script — วางในชีตที่ใช้งาน</div>
+    <div class="script-wrap">
+      <div class="script-head">
+        <span>Code.gs</span>
+        <button class="btn btn-sm btn-outline" style="font-size:11px" onclick="copyCode()">📋 คัดลอก</button>
+      </div>
+      <div class="script-body" id="codeEl"></div>
+    </div>
+    <div style="margin-top:12px;font-size:12px;color:#666;line-height:1.9">
+      <b>วิธีติดตั้ง:</b><br>
+      1. Google Sheet → Extensions → Apps Script → ลบโค้ดเดิม → วางโค้ดด้านบน<br>
+      2. แก้ <code style="background:#f3f3f3;padding:1px 5px;border-radius:3px">ADMIN_KEY</code> และ <code style="background:#f3f3f3;padding:1px 5px;border-radius:3px">REG_KEY</code><br>
+      3. Deploy → New deployment → Web app → Execute as <b>Me</b> → Access <b>Anyone</b><br>
+      4. คัดลอก URL → ใส่ช่อง "Apps Script URL" ด้านบน และใส่ใน <code style="background:#f3f3f3;padding:1px 5px;border-radius:3px">APPS_SCRIPT_URL</code> ในแอป (index.html)
+    </div>
+  </div>
+</div>
+
+<script>
+const sha256=async s=>{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')};
+
+let users=[], licMap={}, st={};
+const today=new Date().toISOString().slice(0,10);
+const g=id=>document.getElementById(id);
+const val=id=>g(id)?.value?.trim()||'';
+
+// Config
+const saveConf=()=>localStorage.setItem('nl365adm',JSON.stringify({scriptUrl:val('scriptUrl'),adminKey:val('adminKey')}));
+(()=>{const c=JSON.parse(localStorage.getItem('nl365adm')||'{}');['scriptUrl','adminKey'].forEach(k=>{if(c[k])g(k).value=c[k]})})();
+
+async function loadAll(){
+  const url=val('scriptUrl'),key=val('adminKey');
+  if(!url){setMsg('❌ กรุณากรอก Apps Script URL','#c62828');return;}
+  if(!key){setMsg('❌ กรุณากรอก Admin Key','#c62828');return;}
+  if(!url.startsWith('https://script.google.com/macros/s/')){
+    setMsg('❌ URL ไม่ถูกต้อง — ต้องขึ้นต้นด้วย https://script.google.com/macros/s/','#c62828');return;
+  }
+  setMsg('⏳ กำลังโหลด... (รอสูงสุด 15 วินาที)','#1565c0');
+  const btn=g('loadBtn');if(btn){btn.disabled=true;btn.textContent='⏳ กำลังโหลด...';}
+
+  // fetch พร้อม timeout 15 วินาที
+  const fetchWithTimeout=async(fetchUrl,opts={},ms=15000)=>{
+    const ctrl=new AbortController();
+    const tid=setTimeout(()=>ctrl.abort(),ms);
+    try{const r=await fetch(fetchUrl,{...opts,signal:ctrl.signal});clearTimeout(tid);return r;}
+    catch(e){clearTimeout(tid);throw e;}
+  };
+
+  try{
+    const fetchUrl=`${url}?action=all&key=${encodeURIComponent(key)}`;
+    let r;
+    try{r=await fetchWithTimeout(fetchUrl);}
+    catch(e){
+      if(e.name==='AbortError'){setMsg('❌ Timeout — Apps Script ไม่ตอบใน 15 วินาที ลอง Deploy ใหม่','#c62828');}
+      else{setMsg(`❌ เชื่อมต่อไม่ได้: ${e.message}`,'#c62828');}
+      return;
+    }
+
+    const txt=await r.text();
+    // debug: แสดงตัวอักษรแรก 80 ตัวถ้าไม่ใช่ JSON
+    let j;
+    try{j=JSON.parse(txt);}
+    catch(e){
+      const preview=txt.slice(0,80).replace(/</g,'&lt;');
+      setMsg(`❌ Apps Script ตอบไม่ใช่ JSON: "${preview}..." — ตรวจสอบ Deploy อีกครั้ง`,'#c62828');
+      return;
+    }
+
+    if(j.status==='UNAUTHORIZED'){setMsg('❌ Admin Key ไม่ถูกต้อง','#c62828');return;}
+    if(j.status&&j.status!=='OK'){setMsg(`❌ Apps Script ตอบ: ${j.status}`,'#c62828');return;}
+
+    users=j.users||[];
+    const rawLicenses=j.licenses||[];
+
+    // ถ้า Users sheet ว่าง แต่มีข้อมูลใน licenses (Sheet1 เดิม อาจเป็น plain email หรือ hash)
+    // → แยกเป็น 2 กลุ่ม: plain email และ hash จริง
+    const emailEntries=[]; // format เก่า: คอลัมน์ A เป็น email ตรงๆ
+    const hashEntries=[];  // format ใหม่: คอลัมน์ A เป็น sha256 hash
+
+    rawLicenses.forEach(r=>{
+      if(!r.hash)return;
+      if(r.hash.includes('@')){
+        // plain email (ข้อมูลเก่า Sheet1)
+        emailEntries.push({email:r.hash.toLowerCase().trim(),expiry:r.expiry||''});
+      }else{
+        hashEntries.push(r);
+      }
+    });
+
+    // ถ้า users ว่างแต่มี emailEntries → ใช้ email entries แสดงในตาราง
+    if(users.length===0&&emailEntries.length>0){
+      users=emailEntries.map(e=>({email:e.email,regDate:'(Sheet1 เดิม)'}));
+    }
+
+    // สร้าง licMap จาก hash entries (ใหม่)
+    licMap={};
+    hashEntries.forEach(r=>{
+      licMap[r.hash.toLowerCase()]={expiry:r.expiry||'',ok:!r.expiry||r.expiry>=today};
+    });
+    // และจาก email entries (เก่า) — เก็บทั้ง key=email และ key=hash เพื่อ match ได้ทั้งคู่
+    emailEntries.forEach(e=>{
+      const key=e.email.toLowerCase();
+      licMap[key]={expiry:e.expiry,ok:!e.expiry||e.expiry>=today,isLegacy:true};
+    });
+
+    await render();
+    g('syncLabel').textContent='อัปเดต: '+new Date().toLocaleTimeString('th-TH');
+    setMsg(`✅ โหลดสำเร็จ — ${users.length} ผู้ใช้, ${Object.keys(licMap).length} license`,'#2e7d32');
+
+  }catch(e){
+    setMsg(`❌ Error: ${e.message}`,'#c62828');
+  }finally{
+    const btn=g('loadBtn');if(btn){btn.disabled=false;btn.textContent='🔄 โหลด / รีเฟรช';}
+  }
+}
+
+async function render(){
+  const q=val('q').toLowerCase();
+  const filtered=users.filter(u=>u.email.toLowerCase().includes(q));
+  g('cnt').textContent=`${filtered.length} / ${users.length} รายการ`;
+  g('chkMaster').checked=false;
+
+  if(!filtered.length){g('tbody').innerHTML=`<tr><td colspan="9"><div class="empty-state">ไม่พบผู้ใช้ "${val('q')}"</div></td></tr>`;return;}
+
+  const rows=await Promise.all(filtered.map(async(u,i)=>{
+    const hash=await sha256(u.email.toLowerCase().trim());
+    // ตรวจ PRO: ลอง hash ก่อน ถ้าไม่เจอลอง email ตรงๆ (legacy Sheet1)
+    const lic=licMap[hash.toLowerCase()]||licMap[u.email.toLowerCase()];
+    const isLegacy=!licMap[hash.toLowerCase()]&&!!licMap[u.email.toLowerCase()];
+    const isPro=!!lic?.ok;
+    const expiry=lic?.expiry||'';
+    const defDate=expiry||today;
+    const s=st[u.email]||{};
+    const id='exp_'+i;
+
+    const badge=isPro
+      ?`<span class="badge badge-pro">✅ PRO${expiry?' ('+expiry+')':''}${isLegacy?' <span title="ยังไม่ได้แปลงเป็น hash" style="opacity:.7">⚠️email</span>':''}</span>`
+      :`<span class="badge badge-free">FREE</span>`;
+
+    let btn='',statusTxt='';
+    if(s.saving){btn=`<button class="btn btn-sm btn-saving" disabled>⏳</button>`;statusTxt=`<span class="st st-ing">กำลังบันทึก...</span>`;}
+    else if(s.ok){btn=`<button class="btn btn-sm btn-saved" disabled>✅</button>`;statusTxt=`<span class="st st-ok">✅ สำเร็จ</span>`;}
+    else if(s.err){btn=`<button class="btn btn-sm btn-err" onclick="save('${u.email}','${hash}','${id}')">🔁</button>`;statusTxt=`<span class="st st-err">❌ ${s.err}</span>`;}
+    else{btn=`<button class="btn btn-sm btn-save" onclick="save('${u.email}','${hash}','${id}')">💾 บันทึก</button>`;}
+
+    return `<tr>
+      <td><input type="checkbox" class="rchk" data-email="${u.email}" data-hash="${hash}" data-id="${id}"></td>
+      <td style="color:#bbb;font-size:11px">${i+1}</td>
+      <td class="email-td" title="${u.email}">${u.email}${u.regDate?`<div style="font-size:10px;color:#bbb;font-weight:400">${u.regDate}</div>`:''}</td>
+      <td style="font-size:11px;color:#aaa">${u.regDate||'—'}</td>
+      <td>${badge}</td>
+      <td><span class="hash-chip" onclick="copy('${hash}')" title="${hash}">${hash.slice(0,14)}…</span></td>
+      <td>
+        <input type="date" id="${id}" class="exp-input" value="${defDate}" min="${today}">
+        <div style="display:flex;gap:4px;margin-top:4px;flex-wrap:wrap">
+          <button class="btn btn-sm" style="padding:3px 7px;font-size:11px;background:#e8eaf6;color:#3949ab;border:1px solid #c5cae9;border-radius:5px" onclick="setExp('${id}',1)">+1 เดือน</button>
+          <button class="btn btn-sm" style="padding:3px 7px;font-size:11px;background:#e8f5e9;color:#2e7d32;border:1px solid #c8e6c9;border-radius:5px" onclick="setExp('${id}',6)">+6 เดือน</button>
+          <button class="btn btn-sm" style="padding:3px 7px;font-size:11px;background:#fff3e0;color:#e65100;border:1px solid #ffe0b2;border-radius:5px" onclick="setExp('${id}',12)">+1 ปี</button>
+        </div>
+      </td>
+      <td>${btn}</td>
+      <td>${statusTxt}</td>
+    </tr>`;
+  }));
+  g('tbody').innerHTML=rows.join('');
+}
+
+async function save(email,hash,expId){
+  const url=val('scriptUrl'),key=val('adminKey');
+  if(!url||!key)return alert('กรุณากรอก Script URL และ Admin Key');
+  const expiry=g(expId)?.value||'';
+  st[email]={saving:true};await render();
+  try{
+    const ctrl=new AbortController();
+    const tid=setTimeout(()=>ctrl.abort(),15000);
+    /* ใช้ text/plain แทน application/json เพื่อหลีกเลี่ยง CORS preflight */
+    const r=await fetch(url,{method:'POST',body:JSON.stringify({action:'license',key,hash,expiry}),headers:{'Content-Type':'text/plain'},signal:ctrl.signal});
+    clearTimeout(tid);
+    const txt=await r.text();
+    let j;try{j=JSON.parse(txt);}catch(e){st[email]={err:'ตอบไม่ใช่ JSON'};await render();return;}
+    if(j.status==='ADDED'||j.status==='UPDATED'){
+      st[email]={ok:true};
+      licMap[hash.toLowerCase()]={expiry,ok:!expiry||expiry>=today};
+    }else{st[email]={err:j.status||'ผิดพลาด'};}
+  }catch(e){
+    st[email]={err:e.name==='AbortError'?'Timeout 15s':('เชื่อมต่อไม่ได้: '+e.message)};
+  }
+  await render();
+}
+
+function setExp(id,months){
+  const d=new Date();
+  d.setMonth(d.getMonth()+months);
+  const iso=d.toISOString().slice(0,10);
+  const el=g(id);if(el){el.value=iso;}
+}
+
+function chkAll(v){document.querySelectorAll('.rchk').forEach(c=>c.checked=v);g('chkMaster').checked=v;}
+
+function setMsg(txt,color){
+  const el=g('loadMsg');
+  if(!el)return;
+  el.innerHTML=`<span>${txt}</span>`;
+  el.style.color=color||'#333';
+  if(color==='#2e7d32')setTimeout(()=>el.innerHTML='',4000);
+}
+
+function copy(text){
+  navigator.clipboard.writeText(text).catch(()=>{});
+  const t=document.createElement('div');
+  t.textContent='✅ คัดลอกแล้ว';
+  t.style.cssText='position:fixed;top:16px;right:16px;background:#333;color:#fff;padding:8px 16px;border-radius:8px;font-size:13px;z-index:9999';
+  document.body.appendChild(t);setTimeout(()=>t.remove(),1500);
+}
+async function saveChecked(){
+  const checked=[...document.querySelectorAll('.rchk:checked')];
+  if(!checked.length)return alert('ยังไม่ได้เลือกผู้ใช้');
+  if(!confirm(`บันทึก ${checked.length} รายการ?`))return;
+  for(const el of checked)await save(el.dataset.email,el.dataset.hash,el.dataset.id);
+}
+
+async function addManual(){
+  const email=g('manualEmail').value.trim().toLowerCase();
+  if(!email||!email.includes('@')){alert('กรุณากรอก Email ให้ถูกต้อง');return;}
+  // เพิ่มลง Apps Script Users sheet ด้วย action=adduser
+  const url=val('scriptUrl'),key=val('adminKey');
+  if(url&&key){
+    try{
+      await fetch(url,{method:'POST',body:JSON.stringify({action:'adduser',key,email}),headers:{'Content-Type':'text/plain'}});
+    }catch(e){}
+  }
+  // เพิ่มใน local users list ทันที (ไม่ต้อง reload)
+  if(!users.find(u=>u.email===email)){
+    users.push({email,regDate:'(เพิ่มด้วยตนเอง)'});
+    await render();
+  }
+  g('manualEmail').value='';
+}
+
+// Apps Script code
+const CODE=`// Newsletter365 License Manager v2
+const ADMIN_KEY  = "your-admin-secret-key";  // ← เปลี่ยน
+const REG_KEY    = "nl365reg2025";           // ← ให้ตรงกับแอป
+const LIC_SHEET  = "Licenses";
+const USER_SHEET = "Users";
+
+function doPost(e) {
+  try {
+    const d = JSON.parse(e.postData.contents);
+
+    // ลงทะเบียน user (เรียกจากแอปอัตโนมัติ)
+    if (d.action === "register") {
+      if (d.regKey !== REG_KEY) return ok("SKIP");
+      return addUserToSheet((d.email||"").toLowerCase().trim());
+    }
+
+    // Admin เพิ่ม user ด้วยตนเอง
+    if (d.action === "adduser") {
+      if (d.key !== ADMIN_KEY) return ok("UNAUTHORIZED");
+      return addUserToSheet((d.email||"").toLowerCase().trim());
+    }
+
+    // บันทึก License hash (จาก Admin Tool)
+    if (d.action === "license") {
+      if (d.key !== ADMIN_KEY) return ok("UNAUTHORIZED");
+      const sheet = getSheet(LIC_SHEET);
+      const rows  = sheet.getDataRange().getValues();
+      for (let i=0;i<rows.length;i++) {
+        if (rows[i][0]===d.hash) {
+          sheet.getRange(i+1,2).setValue(d.expiry||"");
+          return ok("UPDATED");
+        }
+      }
+      sheet.appendRow([d.hash, d.expiry||""]);
+      return ok("ADDED");
+    }
+
+    return ok("UNKNOWN_ACTION");
+  } catch(err) { return ok("ERROR: "+err.message); }
+}
+
+function addUserToSheet(email) {
+  if (!email) return ok("SKIP");
+  const sheet = getSheet(USER_SHEET);
+  const rows  = sheet.getDataRange().getValues();
+  for (const r of rows)
+    if (r[0]&&r[0].toLowerCase()===email) return ok("EXISTS");
+  sheet.appendRow([email, Utilities.formatDate(new Date(),"Asia/Bangkok","dd/MM/yyyy")]);
+  return ok("REGISTERED");
+}
+
+// Admin ดึงข้อมูลทั้งหมด — รวม Sheet1 (ข้อมูลเก่า) เป็น fallback
+function doGet(e) {
+  const key = e.parameter.key;
+  const action = e.parameter.action || "all";
+
+  // ─── ลงทะเบียน user ใหม่ผ่าน GET (เรียกจากแอปอัตโนมัติ) ───
+  if (action === "register") {
+    if (e.parameter.regKey !== REG_KEY) return ok("SKIP");
+    return addUserToSheet((e.parameter.email||"").toLowerCase().trim());
+  }
+
+  // ─── แอปตรวจ PRO (ไม่ต้องการ Admin Key) ───
+  if (action === "check") {
+    const hash = e.parameter.hash;
+    if (!hash) return ok2({ok:false, exp:""});
+    const today = new Date().toISOString().slice(0,10);
+    const licRows = getSheet(LIC_SHEET).getDataRange().getValues().filter(r=>r[0]);
+    for (const r of licRows) {
+      if (r[0].toLowerCase() === hash.toLowerCase()) {
+        let exp = "";
+        if (r[1] instanceof Date) {
+          exp = Utilities.formatDate(r[1], "UTC", "yyyy-MM-dd");
+        } else if (r[1]) {
+          exp = String(r[1]).trim();
+        }
+        const isPro = !exp || exp >= today;
+        return ok2({ok:isPro, exp});
+      }
+    }
+    return ok2({ok:false, exp:""});
+  }
+
+  // ─── Admin queries ───
+  if (!key || key !== ADMIN_KEY) return ok("UNAUTHORIZED");
+
+  // Users: อ่านจาก Users tab
+  const userRows = getSheet(USER_SHEET).getDataRange().getValues();
+  const users = userRows.filter(r=>r[0]&&r[0].includes("@"))
+    .map(r=>({email:r[0].toLowerCase().trim(), regDate:r[1]||""}));
+
+  const licRows = getSheet(LIC_SHEET).getDataRange().getValues().filter(r=>r[0]);
+  const licenses = licRows.map(r=>{
+    let expiry = "";
+    if (r[1] instanceof Date) {
+      expiry = Utilities.formatDate(r[1], "UTC", "yyyy-MM-dd");
+    } else if (r[1]) {
+      expiry = String(r[1]).trim();
+    }
+    return {hash:r[0], expiry};
+  });
+
+  return ContentService
+    .createTextOutput(JSON.stringify({status:"OK", users, licenses}))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function getSheet(n){
+  const ss=SpreadsheetApp.getActiveSpreadsheet();
+  return ss.getSheetByName(n)||ss.insertSheet(n);
+}
+function ok2(obj){
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+function ok(msg){
+  return ContentService
+    .createTextOutput(JSON.stringify({status:msg}))
+    .setMimeType(ContentService.MimeType.JSON);
+}`;
+
+function copyCode(){navigator.clipboard.writeText(CODE);event.target.textContent='✅ คัดลอกแล้ว';setTimeout(()=>event.target.textContent='📋 คัดลอก',2000);}
+
+// Render code — HTML-escape ก่อน ป้องกัน < > & ทำให้ innerHTML พัง
+const escHtml=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+g('codeEl').innerHTML=escHtml(CODE)
+  .replace(/\/\/.*/g,m=>`<span class="cm">${m}</span>`)
+  .replace(/\b(const|function|if|for|of|return|try|catch|let)\b/g,m=>`<span class="kw">${m}</span>`)
+  .replace(/"([^"]*)"/g,(_,s)=>`<span class="str">"${s}"</span>`)
+  .replace(/\b(doPost|doGet|getSheet|ok|appendRow|getDataRange|getValues|getRange|setValue|getSheetByName|insertSheet|getActiveSpreadsheet|createTextOutput|setMimeType|formatDate|addUserToSheet)\b/g,m=>`<span class="fn">${m}</span>`);
+</script>
+</body>
+</html>
