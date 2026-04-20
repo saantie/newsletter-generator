@@ -1855,7 +1855,7 @@ button:hover{filter:brightness(.96)}
   alignItems:"center",
   justifyContent:"space-between"
 }}>
-                <span>🎨 กำหนดสีเอง/แทรกภาพส่วนหัว {!isPro&&<span style={{  fontSize:12,  fontWeight:800,  letterSpacing:0.6,  color:"#fff",  background:"linear-gradient(135deg,#ffb84d,#ff7a18)",  padding:"3px 8px",  borderRadius:999,  marginLeft:6,  boxShadow:"0 4px 12px rgba(0,0,0,.16)",  border:"1px solid rgba(255,255,255,.55)"}}>PRO</span>}</span> <span style={{fontSize:30,lineHeight:1,transform:showColorCtrl?"rotate(180deg)":"none",transition:"transform .2s"}}>▾</span>
+                <span>🎨 กำหนดสีเอง {!isPro&&<span style={{  fontSize:16,  fontWeight:800,  letterSpacing:0.6,  color:"#fff",  background:"linear-gradient(135deg,#ffb84d,#ff7a18)",  padding:"3px 8px",  borderRadius:999,  marginLeft:6,  boxShadow:"0 4px 12px rgba(0,0,0,.16)",  border:"1px solid rgba(255,255,255,.55)"}}>PRO</span>}</span> <span style={{fontSize:30,lineHeight:1,transform:showColorCtrl?"rotate(180deg)":"none",transition:"transform .2s"}}>▾</span>
               </button>
               {showColorCtrl&&<div style={{padding:"10px 0",borderBottom:"1px solid #eee"}}>
                 {/* Hue */}
@@ -1888,10 +1888,10 @@ button:hover{filter:brightness(.96)}
               const bgBtn=(lbl,on,setFn)=>(<button onClick={()=>setFn(!on)} style={{flex:1,padding:"4px 0",borderRadius:7,border:`1px solid ${on?ac:"#ddd"}`,background:on?`${ac}15`:"#fafafa",color:on?ac:"#999",cursor:"pointer",fontSize:12,fontWeight:600,transition:"all .15s"}}>{on?"✓":"✗"} {lbl}</button>);
               return(<div id="fs-strip" style={{marginTop:6,padding:"8px 0 2px",borderTop:"1px solid #f0f0f0"}}>
                 <button onClick={()=>setShowStripCtrl(v=>!v)} style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between",border:`1px solid ${ac}30`,borderRadius:8,padding:"5px 10px",background:showStripCtrl?`linear-gradient(135deg,${ac6},${fc6})`:`${ac}10`,color:showStripCtrl?"#fff":ac,cursor:"pointer",fontSize:12,fontFamily:"'Kanit',sans-serif",transition:"all .2s"}}>
-                  <span>🎨 สี Strip และพื้นหลัง</span><span style={{fontSize:30,lineHeight:1,transform:showStripCtrl?"rotate(180deg)":"none",transition:"transform .2s"}}>▾</span>
+                  <span>🎨 กำหนดสีแถบคาด และเปิด/ปิดพื้นหลัง</span><span style={{fontSize:30,lineHeight:1,transform:showStripCtrl?"rotate(180deg)":"none",transition:"transform .2s"}}>▾</span>
                 </button>
                 {showStripCtrl&&<div style={{paddingTop:8}}>
-                  <div style={{fontSize:12,color:"#666",fontWeight:600,marginBottom:4}}>ทิศทาง Gradient Strip</div>
+                  <div style={{fontSize:12,color:"#666",fontWeight:600,marginBottom:4}}>ทิศทางสี Gradient แถบคาด</div>
                   <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:6}}>
                     <button onClick={()=>setStripGradOn(v=>!v)} style={{display:"flex",alignItems:"center",gap:4,padding:"3px 10px",borderRadius:999,border:`1px solid ${stripGradOn?ac:"#ddd"}`,background:stripGradOn?`${ac}15`:"#fafafa",color:stripGradOn?ac:"#bbb",cursor:"pointer",fontSize:12,fontWeight:600,flexShrink:0,transition:"all .15s"}}>
                       <span style={{width:22,height:12,borderRadius:6,background:stripGradOn?ac:"#ddd",display:"inline-block",position:"relative",transition:"background .15s",flexShrink:0}}><span style={{position:"absolute",top:2,left:stripGradOn?10:2,width:8,height:8,borderRadius:"50%",background:"#fff",transition:"left .15s"}}/></span>
@@ -1901,9 +1901,9 @@ button:hover{filter:brightness(.96)}
                   <div style={{display:"grid",gridTemplateColumns:"repeat(6,1fr)",gap:4,opacity:stripGradOn?1:0.35,pointerEvents:stripGradOn?"auto":"none",transition:"opacity .2s",marginBottom:8}}>
                     {dirs.map(({k,label,deg})=>{const btnGrad=stripGradOn?mkBtnGrad(deg):`${ac}12`;const isActive=stripGradDir===k;return(<button key={k} onClick={()=>setStripGradDir(k)} title={label} style={{height:28,borderRadius:8,border:isActive?`2px solid ${ac}`:"1px solid rgba(0,0,0,.1)",background:btnGrad,cursor:"pointer",outline:isActive?`2px solid ${ac}`:"none",outlineOffset:2,boxShadow:isActive?"0 0 0 3px rgba(0,0,0,.08)":"none",transition:"outline .1s,box-shadow .1s"}}/>);})}
                   </div>
-                  <div style={{fontSize:12,color:"#666",fontWeight:600,marginBottom:4}}>สีของ Strip (อิสระจาก Theme)</div>
+                  <div style={{fontSize:12,color:"#666",fontWeight:600,marginBottom:4}}>ปรับสีของแถบคาดส่วนหัว ส่วนท้าย</div>
                   <div style={{display:"flex",gap:4,marginBottom:6}}>
-                    {[["both","ทั้งสอง"],["top","บน ▲"],["bot","ล่าง ▼"]].map(([m,lbl])=>(
+                    {[["both","ทั้งสอง"],["top","แถบคาดส่วนหัว ▲"],["bot","แถบคาดส่วนท้าย ▼"]].map(([m,lbl])=>(
                       <button key={m} onClick={()=>setStripAdjMode(m)} style={{flex:1,padding:"3px 0",borderRadius:7,border:`1px solid ${stripAdjMode===m?ac:"#ddd"}`,background:stripAdjMode===m?`${ac}15`:"#fafafa",color:stripAdjMode===m?ac:"#999",cursor:"pointer",fontSize:12,fontWeight:600}}>{lbl}</button>
                     ))}
                   </div>
@@ -1914,10 +1914,10 @@ button:hover{filter:brightness(.96)}
                     const setVib=(v)=>{if(stripAdjMode!=="bot")setStripTopVib(v);if(stripAdjMode!=="top")setStripBotVib(v);};
                     return(<>{sl("Hue",curH,-180,180,"linear-gradient(90deg,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00)",setH)}{sl("Brightness",curBrt,25,300,"linear-gradient(90deg,#333,#fff)",setBrt)}{sl("Saturation",curSat,0,200,`linear-gradient(90deg,#ccc,${ac})`,setSat)}{sl("Vibrance",curVib,0,200,`linear-gradient(90deg,#888,${ac},#fff)`,setVib)}</>);
                   })()}
-                  <div style={{fontSize:12,color:"#666",fontWeight:600,marginBottom:4,marginTop:6}}>พื้นหลัง</div>
+                  <div style={{fontSize:12,color:"#666",fontWeight:600,marginBottom:4,marginTop:6}}>เลือกเปิดปิดพื้นหลัง</div>
                   <div style={{display:"flex",gap:4,marginBottom:4,flexWrap:"wrap"}}>{bgBtn("ส่วนหัว",showHdrBg,setShowHdrBg)}{bgBtn("เนื้อหา",showBodyBg,setShowBodyBg)}{bgBtn("ส่วนท้าย",showFtrBg,setShowFtrBg)}{bgBtn("ลวดลาย",showBgPat,setShowBgPat)}</div>
-                  <div style={{fontSize:12,color:"#666",fontWeight:600,marginBottom:4}}>U-shape โปรไฟล์</div>
-                  <div style={{display:"flex",gap:4,marginBottom:4}}>{bgBtn("โปรไฟล์",showProfileBg,setShowProfileBg)}</div>
+                  <div style={{fontSize:12,color:"#666",fontWeight:600,marginBottom:4}}>เปิด/ปิดพื้นหลังกรอบภาพโปรไฟล์</div>
+                  <div style={{display:"flex",gap:4,marginBottom:4}}>{bgBtn("พื้นหลังกรอบภาพโปรไฟล์",showProfileBg,setShowProfileBg)}</div>
                   <button onClick={()=>{if(!window.confirm("รีเซ็ต Strip และพื้นหลังทั้งหมด?"))return;setStripHue(0);setStripBrt(100);setStripSat(100);setStripVib(100);setStripTopHue(0);setStripTopBrt(100);setStripTopSat(100);setStripTopVib(100);setStripBotHue(0);setStripBotBrt(100);setStripBotSat(100);setStripBotVib(100);setShowHdrBg(true);setShowBodyBg(true);setShowFtrBg(true);setShowBgPat(true);setShowProfileBg(true);setStripTopOffY(0);setStripBotOffY(0);}} style={{width:"100%",padding:"6px",border:`1px solid ${ac}30`,borderRadius:8,background:`${ac}06`,color:ac,cursor:"pointer",fontSize:12,marginTop:2,fontFamily:"'Sarabun',sans-serif"}}>↺ reset ตำแหน่ง</button>
                 </div>}
               </div>);
@@ -1993,7 +1993,7 @@ button:hover{filter:brightness(.96)}
           <div className="fld"><div style={{display:"flex",alignItems:"center",marginBottom:4}}><Label c={ac}>ชื่อหน่วยงาน *</Label><ColorPick val={d.tcOrgName} onChange={v=>set("tcOrgName",v)} ac={ac}/><SzBtn val={d.fsOrgName} def={28} onChange={v=>set("fsOrgName",v)}/></div><Input value={d.orgName} onChange={v=>set("orgName",v)} placeholder="" ac={ac} voice/></div>
           <div className="fld"><div style={{display:"flex",alignItems:"center",marginBottom:4}}><Label c={ac}>หน่วยงานย่อย</Label><ColorPick val={d.tcSubOrg} onChange={v=>set("tcSubOrg",v)} ac={ac}/><SzBtn val={d.fsSubOrg} def={24} onChange={v=>set("fsSubOrg",v)}/></div><Input value={d.subOrg} onChange={v=>set("subOrg",v)} placeholder="" ac={ac} voice/></div>
           <div style={{display:"flex",gap:10}}>
-                <div style={{flex:1}}><ImgUp label="โปรไฟล์" icon="👤" src={d.profileUrl} onUpload={v=>set("profileUrl",v)} onRemove={()=>set("profileUrl","")} ac={ac} h={65}/>
+                <div style={{flex:1}}><ImgUp label="ภาพโปรไฟล์/ภาพผู้บริหาร" icon="👤" src={d.profileUrl} onUpload={v=>set("profileUrl",v)} onRemove={()=>set("profileUrl","")} ac={ac} h={65}/>
                 <div style={{display:"flex",alignItems:"center",gap:3,marginTop:4}}>
                   <span style={{fontSize:12,color:"#888"}}>ขนาด</span>
                   <button onClick={()=>set("profileSize",Math.max(60,(d.profileSize||116)-8))} style={{width:20,height:20,borderRadius:5,border:"1px solid #ddd",background:"#fafafa",color:"#888",cursor:"pointer",fontSize:12,display:"flex",alignItems:"center",justifyContent:"center"}}>−</button>
@@ -2003,9 +2003,9 @@ button:hover{filter:brightness(.96)}
                 </div></div>
                 {/* ─ ภาพพื้นหลังส่วนหัว FREE ─ */}
                 <div style={{marginTop:6,paddingTop:6,borderTop:"1px solid #f5f5f5"}}>
-                  <div style={{fontSize:12,color:"#888",marginBottom:4}}>🖼️ ภาพพื้นหลังส่วนหัว (ฟรี)</div>
+                  <div style={{fontSize:14,color:"#888",marginBottom:4}}>แทรกภาพพื้นหลังส่วนหัว</div>
                   <div style={{display:"flex",gap:6,alignItems:"center",marginBottom:4}}>
-                    {headerWm?(<div style={{display:"flex",alignItems:"center",gap:6}}><div style={{position:"relative",width:80,height:40,borderRadius:8,overflow:"hidden",border:"1px solid #ddd"}}><div style={{width:"100%",height:"100%",backgroundImage:`url(${headerWm})`,backgroundSize:headerWmZoom>100?`${headerWmZoom}%`:"cover",backgroundPosition:headerWmPos,opacity:headerWmOp/100}}/><button onClick={()=>{setHeaderWm("");setHeaderWmPos("50% 50%");setHeaderWmZoom(100);setHeaderWmOp(50)}} style={{position:"absolute",top:2,right:2,width:16,height:16,borderRadius:"50%",background:"rgba(0,0,0,.5)",border:"none",color:"#fff",cursor:"pointer",fontSize:12,display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button></div><span style={{fontSize:12,color:"#aaa"}}>ลาก+ซูมบน preview</span></div>):(<button onClick={()=>{const inp=document.createElement("input");inp.type="file";inp.accept="image/*";inp.onchange=e=>{const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=ev=>setHeaderWm(ev.target.result);r.readAsDataURL(f)};inp.click()}} style={{padding:"6px 14px",borderRadius:8,border:"1px solid #ddd",background:"#fafafa",color:"#888",cursor:"pointer",fontSize:12}}>+ เลือกภาพ</button>)}
+                    {headerWm?(<div style={{display:"flex",alignItems:"center",gap:6}}><div style={{position:"relative",width:80,height:40,borderRadius:8,overflow:"hidden",border:"1px solid #ddd"}}><div style={{width:"100%",height:"100%",backgroundImage:`url(${headerWm})`,backgroundSize:headerWmZoom>100?`${headerWmZoom}%`:"cover",backgroundPosition:headerWmPos,opacity:headerWmOp/100}}/><button onClick={()=>{setHeaderWm("");setHeaderWmPos("50% 50%");setHeaderWmZoom(100);setHeaderWmOp(50)}} style={{position:"absolute",top:2,right:2,width:16,height:16,borderRadius:"50%",background:"rgba(0,0,0,.5)",border:"none",color:"#fff",cursor:"pointer",fontSize:12,display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button></div><span style={{fontSize:12,color:"#aaa"}}>ลาก+ซูมบน preview</span></div>):(<button onClick={()=>{const inp=document.createElement("input");inp.type="file";inp.accept="image/*";inp.onchange=e=>{const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=ev=>setHeaderWm(ev.target.result);r.readAsDataURL(f)};inp.click()}} style={{padding:"10px 14px",borderRadius:8,border:"1px solid #ddd",background:"#fafafa",color:"#888",cursor:"pointer",fontSize:14}}>+ 🖼️ เลือกภาพ</button>)}
                   </div>
                   {headerWm&&<div style={{display:"flex",alignItems:"center",gap:6,marginBottom:4}}><span style={{fontSize:12,color:"#888",flexShrink:0}}>โปร่งใส</span><input type="range" min="10" max="100" value={headerWmOp} onChange={e=>setHeaderWmOp(Number(e.target.value))} style={{flex:1,height:6,borderRadius:3,appearance:"none",background:"linear-gradient(90deg,#eee,#888)",cursor:"pointer"}}/><span style={{fontSize:12,color:"#888",minWidth:30}}>{headerWmOp}%</span></div>}
                 </div>
