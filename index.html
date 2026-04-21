@@ -813,40 +813,96 @@ const stripDef=null;
       })}
 
       {/* HEADLINE — front layer, above all deco/strips */}
-      {(()=>{const hs=c.sp.hlStyle;const hlLeft=(d.profileSize||116)+60;
-        const hlOffX=d.hlOffX||0;const hlOffY=d.hlOffY||0;
-        const hlSel=selectedEl==="hl";
-        const base={position:"absolute",bottom:(1123-HEADER_H)+55+hlOffY,left:hlLeft+hlOffX,display:"flex",justifyContent:"center",zIndex:hlSel?9999:25,overflow:"visible",
-          cursor:onHlDrag&&hlSel?"move":"default",userSelect:"none",touchAction:"none",
-          outline:hlSel?"2.5px dashed rgba(56,210,110,0.9)":"none",outlineOffset:"4px",
-          filter:hlSel?"drop-shadow(0 0 6px rgba(56,210,110,0.7))":"none"};
-        const makeDrag=(e)=>{
-          if(!onHlDrag)return;
-          if(e.touches&&!hlSel)return; // touch: ต้อง double-tap เลือกก่อน
-          e.preventDefault();e.stopPropagation();
-          const sx=e.touches?e.touches[0].clientX:e.clientX;
-          const sy=e.touches?e.touches[0].clientY:e.clientY;
-          const ox=hlOffX,oy=hlOffY;
-          const mv=(ev)=>{ev.preventDefault();
-            const cx=ev.touches?ev.touches[0].clientX:ev.clientX;
-            const cy=ev.touches?ev.touches[0].clientY:ev.clientY;
-            onHlDrag(Math.round(ox+(cx-sx)/scale),Math.round(oy-(cy-sy)/scale));
-          };
-          const up=()=>{window.removeEventListener("mousemove",mv);window.removeEventListener("mouseup",up);window.removeEventListener("touchmove",mv);window.removeEventListener("touchend",up)};
-          window.addEventListener("mousemove",mv);window.addEventListener("mouseup",up);
-          window.addEventListener("touchmove",mv,{passive:false});window.addEventListener("touchend",up);
+{(() => {
+  const hlX = (d.hlOffX || 0);
+  const hlY = (d.hlOffY || 0);
+  const isSelected = selectedEl === "headline";
+
+  return (
+    <div
+      data-selid="headline"
+      onMouseDown={onHlDrag ? (e) => {
+        e.preventDefault();
+        const startX = e.clientX;
+        const startY = e.clientY;
+        const origX = hlX;
+        const origY = hlY;
+        const move = (ev) => {
+          ev.preventDefault();
+          onHlDrag(
+            Math.round(origX + (ev.clientX - startX) / (scale || 1)),
+            Math.round(origY + (ev.clientY - startY) / (scale || 1))
+          );
         };
-        const capsule={borderRadius:c.sp.hlR,padding:"6px 6px",position:"relative",display:"inline-block",maxWidth:"80%"};
-        const hlS=hs==="border"?{...capsule,backdropFilter:"blur(4px)",boxShadow:`0 4px 16px rgba(0,0,0,.18), 0 2px 8px ${c.ac}30`}:hs==="flat"?{...capsule,boxShadow:"0 4px 12px rgba(0,0,0,.12)"}:hs==="glow"?{...capsule,boxShadow:`0 4px 20px ${c.ac}40, 0 0 40px ${c.ac}15, 0 2px 8px rgba(0,0,0,.2)`}:{...capsule,boxShadow:`0 4px 16px rgba(0,0,0,.18), 0 2px 8px ${c.ac}25`};
-        const bgC=d.hlBgColor||(hs==="border"?"rgba(255,255,255,0.2)":c.hlBg);
-        const txtC=d.hlColor||(hs==="border"?"#fff":c.hlTxt);
-        return<div data-selid="hl" style={base} onMouseDown={onHlDrag?makeDrag:undefined} onTouchStart={onHlDrag?makeDrag:undefined}>
-          <div style={hlS}>
-            <div style={{position:"absolute",inset:0,background:bgC,filter:bf,borderRadius:c.sp.hlR}}/>
-            <div style={{position:"relative",fontFamily:"'Kanit',sans-serif",fontSize:d.fsHeadline||14,fontWeight:700,color:txtC,lineHeight:1.55,textAlign:"center",overflow:"hidden",whiteSpace:"pre"}}>{d.headline||"หัวข้อข่าวประชาสัมพันธ์"}</div>
-          </div>
-        </div>;
-      })()}
+        const up = () => {
+          window.removeEventListener("mousemove", move);
+          window.removeEventListener("mouseup", up);
+        };
+        window.addEventListener("mousemove", move);
+        window.addEventListener("mouseup", up);
+      } : undefined}
+      onTouchStart={onHlDrag ? (e) => {
+        if (selectedEl !== "headline") return;
+        e.preventDefault();
+        const startX = e.touches[0].clientX;
+        const startY = e.touches[0].clientY;
+        const origX = hlX;
+        const origY = hlY;
+        const move = (ev) => {
+          ev.preventDefault();
+          onHlDrag(
+            Math.round(origX + (ev.touches[0].clientX - startX) / (scale || 1)),
+            Math.round(origY + (ev.touches[0].clientY - startY) / (scale || 1))
+          );
+        };
+        const up = () => {
+          window.removeEventListener("touchmove", move);
+          window.removeEventListener("touchend", up);
+        };
+        window.addEventListener("touchmove", move, { passive: false });
+        window.addEventListener("touchend", up);
+      } : undefined}
+      style={{
+        position: "absolute",
+        top: 138 + hlY,
+        left: 285 + hlX,
+        zIndex: 15,
+        cursor: onHlDrag && isSelected ? "move" : "default",
+        outline: isSelected ? "2.5px dashed rgba(56,210,110,0.9)" : "none",
+        outlineOffset: "8px",
+        filter: isSelected ? "drop-shadow(0 0 8px rgba(56,210,110,0.6))" : "none",
+      }}
+    >
+      <div
+        style={{
+          display: "inline-block",
+          padding: "10px 24px",
+          borderRadius: "14px",
+          background: d.hlBgColor || `linear-gradient(135deg, ${c.ac}ee, ${c.fc2}cc)`,
+          boxShadow: "0 6px 20px rgba(0,0,0,0.28)",
+          maxWidth: "480px",
+          textAlign: "center",
+          position: "relative",
+        }}
+      >
+        <div
+          style={{
+            fontSize: d.fsHeadline || 23,
+            fontWeight: 700,
+            fontFamily: "'Kanit', sans-serif",
+            color: d.hlColor || "#ffffff",
+            lineHeight: 1.4,
+            textShadow: "2px 3px 8px rgba(0,0,0,0.45)",
+            whiteSpace: "pre-line",
+            wordBreak: "break-word",
+          }}
+        >
+          {d.headline || "หัวข้อข่าวประชาสัมพันธ์"}
+        </div>
+      </div>
+    </div>
+  );
+})()}
     </div>
   );
 }
