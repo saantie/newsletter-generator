@@ -812,7 +812,7 @@ const stripDef=null;
         );
       })}
 
-      {/* HEADLINE — front layer, above all deco/strips */}
+      {/* ── HEADLINE HIGHLIGHT ── */}
 {(() => {
   const hlX = (d.hlOffX || 0);
   const hlY = (d.hlOffY || 0);
@@ -1152,7 +1152,8 @@ function App(){
   const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
   const isSafari=/^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   const isLandscape=window.innerWidth>window.innerHeight; 
-  // AUTO SCROLL FORM เมื่อเลือกองค์ประกอบใน Preview
+  // ─────────────────────────────────────────────────────────────
+// AUTO SCROLL FORM เมื่อเลือกองค์ประกอบใน Preview
 // ─────────────────────────────────────────────────────────────
 useEffect(() => {
   if (!selectedEl || !scrollAreaRef.current) return;
@@ -2290,92 +2291,45 @@ button:hover{filter:brightness(.96)}
 
       {/* Preview — zoom bar fixed + scroll area below */}
       <div className="prev-col" style={{display:"flex",flexDirection:"column",overflow:"hidden"}}>
-        {/* Zoom bar */}
-        <div style={{flexShrink:0,display:"flex",justifyContent:"center",padding:"6px 0 4px",background:"#f0f0f5",zIndex:99}}>
-          <div style={{display:"flex",alignItems:"center",gap:2,background:"rgba(255,255,255,0.92)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",borderRadius:50,padding:"4px 6px",boxShadow:"0 4px 14px rgba(0,0,0,0.10)",border:"1px solid rgba(0,0,0,0.06)"}}>
-            <span style={{fontSize:12,color:"#999",padding:"0 6px"}}>🔍</span>
-            {[0.3,0.45,0.6,0.8,1.0,1.2].map(s=>(
-              <button key={s} onClick={()=>setScale(s)} style={{padding:"4px 10px",border:"none",borderRadius:50,background:scale===s?ac:"transparent",color:scale===s?"#fff":"#888",cursor:"pointer",fontSize:12,fontWeight:scale===s?600:400,fontFamily:"'Sarabun',sans-serif",minWidth:38}}>
-                {Math.round(s*100)}%
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* SCROLL AREA — เวอร์ชันลื่นสุด (นิ้วเดียวปัดได้ปกติ) */}
+  {/* Zoom bar — ไม่ scroll, อยู่บนสุดเสมอ */}
+  <div style={{flexShrink:0,display:"flex",justifyContent:"center",padding:"6px 0 4px",background:"#f0f0f5",zIndex:99}}>
+    <div style={{display:"flex",alignItems:"center",gap:2,background:"rgba(255,255,255,0.92)",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)",borderRadius:50,padding:"4px 6px",boxShadow:"0 4px 14px rgba(0,0,0,0.10)",border:"1px solid rgba(0,0,0,0.06)"}}>
+      <span style={{fontSize:12,color:"#999",padding:"0 6px"}}>🔍</span>
+      {[0.3,0.45,0.6,0.8,1.0,1.2].map(s=>(
+        <button key={s} onClick={()=>setScale(s)} style={{padding:"4px 10px",border:"none",borderRadius:50,background:scale===s?ac:"transparent",color:scale===s?"#fff":"#888",cursor:"pointer",fontSize:12,fontWeight:scale===s?600:400,fontFamily:"'Sarabun',sans-serif",minWidth:38}}>
+          {Math.round(s*100)}%
+        </button>
+      ))}
+    </div>
+  </div>
+  {/* Scroll area — เลื่อนได้ทั้งแนวตั้งและแนวนอน | 1-finger pan */}
+  <div 
+    ref={prevScrollRef} 
+    style={{
+      flex:1,
+      minHeight:0,
+      overflow:"auto",
+      overflowX:"auto",
+      overflowY:"auto",
+      WebkitOverflowScrolling:"touch",
+      touchAction: "pan-x pan-y"     // ← เพิ่มบรรทัดนี้
+    }}
+  >
+    <div style={{minWidth:"fit-content",margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center",padding:"80px"}}>
+      <div style={{width:Math.ceil(794*scale),height:Math.ceil(1123*scale),flexShrink:0,margin:"0 auto"}}>
         <div 
-          ref={prevScrollRef} 
+          ref={wrapRef} 
           style={{
-            flex: 1,
-            minHeight: 0,
-            overflow: "auto",
-            overscrollBehavior: "contain",
-            WebkitOverflowScrolling: "touch",
-            touchAction: "pan-x pan-y",           /* สำคัญที่สุด */
-            scrollBehavior: "smooth",
-            position: "relative"
-          }}
+            transform:`scale(${scale})`,
+            transformOrigin:"top left",
+            width:794,
+            height:1123,
+            touchAction: "none"          // ← เพิ่มบรรทัดนี้
+          }} 
+          onTouchStartCapture={onPreviewTouchStartCapture} 
+          onTouchEndCapture={onPreviewTouchEndCapture}
         >
-          <div style={{
-            minWidth: "fit-content",
-            margin: "0 auto",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            padding: "80px 20px"
-          }}>
-            <div style={{
-              width: Math.ceil(794 * scale),
-              height: Math.ceil(1123 * scale),
-              flexShrink: 0,
-              margin: "0 auto",
-              boxShadow: "0 10px 40px rgba(0,0,0,0.15)"
-            }}>
-              <div 
-                ref={wrapRef} 
-                style={{
-                  transform: `scale(${scale})`,
-                  transformOrigin: "top left",
-                  width: 794,
-                  height: 1123,
-                  touchAction: "none",           /* ปล่อยให้ parent จัดการ scroll */
-                  userSelect: "none",
-                  pointerEvents: "auto"
-                }}
-                /* ลบ onTouchStartCapture และ onTouchEndCapture ออกชั่วคราว */
-              >
-                <Preview 
-                  ck={ck} sk={sk} d={d} id="main-preview" 
-                  hue={hue} brightness={brightness} saturation={saturation} vibrance={vibrance} 
-                  compactParagraph={compactParagraph} stripGradDir={stripGradDir} stripGradOn={stripGradOn} 
-                  hdrTextX={hdrTextX} hdrTextY={hdrTextY} 
-                  headerWm={headerWm} headerWmPos={headerWmPos} headerWmZoom={headerWmZoom} headerWmOp={headerWmOp} 
-                  textAlign={textAlign} isPro={isPro} scale={scale} 
-                  stripHue={stripHue} stripBrt={stripBrt} stripSat={stripSat} stripVib={stripVib} 
-                  stripTopHue={stripTopHue} stripTopBrt={stripTopBrt} stripTopSat={stripTopSat} stripTopVib={stripTopVib} 
-                  stripBotHue={stripBotHue} stripBotBrt={stripBotBrt} stripBotSat={stripBotSat} stripBotVib={stripBotVib} 
-                  showHdrBg={showHdrBg} showBodyBg={showBodyBg} showFtrBg={showFtrBg} showBgPat={showBgPat} 
-                  profileGX={profileGX} profileGY={profileGY} 
-                  contentOX={contentOX} contentOY={contentOY} 
-                  footerTX={footerTX} footerTY={footerTY} 
-                  showProfileBg={showProfileBg} 
-                  stripTopOffY={stripTopOffY} stripBotOffY={stripBotOffY} 
-                  onImgDrag={onImgDrag} onImgZoom={onImgZoom} 
-                  onProfileDrag={onProfileDrag} onProfileZoom={onProfileZoom} 
-                  onHdrWmDrag={p=>setHeaderWmPos(p)} onHdrWmZoom={z=>setHeaderWmZoom(z)} 
-                  onHdrTextDrag={(x,y)=>{setHdrTextX(x);setHdrTextY(y);}} 
-                  onHlDrag={(x,y)=>{setD(p=>({...p,hlOffX:x,hlOffY:y}));}} 
-                  onTopHChange={v=>set("topImgH",v)} onBotHChange={v=>set("botImgH",v)} 
-                  onFooterTDrag={(x,y)=>{setFooterTX(x);setFooterTY(y);}} 
-                  onProfileGDrag={(x,y)=>{setProfileGX(x);setProfileGY(y);}} 
-                  onContentDrag={(x,y)=>{setContentOX(x);setContentOY(y);}} 
-                  onStripTopDrag={v=>setStripTopOffY(v)} onStripBotDrag={v=>setStripBotOffY(v)} 
-                  decoImgs={decoImgs} 
-                  onDecoDrag={(i,x,y)=>setDecoImgs(p=>p.map((img,j)=>j===i?{...img,x,y}:img))} 
-                  onDecoResize={(i,w,h)=>setDecoImgs(p=>p.map((img,j)=>j===i?{...img,w,h}:img))} 
-                  onDecoRotate={(i,rot)=>setDecoImgs(p=>p.map((img,j)=>j===i?{...img,rot}:img))} 
-                  selectedEl={selectedEl}
-                />
+            <Preview ck={ck} sk={sk} d={d} id="main-preview" hue={hue} brightness={brightness} saturation={saturation} vibrance={vibrance} compactParagraph={compactParagraph} stripGradDir={stripGradDir} stripGradOn={stripGradOn} hdrTextX={hdrTextX} hdrTextY={hdrTextY} headerWm={headerWm} headerWmPos={headerWmPos} headerWmZoom={headerWmZoom} headerWmOp={headerWmOp} textAlign={textAlign} isPro={isPro} scale={scale} stripHue={stripHue} stripBrt={stripBrt} stripSat={stripSat} stripVib={stripVib} stripTopHue={stripTopHue} stripTopBrt={stripTopBrt} stripTopSat={stripTopSat} stripTopVib={stripTopVib} stripBotHue={stripBotHue} stripBotBrt={stripBotBrt} stripBotSat={stripBotSat} stripBotVib={stripBotVib} showHdrBg={showHdrBg} showBodyBg={showBodyBg} showFtrBg={showFtrBg} showBgPat={showBgPat} profileGX={profileGX} profileGY={profileGY} contentOX={contentOX} contentOY={contentOY} footerTX={footerTX} footerTY={footerTY} showProfileBg={showProfileBg} stripTopOffY={stripTopOffY} stripBotOffY={stripBotOffY} onImgDrag={onImgDrag} onImgZoom={onImgZoom} onProfileDrag={onProfileDrag} onProfileZoom={onProfileZoom} onHdrWmDrag={p=>setHeaderWmPos(p)} onHdrWmZoom={z=>setHeaderWmZoom(z)} onHdrTextDrag={(x,y)=>{setHdrTextX(x);setHdrTextY(y);}} onHlDrag={(x,y)=>{setD(p=>({...p,hlOffX:x,hlOffY:y}));}} onTopHChange={v=>set("topImgH",v)} onBotHChange={v=>set("botImgH",v)} onFooterTDrag={(x,y)=>{setFooterTX(x);setFooterTY(y);}} onProfileGDrag={(x,y)=>{setProfileGX(x);setProfileGY(y);}} onContentDrag={(x,y)=>{setContentOX(x);setContentOY(y);}} onStripTopDrag={v=>setStripTopOffY(v)} onStripBotDrag={v=>setStripBotOffY(v)} decoImgs={decoImgs} onDecoDrag={(i,x,y)=>setDecoImgs(p=>p.map((img,j)=>j===i?{...img,x,y}:img))} onDecoResize={(i,w,h)=>setDecoImgs(p=>p.map((img,j)=>j===i?{...img,w,h}:img))} onDecoRotate={(i,rot)=>setDecoImgs(p=>p.map((img,j)=>j===i?{...img,rot}:img))} selectedEl={selectedEl}/>
           </div>
         </div>
         <div style={{height:"calc(32px + env(safe-area-inset-bottom))",flexShrink:0}}/>
