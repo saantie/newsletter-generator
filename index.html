@@ -1152,6 +1152,35 @@ function App(){
   const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
   const isSafari=/^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   const isLandscape=window.innerWidth>window.innerHeight; 
+  // AUTO SCROLL FORM เมื่อเลือกองค์ประกอบใน Preview
+// ─────────────────────────────────────────────────────────────
+useEffect(() => {
+  if (!selectedEl || !scrollAreaRef.current) return;
+
+  let targetId = "";
+  if (selectedEl === "headline") targetId = "fs-content";           // หัวข้อข่าว
+  else if (selectedEl === "hdr-text") targetId = "fs-header";
+  else if (selectedEl === "profile-img" || selectedEl === "profile-g") targetId = "fs-header";
+  else if (selectedEl === "content") targetId = "fs-content";
+  else if (selectedEl.startsWith("img-top-") || selectedEl.startsWith("img-bot-")) targetId = "fs-images";
+
+  if (targetId) {
+    const section = document.getElementById(targetId);
+    if (section) {
+      const scrollContainer = scrollAreaRef.current;
+      const offset = 80; // ชดเชยความสูงของ header + padding
+      const topPosition = section.getBoundingClientRect().top 
+                        + scrollContainer.scrollTop 
+                        - scrollContainer.getBoundingClientRect().top 
+                        - offset;
+
+      scrollContainer.scrollTo({
+        top: Math.max(0, topPosition),
+        behavior: "smooth"
+      });
+    }
+  }
+}, [selectedEl]);
 
   // PWA install prompt (Android/Desktop Chrome)
   useEffect(()=>{
